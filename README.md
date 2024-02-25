@@ -1,7 +1,7 @@
 # Group4GameProject
 ## Team: Carter I, Chase C, Jesse M & Jack M
 ## Class: IGME 106
-This repo is for a class project in the IGME 106 at RIT. 
+This repo is for a class project for IGME 106 at RIT. 
 
 # The primary goals of this project are the following:
 1. Practice with the development of a larger project over the course of a semester
