@@ -5,7 +5,11 @@ using Microsoft.Xna.Framework.Input;
 
 namespace YouveBeenAudited
 {
+    /// <summary>
+    /// Manage the traps on players screen.
+    /// </summary>
     internal class TrapManager
     {
+        // TODO: make the trap manager
     }
 }
