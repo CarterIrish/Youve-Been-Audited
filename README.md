@@ -1,6 +1,7 @@
-# Group4GameProject
+# You've Been Audited
 ## Team: Carter I, Chase C, Jesse M & Jack M
 ## Class: IGME 106
+## Theme: You Cant Make Me!
 This repo is for a class project for IGME 106 at RIT. 
 
 # The primary goals of this project are the following:
