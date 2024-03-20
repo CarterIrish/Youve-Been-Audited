@@ -68,15 +68,24 @@ namespace YouveBeenAudited
         /// <param name="amount">amount of damage to take.</param>
         public void TakeDamage(int amount)
         {
-            // TODO: Create the take damage logic.
+            _health = _health - amount;
+            if (_health <= 0)
+            {
+                _isDead = true;
+            }
         }
 
         /// <summary>
-        /// Moves the enemy to next point in path.
+        /// Moves the enemy to next point in path. If the end is reached, do nothing.
         /// </summary>
         public void Move()
         {
-            // TODO: Create the move logic
+            if (_path.Count - 1 == _currentPoint) //Checks if enemy is at the end of the path.
+            {
+                //Trigger end of game
+                return;
+            }
+            _currentPoint++;
         }
 
     }
