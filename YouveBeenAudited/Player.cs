@@ -22,7 +22,6 @@ namespace YouveBeenAudited
         /// </summary>
         public int Money { get => _money; }
 
-        // TODO: Review if inventory property need an indexer.
         /// <summary>
         /// Gets the inventory of player.
         /// </summary>
@@ -49,9 +48,28 @@ namespace YouveBeenAudited
         /// Buys a trap for the user to use.
         /// </summary>
         /// <param name="t">The trap to be bought</param>
-        private void Buy(Trap t)
+        /// <returns>Returns true if succefully bought false otherwise.</returns>
+        private bool Buy(Trap t)
         {
-            // TODO: Create the buying logic.
+            // TODO: Should we use an array of lists to store trap types?
+            if(t.Cost < _money)
+            {
+                _inventory.Add(t);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Place a provided trap.
+        /// </summary>
+        /// <param name="t">The trap to be placed.</param>
+        private void PlaceTrap(Trap t)
+        {
+            // TODO: Create trap placement logic.
         }
     }
 }

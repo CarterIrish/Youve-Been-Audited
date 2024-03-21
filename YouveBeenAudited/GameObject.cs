@@ -17,6 +17,15 @@ namespace YouveBeenAudited
 
         // ------ Properties ------
 
+        /// <summary>
+        /// Gets the rectangle position of an object.
+        /// </summary>
+        public Rectangle Position { get => _position; }
+       
+        /// <summary>
+        /// Gets the texture for a game object.
+        /// </summary>
+        public Texture2D Texture { get => _texture; }
 
         // ------ Methods ------
 
@@ -37,7 +46,10 @@ namespace YouveBeenAudited
         /// Updates the objects information.
         /// </summary>
         /// <param name="gametime"></param>
-        public virtual void Update(GameTime gametime) { }
+        public virtual void Update(GameTime gametime) 
+        {
+        
+        }
 
         /// <summary>
         /// Draws the object to screen.

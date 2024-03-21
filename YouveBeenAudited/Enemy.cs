@@ -13,18 +13,11 @@ namespace YouveBeenAudited
     {
         // ------ Fields ------
 
-        private bool _isDead;
         private bool _atGoal;
         private int _currentPoint;
         private List<Point> _path;
         
         // ------ Properties -------
-
-        /// <summary>
-        /// Gets whether or not enemy is dead.
-        /// </summary>
-        public bool IsDead { get => _isDead; }
-
         /// <summary>
         /// Gets whether or not enemy is at goal.
         /// </summary>
@@ -68,11 +61,7 @@ namespace YouveBeenAudited
         /// <param name="amount">amount of damage to take.</param>
         public void TakeDamage(int amount)
         {
-            _health = _health - amount;
-            if (_health <= 0)
-            {
-                _isDead = true;
-            }
+            this.Health -= amount;
         }
 
         /// <summary>
@@ -83,7 +72,7 @@ namespace YouveBeenAudited
             if (_path.Count - 1 == _currentPoint) //Checks if enemy is at the end of the path.
             {
                 //Trigger end of game
-                return;
+                
             }
             _currentPoint++;
         }
