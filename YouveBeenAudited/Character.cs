@@ -11,8 +11,10 @@ namespace YouveBeenAudited
     {
         // ------ Fields ------
 
-        private int _health;
-        private bool _isDead;
+        protected int _health;
+        protected int _speed;
+        protected bool _isDead;
+
 
         /// <summary>
         /// Gets whether or not the character is dead.
