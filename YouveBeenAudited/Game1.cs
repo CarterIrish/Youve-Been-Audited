@@ -98,7 +98,7 @@ namespace YouveBeenAudited
 
             // TODO: Add your drawing code here
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
-            player.Draw(_spriteBatch, 5);
+            player.Draw(_spriteBatch);
             _spriteBatch.End();
             base.Draw(gameTime);
         }
