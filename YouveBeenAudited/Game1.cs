@@ -33,6 +33,8 @@ namespace YouveBeenAudited
         private List<Button> _buttonList;
 
 
+        private Texture2D playerTexture;
+        private Player player;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -52,6 +54,8 @@ namespace YouveBeenAudited
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            this.Content.Load<Texture2D>("playerStanding");
+            player = new Player(50, 50, playerTexture, 100, 100);
         }
 
         protected override void Update(GameTime gameTime)
