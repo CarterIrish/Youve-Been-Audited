@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace YouveBeenAudited
 {
@@ -27,6 +28,10 @@ namespace YouveBeenAudited
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private GameState _gameState;
+        private KeyboardState _PreviousKbs;
+        private List<Button> _buttonList;
+
 
         public Game1()
         {
@@ -53,6 +58,19 @@ namespace YouveBeenAudited
         {
             // TODO: Add your update logic here
 
+            switch (_gameState)
+            {
+                case GameState.Menu:
+
+                    break;
+                case GameState.Game:
+                    break;
+                case GameState.Options:
+                    break;
+                case GameState.GameOver:
+                    break;
+            }
+
             base.Update(gameTime);
         }
 
@@ -60,9 +78,32 @@ namespace YouveBeenAudited
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+
+            switch (_gameState)
+            {
+                case GameState.Menu:
+                    break;
+                case GameState.Game:
+                    break;
+                case GameState.Options:
+                    break;
+                case GameState.GameOver:
+                    break;
+            }
 
             base.Draw(gameTime);
+        }
+
+        private void ButtonCheck()
+        {
+            foreach(Button b in _buttonList)
+            {
+                switch (b)
+                {
+
+                }
+
+            }
         }
     }
 }                                                                                 
