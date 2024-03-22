@@ -29,7 +29,7 @@ namespace YouveBeenAudited
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private GameState _gameState;
-        private KeyboardState _PreviousKbs;
+        private MouseState _mouseState;
         private List<Button> _buttonList;
 
 
@@ -65,7 +65,7 @@ namespace YouveBeenAudited
             switch (_gameState)
             {
                 case GameState.Menu:
-
+                    ButtonCheck();
                     break;
                 case GameState.Game:
                     break;
@@ -82,11 +82,13 @@ namespace YouveBeenAudited
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
-
             switch (_gameState)
             {
                 case GameState.Menu:
+                    foreach(Button b in _buttonList)
+                    {
+                        
+                    }
                     break;
                 case GameState.Game:
                     break;
@@ -107,9 +109,26 @@ namespace YouveBeenAudited
         {
             foreach(Button b in _buttonList)
             {
-                switch (b)
+                switch (b.Name)
                 {
-
+                    case "StartButton":
+                        if (b.ButtonClick(_mouseState))
+                        {
+                            _gameState = GameState.Game;
+                        }
+                        break;
+                    case "OptionsButton":
+                        if(b.ButtonClick(_mouseState))
+                        {
+                            _gameState = GameState.Options;
+                        }
+                        break;
+                    case "ExitGame":
+                        if(b.ButtonClick(_mouseState))
+                        {
+                            Exit();
+                        }
+                        break;
                 }
 
             }
