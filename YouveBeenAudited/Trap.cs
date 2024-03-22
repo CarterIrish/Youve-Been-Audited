@@ -48,5 +48,19 @@ namespace YouveBeenAudited
             _damageAmnt = damageAmnt;
             _cost = cost;
         }
+
+        /// <summary>
+        /// Checks the collision with another game object
+        /// </summary>
+        /// <param name="obj">Object to check collisions with</param>
+        /// <returns></returns>
+        public bool CheckCollisions(GameObject obj)
+        {
+            if(obj is Enemy)
+            {
+                return Position.Intersects(obj.Position);
+            }
+            return false;
+        }
     }
 }

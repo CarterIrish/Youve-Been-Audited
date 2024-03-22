@@ -12,8 +12,8 @@ namespace YouveBeenAudited
     {
         // ------ Fields ------
 
-        private Rectangle _position;
-        private Texture2D _texture;
+        protected Rectangle _position;
+        protected Texture2D _texture;
 
         // ------ Properties ------
 
@@ -38,7 +38,7 @@ namespace YouveBeenAudited
         public GameObject(int x, int y, Texture2D texture)
         {
             _texture = texture;
-            _position = new Rectangle(x, y, texture.Width, texture.Height);
+            _position = new Rectangle(x, y, texture.Width * 5, texture.Height * 5);
         }
 
 

@@ -67,9 +67,30 @@ namespace YouveBeenAudited
         /// Place a provided trap.
         /// </summary>
         /// <param name="t">The trap to be placed.</param>
-        private void PlaceTrap(Trap t)
+        public void PlaceTrap(Trap t)
         {
             // TODO: Create trap placement logic.
+        }
+
+        public void Move()
+        {
+            KeyboardState kbs = Keyboard.GetState();
+            if(kbs.IsKeyDown(Keys.W))
+            {
+                _position.Y -= _speed;
+            }
+            if (kbs.IsKeyDown(Keys.A))
+            {
+                _position.X -= _speed;
+            }
+            if (kbs.IsKeyDown(Keys.S))
+            {
+                _position.Y += _speed;
+            }
+            if (kbs.IsKeyDown(Keys.D))
+            {
+                _position.X += _speed;
+            }
         }
     }
 }

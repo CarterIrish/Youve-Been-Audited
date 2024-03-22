@@ -4,6 +4,18 @@ using Microsoft.Xna.Framework.Input;
 
 namespace YouveBeenAudited
 {
+
+    /// <summary>States of a character</summary>
+    enum CharacterStates
+    {
+        Idle,
+        Left,
+        Right,
+        Up,
+        Down
+    }
+
+
     /// <summary>
     /// Purpose: Holds character specific information.
     /// </summary>
@@ -11,8 +23,10 @@ namespace YouveBeenAudited
     {
         // ------ Fields ------
 
-        private int _health;
-        private bool _isDead;
+        protected int _health;
+        protected int _speed;
+        protected bool _isDead;
+
 
         /// <summary>
         /// Gets whether or not the character is dead.
@@ -45,6 +59,11 @@ namespace YouveBeenAudited
             }
         }
 
+        public int Speed
+        {
+            get => _speed;
+        }
+
         // ------ Methods ------
 
             /// <summary>
@@ -56,6 +75,7 @@ namespace YouveBeenAudited
         public Character(int x, int y, Texture2D texture, int health) : base(x, y, texture)
         {
             _health = health;
+            _speed = 10;
         }
 
         // TODO: Make any methods necessary for characters as a whole.
