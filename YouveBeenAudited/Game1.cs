@@ -49,14 +49,14 @@ namespace YouveBeenAudited
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            this.Content.Load<Texture2D>("playerStanding");
+            playerTexture = this.Content.Load<Texture2D>("playerStanding");
             player = new Player(50, 50, playerTexture, 100, 100);
         }
 
         protected override void Update(GameTime gameTime)
         {
             // TODO: Add your update logic here
-
+            player.Move();
             base.Update(gameTime);
         }
 
@@ -65,7 +65,9 @@ namespace YouveBeenAudited
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
+            player.Draw(_spriteBatch, 5);
+            _spriteBatch.End();
             base.Draw(gameTime);
         }
     }

@@ -60,5 +60,17 @@ namespace YouveBeenAudited
             // TODO: If needed change this so that it more aligns with our game
             sb.Draw(_texture, _position, Color.White);
         }
+
+        /// <summary>
+        /// Draws the  object to a screen with a scalar
+        /// </summary>
+        /// <param name="sb">Spritebatch to draw into</param>
+        /// <param name="scale">The amount to scale the object by</param>
+        public virtual void Draw(SpriteBatch sb, int scale)
+        {
+            Rectangle scaleRect = new Rectangle(_position.X, _position.Y,
+                Texture.Width * scale, Texture.Height * scale);
+            sb.Draw(_texture, scaleRect, Color.White);
+        }
     }
 }

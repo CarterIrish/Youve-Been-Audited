@@ -59,6 +59,11 @@ namespace YouveBeenAudited
             }
         }
 
+        public int Speed
+        {
+            get => _speed;
+        }
+
         // ------ Methods ------
 
             /// <summary>
@@ -70,6 +75,7 @@ namespace YouveBeenAudited
         public Character(int x, int y, Texture2D texture, int health) : base(x, y, texture)
         {
             _health = health;
+            _speed = 10;
         }
 
         // TODO: Make any methods necessary for characters as a whole.

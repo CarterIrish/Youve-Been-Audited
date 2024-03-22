@@ -67,12 +67,12 @@ namespace YouveBeenAudited
         /// Place a provided trap.
         /// </summary>
         /// <param name="t">The trap to be placed.</param>
-        private void PlaceTrap(Trap t)
+        public void PlaceTrap(Trap t)
         {
             // TODO: Create trap placement logic.
         }
 
-        private void Move()
+        public void Move()
         {
             KeyboardState kbs = Keyboard.GetState();
             if(kbs.IsKeyDown(Keys.W))
