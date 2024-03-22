@@ -12,8 +12,8 @@ namespace YouveBeenAudited
     {
         // ------ Fields ------
 
-        private Rectangle _position;
-        private Texture2D _texture;
+        protected Rectangle _position;
+        protected Texture2D _texture;
 
         // ------ Properties ------
 
