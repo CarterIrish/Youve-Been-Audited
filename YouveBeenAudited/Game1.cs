@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 
 namespace YouveBeenAudited
@@ -45,6 +46,7 @@ namespace YouveBeenAudited
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            _buttonList = new List<Button>();
 
             base.Initialize();
         }
@@ -56,6 +58,8 @@ namespace YouveBeenAudited
             // TODO: use this.Content to load your game content here
             playerTexture = this.Content.Load<Texture2D>("playerStanding");
             player = new Player(50, 50, playerTexture, 100, 100);
+            // Make menu ui elements
+            _buttonList.Add(new Button(45, 45, playerTexture, "StartButton"));
         }
 
         protected override void Update(GameTime gameTime)
@@ -82,15 +86,17 @@ namespace YouveBeenAudited
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
             switch (_gameState)
             {
                 case GameState.Menu:
-                    foreach(Button b in _buttonList)
+                    foreach (Button b in _buttonList)
                     {
-                        
+                        b.Draw(_spriteBatch);
                     }
                     break;
                 case GameState.Game:
+                    GraphicsDevice.Clear(Color.Black);
                     break;
                 case GameState.Options:
                     break;
@@ -99,7 +105,6 @@ namespace YouveBeenAudited
             }
 
             // TODO: Add your drawing code here
-            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
             player.Draw(_spriteBatch, 5);
             _spriteBatch.End();
             base.Draw(gameTime);
@@ -118,9 +123,11 @@ namespace YouveBeenAudited
                         }
                         break;
                     case "OptionsButton":
+                        System.Diagnostics.Debug.WriteLine($"{b.ButtonClick(_mouseState)} || {_gameState}");
                         if(b.ButtonClick(_mouseState))
                         {
                             _gameState = GameState.Options;
+                            System.Diagnostics.Debug.WriteLine($"GameState: {_gameState}");
                         }
                         break;
                     case "ExitGame":
