@@ -11,15 +11,22 @@ namespace YouveBeenAudited
     {
         // TODO: Create or insert button class.
 
+        private string _buttonName;
+        private bool _isActive;
+
+        public string Name { get => _buttonName; }
+        public bool IsActive { get => _isActive; set => _isActive = value; }
+
         /// <summary>
         /// Creates a new button object.
         /// </summary>
         /// <param name="x">X coord of button.</param>
         /// <param name="y">Y coord of button.</param>
         /// <param name="texture">The buttons texture.</param>
-        public Button(int x, int y, Texture2D texture) : base(x, y, texture)
+        public Button(int x, int y, Texture2D texture, string buttonName) : base(x, y, texture)
         {
             // TODO: Create button constructor.
+            _buttonName = buttonName;
         }
 
         /// <summary>
