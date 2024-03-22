@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace YouveBeenAudited
 {
@@ -27,6 +28,10 @@ namespace YouveBeenAudited
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private GameState _gameState;
+        private KeyboardState _PreviousKbs;
+        private List<Button> _buttonList;
+
 
         private Texture2D playerTexture;
         private Player player;
@@ -56,6 +61,20 @@ namespace YouveBeenAudited
         protected override void Update(GameTime gameTime)
         {
             // TODO: Add your update logic here
+
+            switch (_gameState)
+            {
+                case GameState.Menu:
+
+                    break;
+                case GameState.Game:
+                    break;
+                case GameState.Options:
+                    break;
+                case GameState.GameOver:
+                    break;
+            }
+
             player.Move();
             base.Update(gameTime);
         }
@@ -64,11 +83,36 @@ namespace YouveBeenAudited
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
+
+            switch (_gameState)
+            {
+                case GameState.Menu:
+                    break;
+                case GameState.Game:
+                    break;
+                case GameState.Options:
+                    break;
+                case GameState.GameOver:
+                    break;
+            }
+
             // TODO: Add your drawing code here
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
             player.Draw(_spriteBatch, 5);
             _spriteBatch.End();
             base.Draw(gameTime);
+        }
+
+        private void ButtonCheck()
+        {
+            foreach(Button b in _buttonList)
+            {
+                switch (b)
+                {
+
+                }
+
+            }
         }
     }
 }                                                                                 
