@@ -54,7 +54,7 @@ namespace YouveBeenAudited
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            this.Content.Load<Texture2D>("playerStanding");
+            playerTexture = this.Content.Load<Texture2D>("playerStanding");
             player = new Player(50, 50, playerTexture, 100, 100);
         }
 
@@ -75,6 +75,7 @@ namespace YouveBeenAudited
                     break;
             }
 
+            player.Move();
             base.Update(gameTime);
         }
 
@@ -97,6 +98,10 @@ namespace YouveBeenAudited
                     break;
             }
 
+            // TODO: Add your drawing code here
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
+            player.Draw(_spriteBatch, 5);
+            _spriteBatch.End();
             base.Draw(gameTime);
         }
 
