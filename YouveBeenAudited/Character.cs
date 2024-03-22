@@ -4,6 +4,18 @@ using Microsoft.Xna.Framework.Input;
 
 namespace YouveBeenAudited
 {
+
+    /// <summary>States of a character</summary>
+    enum CharacterStates
+    {
+        Idle,
+        Left,
+        Right,
+        Up,
+        Down
+    }
+
+
     /// <summary>
     /// Purpose: Holds character specific information.
     /// </summary>

@@ -5,6 +5,18 @@ using Microsoft.Xna.Framework.Input;
 namespace YouveBeenAudited
 {
     /// <summary>
+    /// States of the game.
+    /// </summary>
+    enum GameState
+    {
+        Menu,
+        Game,
+        Options,
+        GameOver
+    }
+
+
+    /// <summary>
     /// Authors: Carter I, Chase C, Jesse M & Jack M.
     /// Class: IGME 106.
     /// Date: 2/25/2024.
@@ -39,9 +51,6 @@ namespace YouveBeenAudited
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
             // TODO: Add your update logic here
 
             base.Update(gameTime);
