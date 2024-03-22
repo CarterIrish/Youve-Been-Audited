@@ -11,9 +11,9 @@ namespace YouveBeenAudited
     {
         // ------ Fields. ------
         private int _damageAmnt;
+
         private int _cost;
         private bool _isActive;
-
 
         // ------ Properties. ------
 
@@ -21,7 +21,7 @@ namespace YouveBeenAudited
         /// Gets the damage amount of trap.
         /// </summary>
         public int DamageAmnt { get => _damageAmnt; }
-        
+
         /// <summary>
         /// Gets the cost of trap.
         /// </summary>
@@ -33,7 +33,6 @@ namespace YouveBeenAudited
         public bool IsActive { get => _isActive; set => _isActive = value; }
 
         // ------ Methods. ------
-
 
         /// <summary>
         /// Creates a new trap object.
@@ -53,10 +52,10 @@ namespace YouveBeenAudited
         /// Checks the collision with another game object
         /// </summary>
         /// <param name="obj">Object to check collisions with</param>
-        /// <returns></returns>
+        /// <returns>True if collision detected</returns>
         public bool CheckCollisions(GameObject obj)
         {
-            if(obj is Enemy)
+            if (obj is IDamageable)
             {
                 return Position.Intersects(obj.Position);
             }

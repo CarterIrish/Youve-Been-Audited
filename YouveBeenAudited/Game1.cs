@@ -9,14 +9,13 @@ namespace YouveBeenAudited
     /// <summary>
     /// States of the game.
     /// </summary>
-    enum GameState
+    internal enum GameState
     {
         Menu,
         Game,
         Options,
         GameOver
     }
-
 
     /// <summary>
     /// Authors: Carter I, Chase C, Jesse M & Jack M.
@@ -33,14 +32,19 @@ namespace YouveBeenAudited
         private MouseState _mouseState;
         private List<Button> _buttonList;
 
-
         private Texture2D playerTexture;
         private Player player;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            // Set window to borderless windowed as default
+            Window.IsBorderless = true;
+            _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            _graphics.ApplyChanges();
         }
 
         protected override void Initialize()
@@ -58,6 +62,7 @@ namespace YouveBeenAudited
             // TODO: use this.Content to load your game content here
             playerTexture = this.Content.Load<Texture2D>("playerStanding");
             player = new Player(50, 50, playerTexture, 100, 100);
+
             // Make menu ui elements
             _buttonList.Add(new Button(45, 45, playerTexture, "StartButton"));
         }
@@ -66,15 +71,22 @@ namespace YouveBeenAudited
         {
             // TODO: Add your update logic here
 
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape) == true)
+            {
+                Exit();
+            }
             switch (_gameState)
             {
                 case GameState.Menu:
                     ButtonCheck();
                     break;
+
                 case GameState.Game:
                     break;
+
                 case GameState.Options:
                     break;
+
                 case GameState.GameOver:
                     break;
             }
@@ -95,11 +107,14 @@ namespace YouveBeenAudited
                         b.Draw(_spriteBatch);
                     }
                     break;
+
                 case GameState.Game:
                     GraphicsDevice.Clear(Color.Black);
                     break;
+
                 case GameState.Options:
                     break;
+
                 case GameState.GameOver:
                     break;
             }
@@ -112,7 +127,7 @@ namespace YouveBeenAudited
 
         private void ButtonCheck()
         {
-            foreach(Button b in _buttonList)
+            foreach (Button b in _buttonList)
             {
                 switch (b.Name)
                 {
@@ -122,23 +137,24 @@ namespace YouveBeenAudited
                             _gameState = GameState.Game;
                         }
                         break;
+
                     case "OptionsButton":
                         System.Diagnostics.Debug.WriteLine($"{b.ButtonClick(_mouseState)} || {_gameState}");
-                        if(b.ButtonClick(_mouseState))
+                        if (b.ButtonClick(_mouseState))
                         {
                             _gameState = GameState.Options;
                             System.Diagnostics.Debug.WriteLine($"GameState: {_gameState}");
                         }
                         break;
+
                     case "ExitGame":
-                        if(b.ButtonClick(_mouseState))
+                        if (b.ButtonClick(_mouseState))
                         {
                             Exit();
                         }
                         break;
                 }
-
             }
         }
     }
-}                                                                                 
+}
