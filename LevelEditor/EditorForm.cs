@@ -51,7 +51,7 @@ namespace LevelEditor
             tileLength = 450 / height;
             map = new PictureBox[height, width];
             enemyPath = new List<Point>();
-            
+
 
             //Creates the level canvas in the correct dimensions
             CreateCanvas(width, height);
@@ -112,10 +112,45 @@ namespace LevelEditor
                     map[r, c].Size = new Size(tileLength, tileLength);
                     map[r, c].Location = new Point((c * tileLength) + 115, (r * tileLength) + 100);
                     map[r, c].Click += PaintFloor;
+                    map[r, c].Click += AddPoint;
                     map[r, c].BackColor = Color.White;
                 }
             }
 
+        }
+
+        /// <summary>
+        /// Changes the current color that is being drawn with
+        /// Also turns off pathing mode
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void SelectColor(object sender, EventArgs e)
+        {
+            //turns of pathing mode
+            isPathing = false;
+
+            Button color = (Button)sender;
+            currentColor = color.BackColor;
+            pictureBoxCurrentTile.BackColor = currentColor;
+
+        }
+
+        /// <summary>
+        /// Turns pathing mode on/off
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void PathingMode(object sender, EventArgs e)
+        {
+            if (isPathing)
+            {
+                isPathing = false;
+            }
+            else if (!isPathing)
+            {
+                isPathing = true;
+            }
         }
 
         /// <summary>
@@ -125,39 +160,20 @@ namespace LevelEditor
         /// <param name="e"></param>
         void PaintFloor(object sender, EventArgs e)
         {
-            PictureBox tile = (PictureBox)sender;
-            tile.BackColor = currentColor;
-
-            //Puts a "*" whenever the file has unsaved changes and changes isSaved to false
-            if (isSaved)
+            if (!isPathing)
             {
-                this.Text += "*";
-                isSaved = false;
-            }
-        }
+                PictureBox tile = (PictureBox)sender;
+                tile.BackColor = currentColor;
 
-        void PathingMode(object sender, EventArgs e)
-        {
-            if (isPathing)
-            {
-                isPathing = false;
-                foreach (PictureBox p in map)
+                //If there is a point there, it will redraw the point so the map texture doesn't cover it up
+                tile.Refresh();
+
+                //Puts a "*" whenever the file has unsaved changes and changes isSaved to false
+                if (isSaved)
                 {
-                    p.Click -= AddPoint;
-                    p.Click += PaintFloor;
-                    p.Paint -= PaintPoint;
+                    this.Text += "*";
+                    isSaved = false;
                 }
-
-            }
-            else if (!isPathing)
-            {
-                foreach (PictureBox p in map)
-                {
-                    p.Click += AddPoint;
-                    p.Click -= PaintFloor;
-                    p.Paint += PaintPoint;
-                }
-                isPathing = true;
             }
         }
 
@@ -166,10 +182,30 @@ namespace LevelEditor
         /// </summary>
         void AddPoint(object sender, EventArgs e)
         {
-            PictureBox tile = (PictureBox)sender;
-            Point pointLocation = new Point(tile.Location.X + (tile.Width / 2), tile.Location.Y + (tile.Height / 2));
-            enemyPath.Add(pointLocation);
-            tile.Refresh();
+            if (isPathing)
+            {
+                //Finds the coordinates for the center of the tile that was clicked on
+                PictureBox tile = (PictureBox)sender;
+                Point pointLocation = new Point(tile.Location.X + (tile.Width / 2), tile.Location.Y + (tile.Height / 2));
+
+                //checks to make sure there isn't already a point there
+                bool pointExists = false;
+                foreach (Point p in enemyPath)
+                {
+                    if (p == pointLocation)
+                    {
+                        pointExists = true;
+                    }
+                }
+
+                //if there is no point there, add it to the enemy path, and paint the point on the map
+                if (!pointExists)
+                {
+                    enemyPath.Add(pointLocation);
+                    tile.Paint += PaintPoint;
+                    tile.Refresh();
+                }
+            }
         }
 
         /// <summary>
@@ -177,34 +213,28 @@ namespace LevelEditor
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-       /* void PaintLine(object sender, PaintEventArgs e)
+        void PaintLine(object sender, PaintEventArgs e)
         {
             Pen pen = new Pen(Color.FromArgb(255, 0, 0, 0));
             e.Graphics.DrawLine(pen, 20, 10, 300, 100);
-        }*/
+        }
 
+        /// <summary>
+        /// Paints a point to the map
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void PaintPoint(object sender, PaintEventArgs e)
         {
             PictureBox tile = (PictureBox)sender;
             SolidBrush myBrush = new SolidBrush(Color.Red);
 
-            Point pointLocation = new Point((tile.Width / 2), (tile.Height / 2));
+            Point pointLocation = new Point((tile.Width / 2) - 3, (tile.Height / 2) - 3);
 
-            e.Graphics.FillEllipse(myBrush, new Rectangle(pointLocation, new Size(15, 15)));
+            e.Graphics.FillEllipse(myBrush, new Rectangle(pointLocation, new Size(6, 6)));
         }
 
-        /// <summary>
-        /// Changes the current color that is being drawn with
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void SelectColor(object sender, EventArgs e)
-        {
-            Button color = (Button)sender;
-            currentColor = color.BackColor;
-            pictureBoxCurrentTile.BackColor = currentColor;
 
-        }
 
         /// <summary>
         /// Saves the current file
