@@ -51,7 +51,7 @@ namespace LevelEditor
             tileLength = 450 / height;
             map = new PictureBox[height, width];
             enemyPath = new List<Point>();
-            isPathing = false;
+            
 
             //Creates the level canvas in the correct dimensions
             CreateCanvas(width, height);
@@ -74,6 +74,7 @@ namespace LevelEditor
         {
             InitializeComponent();
 
+            isPathing = false;
             currentColor = Color.White;
 
             //initializes the buttons' click events
@@ -87,7 +88,7 @@ namespace LevelEditor
             buttonSave.Click += SaveFile;
             buttonLoad.Click += LoadFile;
 
-            this.Paint += PaintLine;
+            buttonPathing.Click += PathingMode;
 
             this.FormClosing += UnsavedChanges;
 
@@ -111,11 +112,10 @@ namespace LevelEditor
                     map[r, c].Size = new Size(tileLength, tileLength);
                     map[r, c].Location = new Point((c * tileLength) + 115, (r * tileLength) + 100);
                     map[r, c].Click += PaintFloor;
-                    map[r, c].Click += PaintPoint;
                     map[r, c].BackColor = Color.White;
                 }
             }
-            this.Update();
+
         }
 
         /// <summary>
@@ -136,15 +136,40 @@ namespace LevelEditor
             }
         }
 
+        void PathingMode(object sender, EventArgs e)
+        {
+            if (isPathing)
+            {
+                isPathing = false;
+                foreach (PictureBox p in map)
+                {
+                    p.Click -= AddPoint;
+                    p.Click += PaintFloor;
+                    p.Paint -= PaintPoint;
+                }
+
+            }
+            else if (!isPathing)
+            {
+                foreach (PictureBox p in map)
+                {
+                    p.Click += AddPoint;
+                    p.Click -= PaintFloor;
+                    p.Paint += PaintPoint;
+                }
+                isPathing = true;
+            }
+        }
+
         /// <summary>
         /// Paints a point in the enemy path
         /// </summary>
-        void PaintPoint(object sender, EventArgs e)
+        void AddPoint(object sender, EventArgs e)
         {
             PictureBox tile = (PictureBox)sender;
-            Point point = tile.Location;
-            enemyPath.Add(point);
-            tile.BackColor = Color.Black;
+            Point pointLocation = new Point(tile.Location.X + (tile.Width / 2), tile.Location.Y + (tile.Height / 2));
+            enemyPath.Add(pointLocation);
+            tile.Refresh();
         }
 
         /// <summary>
@@ -152,10 +177,20 @@ namespace LevelEditor
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void PaintLine(object sender, PaintEventArgs e)
+       /* void PaintLine(object sender, PaintEventArgs e)
         {
             Pen pen = new Pen(Color.FromArgb(255, 0, 0, 0));
             e.Graphics.DrawLine(pen, 20, 10, 300, 100);
+        }*/
+
+        void PaintPoint(object sender, PaintEventArgs e)
+        {
+            PictureBox tile = (PictureBox)sender;
+            SolidBrush myBrush = new SolidBrush(Color.Red);
+
+            Point pointLocation = new Point((tile.Width / 2), (tile.Height / 2));
+
+            e.Graphics.FillEllipse(myBrush, new Rectangle(pointLocation, new Size(15, 15)));
         }
 
         /// <summary>
@@ -168,6 +203,7 @@ namespace LevelEditor
             Button color = (Button)sender;
             currentColor = color.BackColor;
             pictureBoxCurrentTile.BackColor = currentColor;
+
         }
 
         /// <summary>
