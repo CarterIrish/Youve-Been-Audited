@@ -86,9 +86,9 @@ namespace YouveBeenAudited
                 _traps.Add(new Trap(_position.X, Position.Y, _nailTexture, 20, 100));
                 _money -= 20;
             }
-            else if(SingleKeyPress(Keys.D2))
+            else if(SingleKeyPress(Keys.D1))
             {
-
+                _money += 100;
             }
             else if(SingleKeyPress(Keys.D2))
             {
@@ -132,13 +132,17 @@ namespace YouveBeenAudited
             return Keyboard.GetState().IsKeyDown(key) && _prevKB.IsKeyUp(key);
         }
 
+        /// <summary>
+        /// Draws player, traps, and money
+        /// </summary>
+        /// <param name="sb"></param>
         public override void Draw(SpriteBatch sb)
         {
-            base.Draw(sb);
             foreach (Trap trap in _traps)
             {
                 trap.Draw(sb);
             }
+            base.Draw(sb);
             sb.DrawString(_font, $"${_money}", new Vector2(50,50), Color.DarkGreen);
         }
 

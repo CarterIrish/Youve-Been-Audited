@@ -183,7 +183,7 @@ namespace YouveBeenAudited
         /// <param name="gameTime">The game time.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CadetBlue);
+            GraphicsDevice.Clear(Color.SaddleBrown);
 
             // Start the sprite batch for drawing all elements to screen
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
