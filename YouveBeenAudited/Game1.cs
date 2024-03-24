@@ -20,6 +20,8 @@ namespace YouveBeenAudited
 
     internal delegate void BtnClickedDelegate(Button b);
 
+    internal delegate void EnemyAtGoal();
+
     /// <summary>
     /// Authors: Carter I, Chase C, Jesse M & Jack M.
     /// Class: IGME 106.
@@ -32,7 +34,7 @@ namespace YouveBeenAudited
         #region Key Game Fields
 
         //Managers
-        EnemyManager enemyManager;
+        private EnemyManager enemyManager;
 
         // Monogame fields
         private GraphicsDeviceManager _graphics;
@@ -106,6 +108,7 @@ namespace YouveBeenAudited
             _windowCenter = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
 
             _player.LoadContent(Content);
+
             #region Button creation
 
             // Menu start button
@@ -221,6 +224,11 @@ namespace YouveBeenAudited
             base.Draw(gameTime);
         }
 
+        public void GameOver()
+        {
+            _gameState = GameStates.GameOver;
+        }
+
         #endregion GameLoop
 
         #region Methods
@@ -296,7 +304,6 @@ namespace YouveBeenAudited
                     enemyManager._Path.Add(new Point(int.Parse(coordinates[0]), int.Parse(coordinates[1])));
                 }
             }
-
 
             #endregion Methods
         }

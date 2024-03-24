@@ -17,6 +17,8 @@ namespace YouveBeenAudited
         private int _currentPoint;
         private List<Point> _path;
 
+        public event EnemyAtGoal EnemyAtGoal;
+
         #endregion Fields
 
         #region Properties
@@ -64,7 +66,6 @@ namespace YouveBeenAudited
             base._texture = texture;
         }
 
-
         /// <summary>
         /// Makes the enemy object take damage.
         /// </summary>
@@ -77,11 +78,11 @@ namespace YouveBeenAudited
         /// <summary>
         /// Moves the enemy to next point in path. If the end is reached, do nothing.
         /// </summary>
-        public void Move()
+        public override void Update(GameTime gt)
         {
             if (_path.Count - 1 == _currentPoint) //Checks if enemy is at the end of the path.
             {
-                //Trigger end of game
+                EnemyAtGoal();
             }
             _currentPoint++;
         }

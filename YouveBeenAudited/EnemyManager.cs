@@ -67,11 +67,11 @@ namespace YouveBeenAudited
         /// <summary>
         /// Moves all enemies.
         /// </summary>
-        public void MoveEnemies()
+        public void UpdateEnemies(GameTime gt)
         {
             foreach (Enemy goober in _enemies)
             {
-                goober.Move();
+                goober.Update(gt);
             }
         }
 
