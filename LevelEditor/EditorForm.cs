@@ -123,6 +123,7 @@ namespace LevelEditor
                     map[r, c].Location = new Point((c * tileLength) + 115, (r * tileLength) + 70);
                     map[r, c].Click += PaintFloor;
                     map[r, c].Click += AddPoint;
+                    map[r, c].DoubleClick += DeletePoint;
                     map[r, c].BackColor = Color.White;
                 }
             }
@@ -221,21 +222,27 @@ namespace LevelEditor
 
         void DeletePoint(object sender, EventArgs e)
         {
-            //Finds the coordinates for the center of the tile that was clicked on
-            PictureBox tile = (PictureBox)sender;
-            Point pointLocation = new Point(tile.Location.X + (tile.Width / 2), tile.Location.Y + (tile.Height / 2));
-
-            for (int i = 0; i < enemyPath.Count; i++)
+            if (isPathing)
             {
-                if (enemyPath[i] == pointLocation)
-                {
-                    enemyPath.RemoveAt(i);
-                    break;
-                }
-            }
+                //Finds the coordinates for the center of the tile that was clicked on
+                PictureBox tile = (PictureBox)sender;
+                Point pointLocation = new Point(tile.Location.X + (tile.Width / 2), tile.Location.Y + (tile.Height / 2));
 
-            tile.Paint -= PaintPoint;
-            tile.Refresh();
+                for (int i = 0; i < enemyPath.Count; i++)
+                {
+                    if (enemyPath[i] == pointLocation)
+                    {
+                        enemyPath.RemoveAt(i);
+                        break;
+                    }
+                }
+
+                tile.Paint -= PaintPoint;
+                Graphics gr = tile.CreateGraphics();
+                gr.Clear(tile.BackColor);
+
+                tile.Refresh();
+            }
         }
 
         /// <summary>
