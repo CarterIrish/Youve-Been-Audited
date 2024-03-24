@@ -82,7 +82,7 @@ namespace YouveBeenAudited
         {
             if (SingleKeyPress(Keys.Space) && _money >= 20)
             {
-                _traps.Add(new Trap(_position.X, Position.Y, _nailTexture, 20, 100));
+                _traps.Add(new Trap(_position.X, Position.Y + Position.Height / 3, _nailTexture, 20, 100));
                 _money -= 20;
             }
             else if (SingleKeyPress(Keys.D1))
