@@ -27,6 +27,9 @@ namespace LevelEditor
         //2d array to hold tiles
         PictureBox[,] map;
 
+        //2d bool array to signify which tiles on the map contain a point on the enemy path
+        bool[,] pointMap;
+
         Color currentColor;
 
         //Is the user in "pathing" mode and can add points to the enemy path
@@ -50,7 +53,7 @@ namespace LevelEditor
             this.height = height;
             tileLength = 450 / height;
             map = new PictureBox[height, width];
-            enemyPath = new List<Point>();
+            pointMap = new bool[height, width];
 
 
             //Creates the level canvas in the correct dimensions
@@ -76,6 +79,7 @@ namespace LevelEditor
 
             isPathing = false;
             currentColor = Color.White;
+            enemyPath = new List<Point>();
 
             //initializes the buttons' click events
             buttonGreen.Click += SelectColor;
@@ -285,6 +289,13 @@ namespace LevelEditor
                     }
                     output.Write("\n");
                 }
+
+                foreach (Point p in enemyPath)
+                {
+                    output.Write("|" + p.X + "," + p.Y);
+                }
+
+
                 output.Close();
             }
 
@@ -323,10 +334,6 @@ namespace LevelEditor
         /// </summary>
         void Load(string fileName)
         {
-            /*OpenFileDialog file = new OpenFileDialog();
-            file.Title = "Open a level file.";
-            file.Filter = "Level Files|*.level";
-            DialogResult result = file.ShowDialog();*/
             if (fileName != null)
             {
                 //reads the dimensions of the canvas
@@ -398,6 +405,48 @@ namespace LevelEditor
                     }
                     input.ReadLine();
                 }
+
+                try
+                {
+                    //adds the points to the enemyPath List
+                    string[] points;
+                    enemyPath.Clear();
+                    points = input.ReadToEnd().Split('|');
+                    foreach (string p in points)
+                    {
+                        if (!p.Equals(""))
+                        {
+                            string[] coordinates = p.Split(",");
+                            enemyPath.Add(new Point(int.Parse(coordinates[0]), int.Parse(coordinates[1])));
+                        }
+                    }
+
+                    //for each of the points, draw paint the point on the corresponding tile
+                    foreach (Point p in enemyPath)
+                    {
+                        for (int r = 0; r < height; r++)
+                        {
+                            for (int c = 0; c < width; c++)
+                            {
+                                if (map[r, c].Bounds.Contains(p))
+                                {
+                                    map[r, c].Paint += PaintPoint;
+                                    map[r, c].Refresh();
+                                }
+                            }
+                        }
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    //Shows an error message if loading fails
+                    MessageBox.Show("Error: Could not load file", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+
+
                 input.Close();
             }
 
