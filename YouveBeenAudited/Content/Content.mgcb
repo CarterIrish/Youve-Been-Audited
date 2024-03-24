@@ -56,3 +56,6 @@
 /processorParam:TextureFormat=Color
 /build:Spikes.png
 
+#begin testingLevel.level
+/copy:testingLevel.level
+
