@@ -33,7 +33,6 @@ namespace YouveBeenAudited
 
         //Managers
         EnemyManager enemyManager;
-        TrapManager trapManager;
 
         // Monogame fields
         private GraphicsDeviceManager _graphics;
