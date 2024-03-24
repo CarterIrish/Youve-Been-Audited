@@ -32,7 +32,7 @@ namespace YouveBeenAudited
         /// </summary>
         public Texture2D Texture { get => _texture; }
 
-        #endregion Fields
+        #endregion Properties
 
         #region Methods
 

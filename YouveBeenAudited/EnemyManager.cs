@@ -11,6 +11,8 @@ namespace YouveBeenAudited
     /// </summary>
     internal class EnemyManager
     {
+        #region Fields
+
         private List<Enemy> _enemies;
         private List<Point> _path;
         private int _numOfEnemies;
@@ -20,11 +22,19 @@ namespace YouveBeenAudited
         //Enemy Textures
         private Texture2D _auditorTexture;
 
+        #endregion Fields
+
+        #region Properties
+
         public List<Point> _Path
         {
             get { return _path; }
             set { _path = value; }
         }
+
+        #endregion Properties
+
+        #region Methods
 
         /// <summary>
         /// Creates an EnemyManager.
@@ -96,5 +106,7 @@ namespace YouveBeenAudited
                 enemy.Draw(sb);
             }
         }
+
+        #endregion Methods
     }
 }

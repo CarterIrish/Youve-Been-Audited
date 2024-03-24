@@ -40,6 +40,8 @@ namespace YouveBeenAudited
 
         #endregion Properties
 
+        #region Methods
+
         /// <summary>
         /// Create a new player object.
         /// </summary>
@@ -53,8 +55,6 @@ namespace YouveBeenAudited
             _money = startingMoney;
             _traps = new List<Trap>();
         }
-
-        #region Methods
 
         /// <summary>
         /// Loads necessary textures
