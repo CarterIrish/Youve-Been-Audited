@@ -114,7 +114,8 @@ namespace YouveBeenAudited
             _windowCenter = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
 
             _startButtonTexture = Content.Load<Texture2D>("StartButton");
-
+            _exitButtonTexture = Content.Load<Texture2D>("ExitButton");
+            _optionsButtonTexture = Content.Load<Texture2D>("OptionsButton");
             _player.LoadContent(Content);
 
             #region Button creation
