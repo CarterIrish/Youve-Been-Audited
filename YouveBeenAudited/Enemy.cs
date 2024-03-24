@@ -64,6 +64,7 @@ namespace YouveBeenAudited
             base._position.Y = y;
             base._health = health;
             base._texture = texture;
+            _atGoal = false;
         }
 
         /// <summary>
@@ -82,7 +83,7 @@ namespace YouveBeenAudited
         {
             if (_path.Count - 1 == _currentPoint) //Checks if enemy is at the end of the path.
             {
-                EnemyAtGoal();
+                _atGoal = true;
             }
             _currentPoint++;
         }

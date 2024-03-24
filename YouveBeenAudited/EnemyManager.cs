@@ -15,6 +15,8 @@ namespace YouveBeenAudited
         private List<Point> _path;
         private int _numOfEnemies;
 
+        public bool enemyAtGoal;
+
         //Enemy Textures
         private Texture2D _auditorTexture;
 
@@ -34,6 +36,7 @@ namespace YouveBeenAudited
             _numOfEnemies = numOfEnemies;
             _path = path;
             _enemies = new List<Enemy>();
+            enemyAtGoal = false;
         }
 
         /// <summary>
@@ -44,6 +47,7 @@ namespace YouveBeenAudited
             _numOfEnemies = numOfEnemies;
             _path = new List<Point>();
             _enemies = new List<Enemy>();
+            enemyAtGoal = false;
         }
 
         /// <summary>
@@ -74,6 +78,10 @@ namespace YouveBeenAudited
             foreach (Enemy goober in _enemies)
             {
                 goober.Update(gt);
+                if (goober.AtGoal)
+                {
+                    enemyAtGoal = true;
+                }
             }
         }
 

@@ -165,6 +165,10 @@ namespace YouveBeenAudited
                     }
                     _player.Update(gameTime);
                     enemyManager.UpdateEnemies(gameTime);
+                    if(enemyManager.enemyAtGoal)
+                    {
+                        _gameState = GameStates.GameOver;
+                    }
 
                     break;
 
