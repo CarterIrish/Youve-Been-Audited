@@ -15,11 +15,11 @@ namespace YouveBeenAudited
 
         private int _money;
 
-        private List<Trap> _inventory;
-
         private List<Trap> _traps;
 
         private Texture2D _nailTexture;
+
+        private SpriteFont _font;
 
         private KeyboardState _prevKB;
 
@@ -34,15 +34,9 @@ namespace YouveBeenAudited
         public int Money { get => _money; }
 
         /// <summary>
-        /// Gets the inventory of player.
-        /// </summary>
-        public List<Trap> Inventory { get => _inventory; }
-
-
-        /// <summary>
         /// Gets the placed traps
         /// </summary>
-        public List<Trap> Traps { get => _inventory; }
+        public List<Trap> Traps { get => _traps; }
 
         #endregion Properties
 
@@ -62,9 +56,14 @@ namespace YouveBeenAudited
 
         #region Methods
 
+        /// <summary>
+        /// Loads necessary textures
+        /// </summary>
+        /// <param name="content">ContentManager to load from</param>
         public void LoadContent(ContentManager content)
         {
             _nailTexture = content.Load<Texture2D>("Spikes");
+            _font = content.Load<SpriteFont>("Arial25");
         }
 
         /// <summary>Updates the player objects information.</summary>
@@ -78,33 +77,14 @@ namespace YouveBeenAudited
 
 
         /// <summary>
-        /// Buys a trap for the user to use.
-        /// </summary>
-        /// <param name="t">The trap to be bought</param>
-        /// <returns>Returns true if successfully bought false otherwise.</returns>
-        private bool Buy(Trap t)
-        {
-            // TODO: Should we use an array of lists to store trap types?
-            if (t.Cost < _money)
-            {
-                _inventory.Add(t);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
         /// Place a trap based on input
         /// </summary>
         public void PlaceTrap()
         {
-
-            if(SingleKeyPress(Keys.D1))
+            if(SingleKeyPress(Keys.Space) && _money >= 20)
             {
                 _traps.Add(new Trap(_position.X, Position.Y, _nailTexture, 20, 100));
+                _money -= 20;
             }
             else if(SingleKeyPress(Keys.D2))
             {
@@ -159,6 +139,7 @@ namespace YouveBeenAudited
             {
                 trap.Draw(sb);
             }
+            sb.DrawString(_font, $"${_money}", new Vector2(50,50), Color.DarkGreen);
         }
 
         #endregion Methods
