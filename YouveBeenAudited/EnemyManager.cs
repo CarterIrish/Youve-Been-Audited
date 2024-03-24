@@ -18,6 +18,12 @@ namespace YouveBeenAudited
         //Enemy Textures
         private Texture2D _auditorTexture;
 
+        public List<Point> _Path
+        {
+            get { return _path; }
+            set { _path = value; }
+        }
+
         /// <summary>
         /// Creates an EnemyManager.
         /// </summary>
@@ -37,13 +43,13 @@ namespace YouveBeenAudited
         {
             _auditorTexture = content.Load<Texture2D>("auditor");
         }
-        
+
         /// <summary>
         /// Creates the list of enemies.
         /// </summary>
         public void CreateEnemies()
         {
-            for (int i = 0 ; i < _numOfEnemies; i++)
+            for (int i = 0; i < _numOfEnemies; i++)
             {
                 _enemies.Add(new Enemy(_path[0].X, _path[0].Y, _auditorTexture, 150, _path));
             }
@@ -54,7 +60,7 @@ namespace YouveBeenAudited
         /// </summary>
         public void MoveEnemies()
         {
-            foreach (Enemy goober in _enemies) 
+            foreach (Enemy goober in _enemies)
             {
                 goober.Move();
             }
