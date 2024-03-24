@@ -68,6 +68,7 @@ namespace YouveBeenAudited
 
         private Texture2D _startButtonTexture;
         private Texture2D _exitButtonTexture;
+        private Texture2D _resumeButtonTexture;
 
         // Input sources
         private MouseState _mouseState;
@@ -116,6 +117,7 @@ namespace YouveBeenAudited
             _startButtonTexture = Content.Load<Texture2D>("StartButton");
             _exitButtonTexture = Content.Load<Texture2D>("ExitButton");
             _optionsButtonTexture = Content.Load<Texture2D>("OptionsButton");
+            _resumeButtonTexture = Content.Load<Texture2D>("ResumeButton");
             _player.LoadContent(Content);
 
             #region Button creation
@@ -131,12 +133,12 @@ namespace YouveBeenAudited
             ExitGameButton.BtnClicked += ButtonCheck;
 
             // resume game button
-            Button ResumeGame = new Button((int)_windowCenter.X, (int)_windowCenter.Y + 5, _playerTexture, "ResumeGameButton", Color.Green);
+            Button ResumeGame = new Button(_windowCenter.X - (_resumeButtonTexture.Width * 5) / 2, _windowCenter.Y - (_resumeButtonTexture.Height * 5) - 10, _resumeButtonTexture, "ResumeGameButton", Color.White);
             _optionButtons.Add(ResumeGame);
             ResumeGame.BtnClicked += ButtonCheck;
 
             // Options exit game button
-            Button optionsExit = new Button((int)_windowCenter.X - 120, (int)_windowCenter.Y + 5, _playerTexture, "ExitGameButton", Color.Red);
+            Button optionsExit = new Button(_windowCenter.X - (_exitButtonTexture.Width * 5) / 2, _windowCenter.Y + 10, _exitButtonTexture, "OptionExitGameButton", Color.White);
             _optionButtons.Add(optionsExit);
             optionsExit.BtnClicked += ButtonCheck;
 
