@@ -78,10 +78,10 @@ namespace YouveBeenAudited
             foreach (Enemy goober in _enemies)
             {
                 goober.Update(gt);
-                if (goober.AtGoal)
-                {
-                    enemyAtGoal = true;
-                }
+                //if (goober.AtGoal)
+                //{
+                //    enemyAtGoal = true;
+                //}
             }
         }
 

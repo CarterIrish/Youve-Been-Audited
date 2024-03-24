@@ -63,6 +63,12 @@ namespace YouveBeenAudited
         private List<Button> _gameOverButtons;
         private List<Button> _masterButtonList;
 
+        // Button textures
+        private Texture2D _optionsButtonTexture;
+
+        private Texture2D _startButtonTexture;
+        private Texture2D _exitButtonTexture;
+
         // Input sources
         private MouseState _mouseState;
 
@@ -107,12 +113,14 @@ namespace YouveBeenAudited
             _arial25 = Content.Load<SpriteFont>("Arial25");
             _windowCenter = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
 
+            _startButtonTexture = Content.Load<Texture2D>("StartButton");
+
             _player.LoadContent(Content);
 
             #region Button creation
 
             // Menu start button
-            Button StartButton = new Button(45, 60, _playerTexture, "StartButton", Color.Green);
+            Button StartButton = new Button(45, 60, _startButtonTexture, "StartButton", Color.Green);
             _menuButtons.Add(StartButton);
             StartButton.BtnClicked += ButtonCheck;
 
@@ -165,7 +173,7 @@ namespace YouveBeenAudited
                     }
                     _player.Update(gameTime);
                     enemyManager.UpdateEnemies(gameTime);
-                    if(enemyManager.enemyAtGoal)
+                    if (enemyManager.enemyAtGoal)
                     {
                         _gameState = GameStates.GameOver;
                     }
