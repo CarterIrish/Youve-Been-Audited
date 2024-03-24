@@ -45,7 +45,7 @@ namespace YouveBeenAudited
         {
             for (int i = 0 ; i < _numOfEnemies; i++)
             {
-                _enemies.Add(new Enemy(_path[0].X, _path[0].Y, _auditorTexture, 150,));
+                _enemies.Add(new Enemy(_path[0].X, _path[0].Y, _auditorTexture, 150, _path));
             }
         }
 
