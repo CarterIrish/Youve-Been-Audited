@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
-using System.Numerics;
 
 namespace YouveBeenAudited
 {
@@ -36,6 +35,9 @@ namespace YouveBeenAudited
 
         private SpriteBatch _spriteBatch;
 
+        // Window center
+        private Vector2 _windowCenter;
+
         // Game States
         private GameStates _gameState;
 
@@ -43,6 +45,9 @@ namespace YouveBeenAudited
         private Player _player;
 
         private Texture2D _playerTexture;
+
+        // SpriteFonts
+        private SpriteFont _arial25;
 
         // Element lists
         private List<Button> _menuButtons;
@@ -93,18 +98,30 @@ namespace YouveBeenAudited
             // TODO: use this.Content to load your game content here
             _playerTexture = this.Content.Load<Texture2D>("playerStanding");
             _player = new Player(50, 50, _playerTexture, 100, 100);
+            _arial25 = Content.Load<SpriteFont>("Arial25");
+            _windowCenter = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
 
             #region Button creation
 
             // Menu start button
-            Button StartButton = new Button(45, 45, _playerTexture, "StartButton");
+            Button StartButton = new Button(45, 60, _playerTexture, "StartButton", Color.Green);
             _menuButtons.Add(StartButton);
             StartButton.BtnClicked += ButtonCheck;
 
-            // Exit game button
-            Button ExitGameButton = new Button(110, 45, _playerTexture, "ExitGameButton");
+            // MenuExit game button
+            Button ExitGameButton = new Button(110, 60, _playerTexture, "ExitGameButton", Color.Red);
             _menuButtons.Add(ExitGameButton);
             ExitGameButton.BtnClicked += ButtonCheck;
+
+            // resume game button
+            Button ResumeGame = new Button((int)_windowCenter.X, (int)_windowCenter.Y, _playerTexture, "ResumeGameButton", Color.Green);
+            _optionButtons.Add(ResumeGame);
+            ResumeGame.BtnClicked += ButtonCheck;
+
+            // Options exit game button
+            Button optionsExit = new Button((int)_windowCenter.X - 120, (int)_windowCenter.Y, _playerTexture, "ExitGameButton", Color.Red);
+            _optionButtons.Add(optionsExit);
+            optionsExit.BtnClicked += ButtonCheck;
 
             #endregion Button creation
         }
@@ -116,10 +133,6 @@ namespace YouveBeenAudited
         protected override void Update(GameTime gameTime)
         {
             // TODO: remove this statement after menu UI functional
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape) == true)
-            {
-                Exit();
-            }
 
             // Get current input states
             _mouseState = Mouse.GetState();
@@ -135,13 +148,24 @@ namespace YouveBeenAudited
                         b.CheckClick(_mouseState);
                     }
                     break;
+
                 // Active game
                 case GameStates.Game:
+                    if (Keyboard.GetState().IsKeyDown(Keys.Escape) == true)
+                    {
+                        _gameState = GameStates.Options;
+                    }
                     _player.Move();
                     break;
+
                 // Options screen / paused
                 case GameStates.Options:
+                    foreach (Button b in _optionButtons)
+                    {
+                        b.CheckClick(_mouseState);
+                    }
                     break;
+
                 // Game over
                 case GameStates.GameOver:
                     break;
@@ -163,17 +187,24 @@ namespace YouveBeenAudited
             {
                 // On menu
                 case GameStates.Menu:
+                    _spriteBatch.DrawString(_arial25, "MenuState", new Vector2(_windowCenter.X - 5 * 25, _windowCenter.Y - 25), Color.Red);
                     foreach (Button b in _menuButtons)
                     {
-                        b.Draw(_spriteBatch, Color.Green);
+                        b.Draw(_spriteBatch, b.Color);
                     }
                     break;
                 // Active game
                 case GameStates.Game:
+                    _spriteBatch.DrawString(_arial25, "GameState", new Vector2(_windowCenter.X - 5 * 25, _windowCenter.Y - 25), Color.Red);
                     _player.Draw(_spriteBatch);
                     break;
                 // Options/pause menu
                 case GameStates.Options:
+                    _spriteBatch.DrawString(_arial25, "OptionState", new Vector2(_windowCenter.X - 5 * 25, _windowCenter.Y - 25), Color.Red);
+                    foreach (Button b in _optionButtons)
+                    {
+                        b.Draw(_spriteBatch, b.Color);
+                    }
                     break;
                 // Game over
                 case GameStates.GameOver:
@@ -202,6 +233,10 @@ namespace YouveBeenAudited
                 case "ExitGameButton":
                     System.Diagnostics.Debug.WriteLine("ChangeState ==> QuitGame");
                     Exit();
+                    break;
+
+                case "ResumeGameButton":
+                    _gameState = GameStates.Game;
                     break;
             }
         }

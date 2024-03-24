@@ -15,6 +15,8 @@ namespace YouveBeenAudited
 
         private bool _isActive;
 
+        private Color _color;
+
         // Button clicked event
         public event BtnClickedDelegate BtnClicked;
 
@@ -27,6 +29,8 @@ namespace YouveBeenAudited
 
         public bool IsActive { get => _isActive; set => _isActive = value; }
 
+        public Color Color { get => _color; }
+
         #endregion Properties
 
         #region Methods
@@ -37,10 +41,11 @@ namespace YouveBeenAudited
         /// <param name="x">X coord of button.</param>
         /// <param name="y">Y coord of button.</param>
         /// <param name="texture">The buttons texture.</param>
-        public Button(int x, int y, Texture2D texture, string buttonName) : base(x, y, texture)
+        public Button(int x, int y, Texture2D texture, string buttonName, Color color) : base(x, y, texture)
         {
             // TODO: Create button constructor.
             _buttonName = buttonName;
+            _color = color;
         }
 
         /// <summary>
