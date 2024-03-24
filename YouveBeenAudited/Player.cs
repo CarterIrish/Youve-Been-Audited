@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
@@ -15,6 +16,10 @@ namespace YouveBeenAudited
         private int _money;
 
         private List<Trap> _inventory;
+
+        private List<Trap> _traps;
+
+        private Texture2D _nailTexture;
 
         private KeyboardState _prevKB;
 
@@ -33,17 +38,13 @@ namespace YouveBeenAudited
         /// </summary>
         public List<Trap> Inventory { get => _inventory; }
 
+
+        /// <summary>
+        /// Gets the placed traps
+        /// </summary>
+        public List<Trap> Traps { get => _inventory; }
+
         #endregion Properties
-
-        #region Methods
-
-        /// <summary>Updates the player objects information.</summary>
-        /// <param name="gametime">GameTime from Game1</param>
-        public override void Update(GameTime gametime)
-        {
-            Move();
-            base.Update(gametime);
-        }
 
         /// <summary>
         /// Create a new player object.
@@ -56,7 +57,24 @@ namespace YouveBeenAudited
         public Player(int x, int y, Texture2D texture, int health, int startingMoney) : base(x, y, texture, health)
         {
             _money = startingMoney;
+            _traps = new List<Trap>();
         }
+
+        #region Methods
+
+        public void LoadContent(ContentManager content)
+        {
+            _nailTexture = content.Load<Texture2D>("Spikes");
+        }
+
+        /// <summary>Updates the player objects information.</summary>
+        /// <param name="gametime">GameTime from Game1</param>
+        public override void Update(GameTime gametime)
+        {
+            Move();
+            base.Update(gametime);
+        }
+
 
         /// <summary>
         /// Buys a trap for the user to use.
@@ -78,16 +96,16 @@ namespace YouveBeenAudited
         }
 
         /// <summary>
-        /// Place a provided trap.
+        /// Place a trap based on input
         /// </summary>
-        /// <param name="t">The trap to be placed.</param>
-        public void PlaceTrap(Trap t)
+        public void PlaceTrap()
         {
             KeyboardState kbs = Keyboard.GetState();
 
-            if(SingleKeyPress(Keys.D1) && _money <= 50)
+            if(SingleKeyPress(Keys.D1) && _money >= 20)
             {
-
+                _traps.Add(new Trap(_position.X, Position.Y, _nailTexture, 20, 100));
+                _money -= 20;
             }
             else if(SingleKeyPress(Keys.D2))
             {
@@ -99,7 +117,10 @@ namespace YouveBeenAudited
             }
 
         }
-
+        
+        /// <summary>
+        /// Changes the players position based on WASD input
+        /// </summary>
         public void Move()
         {
             KeyboardState kbs = Keyboard.GetState();
@@ -121,9 +142,23 @@ namespace YouveBeenAudited
             }
         }
 
+        /// <summary>
+        /// Checks if a key has been pressed only this frame and not the previous
+        /// </summary>
+        /// <param name="key">key to check for a single press</param>
+        /// <returns>True if the key was pressed only this frame</returns>
         public bool SingleKeyPress(Keys key)
         {
             return Keyboard.GetState().IsKeyDown(key) && _prevKB.IsKeyUp(key);
+        }
+
+        public override void Draw(SpriteBatch sb)
+        {
+            base.Draw(sb);
+            foreach (Trap trap in _traps)
+            {
+                trap.Draw(sb);
+            }
         }
 
         #endregion Methods
