@@ -30,6 +30,10 @@ namespace YouveBeenAudited
     {
         #region Key Game Fields
 
+        //Managers
+        EnemyManager enemyManager;
+        TrapManager trapManager;
+
         // Monogame fields
         private GraphicsDeviceManager _graphics;
 
@@ -243,7 +247,7 @@ namespace YouveBeenAudited
 
         private void ReadFile(string fileName)
         {
-
+            
         }
 
         #endregion Methods
