@@ -210,7 +210,6 @@ namespace YouveBeenAudited
             {
                 // On menu
                 case GameStates.Menu:
-                    _spriteBatch.DrawString(_arial25, "MenuState", new Vector2(_windowCenter.X - 5 * 25, _windowCenter.Y - 25), Color.Red);
                     foreach (Button b in _menuButtons)
                     {
                         b.Draw(_spriteBatch, b.Color);
@@ -220,6 +219,7 @@ namespace YouveBeenAudited
                 case GameStates.Game:
                     _spriteBatch.DrawString(_arial25, "GameState: Escape to enter options", new Vector2(_windowCenter.X - 13 * 25, _windowCenter.Y - 25), Color.Red);
                     _player.Draw(_spriteBatch);
+                    _spriteBatch.DrawString(_arial25, $"${_player.Money}", new Vector2(50, 50), Color.DarkGreen);
                     enemyManager.DrawEnemies(_spriteBatch);
                     break;
                 // Options/pause menu

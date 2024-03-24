@@ -75,29 +75,27 @@ namespace YouveBeenAudited
             base.Update(gametime);
         }
 
-
         /// <summary>
         /// Place a trap based on input
         /// </summary>
         public void PlaceTrap()
         {
-            if(SingleKeyPress(Keys.Space) && _money >= 20)
+            if (SingleKeyPress(Keys.Space) && _money >= 20)
             {
                 _traps.Add(new Trap(_position.X, Position.Y, _nailTexture, 20, 100));
                 _money -= 20;
             }
-            else if(SingleKeyPress(Keys.D1))
+            else if (SingleKeyPress(Keys.D1))
             {
                 _money += 100;
             }
-            else if(SingleKeyPress(Keys.D2))
+            else if (SingleKeyPress(Keys.D2))
             {
-
             }
 
             _prevKB = Keyboard.GetState();
         }
-        
+
         /// <summary>
         /// Changes the players position based on WASD input
         /// </summary>
@@ -143,7 +141,6 @@ namespace YouveBeenAudited
                 trap.Draw(sb);
             }
             base.Draw(sb);
-            sb.DrawString(_font, $"${_money}", new Vector2(50,50), Color.DarkGreen);
         }
 
         #endregion Methods
