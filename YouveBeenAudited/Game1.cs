@@ -106,6 +106,7 @@ namespace YouveBeenAudited
             _arial25 = Content.Load<SpriteFont>("Arial25");
             _windowCenter = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
 
+            _player.LoadContent(Content);
             #region Button creation
 
             // Menu start button
