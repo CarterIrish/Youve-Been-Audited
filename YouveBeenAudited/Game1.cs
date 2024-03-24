@@ -164,6 +164,7 @@ namespace YouveBeenAudited
                         _gameState = GameStates.Options;
                     }
                     _player.Update(gameTime);
+                    enemyManager.UpdateEnemies(gameTime);
 
                     break;
 
