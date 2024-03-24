@@ -14,6 +14,7 @@ namespace YouveBeenAudited
         private List<Enemy> _enemies;
         private List<Point> _path;
         private int _numOfEnemies;
+        private Game1 _game1;
 
         //Enemy Textures
         private Texture2D _auditorTexture;
@@ -29,21 +30,23 @@ namespace YouveBeenAudited
         /// </summary>
         /// <param name="numOfEnemies"> Number of desired enemies. </param>
         /// <param name="path"> List of points for the enemies to follow. </param>
-        public EnemyManager(int numOfEnemies, List<Point> path)
+        public EnemyManager(int numOfEnemies, List<Point> path, Game1 game1)
         {
             _numOfEnemies = numOfEnemies;
             _path = path;
             _enemies = new List<Enemy>();
+            _game1 = game1;
         }
 
         /// <summary>
         /// Creates a new EnemyManager with an empty enemy path
         /// </summary>
-        public EnemyManager(int numOfEnemies)
+        public EnemyManager(int numOfEnemies, Game1 game1)
         {
             _numOfEnemies = numOfEnemies;
             _path = new List<Point>();
             _enemies = new List<Enemy>();
+            _game1 = game1;
         }
 
         /// <summary>
@@ -62,14 +65,16 @@ namespace YouveBeenAudited
         {
             for (int i = 0; i < _numOfEnemies; i++)
             {
-                _enemies.Add(new Enemy(_path[0].X, _path[0].Y, _auditorTexture, 150, _path));
+                Enemy em = new Enemy(_path[0].X, _path[0].Y, _auditorTexture, 150, _path);
+                em.EnemyAtGoal += _game1.GameOver;
+                _enemies.Add(em);
             }
         }
 
         /// <summary>
         /// Moves all enemies.
         /// </summary>
-        public void UpdateEnemies(GameTime gt)
+        public void UpdateEnemies(GameTime gt, GameStates gamestate)
         {
             foreach (Enemy goober in _enemies)
             {

@@ -164,7 +164,7 @@ namespace YouveBeenAudited
                         _gameState = GameStates.Options;
                     }
                     _player.Update(gameTime);
-                    enemyManager.UpdateEnemies(gameTime);
+                    enemyManager.UpdateEnemies(gameTime, _gameState);
 
                     break;
 
@@ -219,15 +219,11 @@ namespace YouveBeenAudited
                     break;
                 // Game over
                 case GameStates.GameOver:
+                    _spriteBatch.DrawString(_arial25, "GameOver state.", new Vector2(_windowCenter.X - 13 * 25, _windowCenter.Y - 25), Color.Red);
                     break;
             }
             _spriteBatch.End();
             base.Draw(gameTime);
-        }
-
-        public void GameOver()
-        {
-            _gameState = GameStates.GameOver;
         }
 
         #endregion GameLoop
@@ -260,7 +256,7 @@ namespace YouveBeenAudited
 
         private void NextLevel(string fileName)
         {
-            enemyManager = new EnemyManager(3);
+            enemyManager = new EnemyManager(3, this);
             enemyManager.LoadContent(Content);
             ReadFile(fileName);
             enemyManager.CreateEnemies();
@@ -308,6 +304,11 @@ namespace YouveBeenAudited
             }
 
             #endregion Methods
+        }
+
+        public void GameOver()
+        {
+            _gameState = GameStates.GameOver;
         }
     }
 }
