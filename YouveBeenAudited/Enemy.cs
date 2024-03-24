@@ -11,13 +11,16 @@ namespace YouveBeenAudited
     /// </summary>
     internal class Enemy : Character, IDamageable
     {
-        // ------ Fields ------
+        #region Fields
 
         private bool _atGoal;
         private int _currentPoint;
         private List<Point> _path;
-        
-        // ------ Properties -------
+
+        #endregion Fields
+
+        #region Properties
+
         /// <summary>
         /// Gets whether or not enemy is at goal.
         /// </summary>
@@ -34,14 +37,16 @@ namespace YouveBeenAudited
         public List<Point> Path
         {
             get => _path;
-            set 
-            { 
+            set
+            {
                 _path = value;
                 _currentPoint = 0;
             }
         }
-        
-        // ------ Methods ------
+
+        #endregion Properties
+
+        #region Methods
 
         /// <summary>
         /// Creates a new enemy object.
@@ -72,10 +77,10 @@ namespace YouveBeenAudited
             if (_path.Count - 1 == _currentPoint) //Checks if enemy is at the end of the path.
             {
                 //Trigger end of game
-                
             }
             _currentPoint++;
         }
 
+        #endregion Methods
     }
 }

@@ -9,13 +9,16 @@ namespace YouveBeenAudited
     /// </summary>
     internal class Trap : GameObject
     {
-        // ------ Fields. ------
+        #region Fields
+
         private int _damageAmnt;
 
         private int _cost;
         private bool _isActive;
 
-        // ------ Properties. ------
+        #endregion Fields
+
+        #region Properties
 
         /// <summary>
         /// Gets the damage amount of trap.
@@ -32,7 +35,9 @@ namespace YouveBeenAudited
         /// </summary>
         public bool IsActive { get => _isActive; set => _isActive = value; }
 
-        // ------ Methods. ------
+        #endregion Properties
+
+        #region Methods
 
         /// <summary>
         /// Creates a new trap object.
@@ -61,5 +66,7 @@ namespace YouveBeenAudited
             }
             return false;
         }
+
+        #endregion Methods
     }
 }

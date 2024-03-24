@@ -10,11 +10,15 @@ namespace YouveBeenAudited
     /// </summary>
     internal class Player : Character
     {
-        // ------ Fields ------
+        #region Fields
+
         private int _money;
+
         private List<Trap> _inventory;
 
-        // ------ Properties ------
+        #endregion Fields
+
+        #region Properties
 
         /// <summary>
         /// Gets the current amount of money
@@ -27,9 +31,9 @@ namespace YouveBeenAudited
         /// </summary>
         public List<Trap> Inventory { get => _inventory; }
 
+        #endregion Properties
 
-        // ------ Methods ------
-
+        #region Methods
 
         /// <summary>
         /// Create a new player object.
@@ -48,11 +52,11 @@ namespace YouveBeenAudited
         /// Buys a trap for the user to use.
         /// </summary>
         /// <param name="t">The trap to be bought</param>
-        /// <returns>Returns true if succefully bought false otherwise.</returns>
+        /// <returns>Returns true if successfully bought false otherwise.</returns>
         private bool Buy(Trap t)
         {
             // TODO: Should we use an array of lists to store trap types?
-            if(t.Cost < _money)
+            if (t.Cost < _money)
             {
                 _inventory.Add(t);
                 return true;
@@ -75,7 +79,7 @@ namespace YouveBeenAudited
         public void Move()
         {
             KeyboardState kbs = Keyboard.GetState();
-            if(kbs.IsKeyDown(Keys.W))
+            if (kbs.IsKeyDown(Keys.W))
             {
                 _position.Y -= _speed;
             }
@@ -92,5 +96,7 @@ namespace YouveBeenAudited
                 _position.X += _speed;
             }
         }
+
+        #endregion Methods
     }
 }

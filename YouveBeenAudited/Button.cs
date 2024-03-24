@@ -9,13 +9,27 @@ namespace YouveBeenAudited
     /// </summary>
     internal class Button : GameObject
     {
-        // TODO: Create or insert button class.
+        #region Fields
 
         private string _buttonName;
+
         private bool _isActive;
 
+        // Button clicked event
+        public event BtnClickedDelegate BtnClicked;
+
+        #endregion Fields
+
+        #region Properties
+
+        // Properties
         public string Name { get => _buttonName; }
+
         public bool IsActive { get => _isActive; set => _isActive = value; }
+
+        #endregion Properties
+
+        #region Methods
 
         /// <summary>
         /// Creates a new button object.
@@ -52,16 +66,17 @@ namespace YouveBeenAudited
         /// </summary>
         /// <param name="mouse">Mouse to keep track of</param>
         /// <returns>True if mouse clicks while hovering over button</returns>
-        public bool ButtonClick(MouseState mouse)
+        public void CheckClick(MouseState mouse)
         {
             if (ButtonHover(mouse))
             {
                 if (mouse.LeftButton == ButtonState.Pressed)
                 {
-                    return true;
+                    BtnClicked(this);
                 }
             }
-            return false;
         }
+
+        #endregion Methods
     }
 }

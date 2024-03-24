@@ -3,19 +3,22 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace YouveBeenAudited
 {
     /// <summary>
     /// States of the game.
     /// </summary>
-    internal enum GameState
+    internal enum GameStates
     {
         Menu,
         Game,
         Options,
         GameOver
     }
+
+    internal delegate void BtnClickedDelegate(Button b);
 
     /// <summary>
     /// Authors: Carter I, Chase C, Jesse M & Jack M.
@@ -26,20 +29,45 @@ namespace YouveBeenAudited
     /// </summary>
     public class Game1 : Game
     {
-        private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
-        private GameState _gameState;
-        private MouseState _mouseState;
-        private List<Button> _buttonList;
+        #region Key Game Fields
 
-        private Texture2D playerTexture;
-        private Player player;
+        // Monogame fields
+        private GraphicsDeviceManager _graphics;
+
+        private SpriteBatch _spriteBatch;
+
+        // Game States
+        private GameStates _gameState;
+
+        // Player
+        private Player _player;
+
+        private Texture2D _playerTexture;
+
+        // Element lists
+        private List<Button> _menuButtons;
+
+        private List<Button> _gameButtons;
+        private List<Button> _optionButtons;
+        private List<Button> _gameOverButtons;
+        private List<Button> _masterButtonList;
+
+        // Input sources
+        private MouseState _mouseState;
+
+        private KeyboardState _prevKbState;
+
+        #endregion Key Game Fields
+
+        #region Pre GameLoop
 
         public Game1()
+
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+
             // Set window to borderless windowed as default
             Window.IsBorderless = true;
             _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
@@ -49,9 +77,12 @@ namespace YouveBeenAudited
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-            _buttonList = new List<Button>();
-
+            // Initialize key game fields.
+            _menuButtons = new List<Button>();
+            _gameButtons = new List<Button>();
+            _optionButtons = new List<Button>();
+            _gameButtons = new List<Button>();
+            _gameState = GameStates.Menu;
             base.Initialize();
         }
 
@@ -60,101 +91,121 @@ namespace YouveBeenAudited
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            playerTexture = this.Content.Load<Texture2D>("playerStanding");
-            player = new Player(50, 50, playerTexture, 100, 100);
+            _playerTexture = this.Content.Load<Texture2D>("playerStanding");
+            _player = new Player(50, 50, _playerTexture, 100, 100);
 
-            // Make menu ui elements
-            _buttonList.Add(new Button(45, 45, playerTexture, "StartButton"));
+            #region Button creation
+
+            // Menu start button
+            Button StartButton = new Button(45, 45, _playerTexture, "StartButton");
+            _menuButtons.Add(StartButton);
+            StartButton.BtnClicked += ButtonCheck;
+
+            // Exit game button
+            Button ExitGameButton = new Button(110, 45, _playerTexture, "ExitGameButton");
+            _menuButtons.Add(ExitGameButton);
+            ExitGameButton.BtnClicked += ButtonCheck;
+
+            #endregion Button creation
         }
+
+        #endregion Pre GameLoop
+
+        #region GameLoop
 
         protected override void Update(GameTime gameTime)
         {
-            // TODO: Add your update logic here
-
+            // TODO: remove this statement after menu UI functional
             if (Keyboard.GetState().IsKeyDown(Keys.Escape) == true)
             {
                 Exit();
             }
+
+            // Get current input states
+            _mouseState = Mouse.GetState();
+
+            // Update according to game states.
             switch (_gameState)
             {
-                case GameState.Menu:
-                    ButtonCheck();
+                // On  menu
+                case GameStates.Menu:
+                    // Check all menu buttons for clicks
+                    foreach (Button b in _menuButtons)
+                    {
+                        b.CheckClick(_mouseState);
+                    }
                     break;
-
-                case GameState.Game:
+                // Active game
+                case GameStates.Game:
+                    _player.Move();
                     break;
-
-                case GameState.Options:
+                // Options screen / paused
+                case GameStates.Options:
                     break;
-
-                case GameState.GameOver:
+                // Game over
+                case GameStates.GameOver:
                     break;
             }
 
-            player.Move();
             base.Update(gameTime);
         }
 
+        /// <summary>Draws the game elements to screen.</summary>
+        /// <param name="gameTime">The game time.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.CadetBlue);
+
+            // Start the sprite batch for drawing all elements to screen
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
+            // Draw according to game state
             switch (_gameState)
             {
-                case GameState.Menu:
-                    foreach (Button b in _buttonList)
+                // On menu
+                case GameStates.Menu:
+                    foreach (Button b in _menuButtons)
                     {
-                        b.Draw(_spriteBatch);
+                        b.Draw(_spriteBatch, Color.Green);
                     }
                     break;
-
-                case GameState.Game:
-                    GraphicsDevice.Clear(Color.Black);
+                // Active game
+                case GameStates.Game:
+                    _player.Draw(_spriteBatch);
                     break;
-
-                case GameState.Options:
+                // Options/pause menu
+                case GameStates.Options:
                     break;
-
-                case GameState.GameOver:
+                // Game over
+                case GameStates.GameOver:
                     break;
             }
-
-            // TODO: Add your drawing code here
-            player.Draw(_spriteBatch);
             _spriteBatch.End();
             base.Draw(gameTime);
         }
 
-        private void ButtonCheck()
+        #endregion GameLoop
+
+        #region Methods
+
+        /// <summary>Checks all buttons in provided list for click state, and performs actions based off that information.</summary>
+        /// <param name="b">The button to be checked</param>
+        private void ButtonCheck(Button b)
         {
-            foreach (Button b in _buttonList)
+            switch (b.Name)
             {
-                switch (b.Name)
-                {
-                    case "StartButton":
-                        if (b.ButtonClick(_mouseState))
-                        {
-                            _gameState = GameState.Game;
-                        }
-                        break;
-
-                    case "OptionsButton":
-                        System.Diagnostics.Debug.WriteLine($"{b.ButtonClick(_mouseState)} || {_gameState}");
-                        if (b.ButtonClick(_mouseState))
-                        {
-                            _gameState = GameState.Options;
-                            System.Diagnostics.Debug.WriteLine($"GameState: {_gameState}");
-                        }
-                        break;
-
-                    case "ExitGame":
-                        if (b.ButtonClick(_mouseState))
-                        {
-                            Exit();
-                        }
-                        break;
-                }
+                // If its the start button
+                case "StartButton":
+                    System.Diagnostics.Debug.WriteLine("Change State ==> Game");
+                    _gameState = GameStates.Game;
+                    break;
+                // If its the exit game button
+                case "ExitGameButton":
+                    System.Diagnostics.Debug.WriteLine("ChangeState ==> QuitGame");
+                    Exit();
+                    break;
             }
         }
+
+        #endregion Methods
     }
 }
