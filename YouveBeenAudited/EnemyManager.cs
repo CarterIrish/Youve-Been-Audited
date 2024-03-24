@@ -66,9 +66,16 @@ namespace YouveBeenAudited
             }
         }
 
-        public void DrawEnemies()
+        /// <summary>
+        /// Draws all of the enemies.
+        /// </summary>
+        /// <param name="sb"></param>
+        public void DrawEnemies(SpriteBatch sb)
         {
-
+            foreach (Enemy enemy in _enemies)
+            {
+                enemy.Draw(sb);
+            }
         }
     }
 }
