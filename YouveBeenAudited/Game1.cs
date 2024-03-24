@@ -138,7 +138,7 @@ namespace YouveBeenAudited
             ResumeGame.BtnClicked += ButtonCheck;
 
             // Options exit game button
-            Button optionsExit = new Button(_windowCenter.X - (_exitButtonTexture.Width * 5) / 2, _windowCenter.Y + 10, _exitButtonTexture, "OptionExitGameButton", Color.White);
+            Button optionsExit = new Button(_windowCenter.X - (_exitButtonTexture.Width * 5) / 2, _windowCenter.Y + 10, _exitButtonTexture, "ExitGameButton", Color.White);
             _optionButtons.Add(optionsExit);
             optionsExit.BtnClicked += ButtonCheck;
 
