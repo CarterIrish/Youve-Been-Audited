@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace YouveBeenAudited
 {
@@ -245,11 +246,49 @@ namespace YouveBeenAudited
             }
         }
 
+        /// <summary>
+        /// Reads a file into the game
+        /// </summary>
+        /// <param name="fileName"></param>
         private void ReadFile(string fileName)
         {
-            
-        }
+            StreamReader input = new StreamReader(fileName);
+            string[] dimensions;
+            int height;
+            int width;
 
-        #endregion Methods
+            dimensions = input.ReadLine().Split(",");
+            width = int.Parse(dimensions[0]);
+            height = int.Parse(dimensions[1]);
+
+            for (int i = 0; i < height; i++)
+            {
+                for (int k = 0; k < width; k++)
+                {
+                    switch (input.Read())
+                    {
+                        default:
+                            break;
+                    }
+                }
+                input.ReadLine();
+            }
+
+            //adds the points to the enemy path List
+            string[] points;
+            enemyManager._Path.Clear();
+            points = input.ReadToEnd().Split('|');
+            foreach (string p in points)
+            {
+                if (!p.Equals(""))
+                {
+                    string[] coordinates = p.Split(",");
+                    enemyManager._Path.Add(new Point(int.Parse(coordinates[0]), int.Parse(coordinates[1])));
+                }
+            }
+
+
+            #endregion Methods
+        }
     }
 }
