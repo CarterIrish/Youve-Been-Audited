@@ -241,6 +241,11 @@ namespace YouveBeenAudited
             }
         }
 
+        private void ReadFile(string fileName)
+        {
+
+        }
+
         #endregion Methods
     }
 }
