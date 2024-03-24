@@ -42,7 +42,7 @@ namespace YouveBeenAudited
         private SpriteBatch _spriteBatch;
 
         // Window center
-        private Vector2 _windowCenter;
+        private Point _windowCenter;
 
         // Game States
         private GameStates _gameState;
@@ -111,7 +111,7 @@ namespace YouveBeenAudited
             _playerTexture = this.Content.Load<Texture2D>("playerStanding");
             _player = new Player(50, 50, _playerTexture, 100, 100);
             _arial25 = Content.Load<SpriteFont>("Arial25");
-            _windowCenter = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
+            _windowCenter = new Point(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
 
             _startButtonTexture = Content.Load<Texture2D>("StartButton");
             _exitButtonTexture = Content.Load<Texture2D>("ExitButton");
@@ -121,12 +121,12 @@ namespace YouveBeenAudited
             #region Button creation
 
             // Menu start button
-            Button StartButton = new Button(45, 60, _startButtonTexture, "StartButton", Color.Green);
+            Button StartButton = new Button(_windowCenter.X - (_startButtonTexture.Width * 5) / 2, _windowCenter.Y - (_startButtonTexture.Height * 5) - 10, _startButtonTexture, "StartButton", Color.White);
             _menuButtons.Add(StartButton);
             StartButton.BtnClicked += ButtonCheck;
 
             // MenuExit game button
-            Button ExitGameButton = new Button(110, 60, _playerTexture, "ExitGameButton", Color.Red);
+            Button ExitGameButton = new Button(_windowCenter.X - (_exitButtonTexture.Width * 5) / 2, _windowCenter.Y + 10, _exitButtonTexture, "ExitGameButton", Color.White);
             _menuButtons.Add(ExitGameButton);
             ExitGameButton.BtnClicked += ButtonCheck;
 
