@@ -114,12 +114,12 @@ namespace YouveBeenAudited
             ExitGameButton.BtnClicked += ButtonCheck;
 
             // resume game button
-            Button ResumeGame = new Button((int)_windowCenter.X, (int)_windowCenter.Y, _playerTexture, "ResumeGameButton", Color.Green);
+            Button ResumeGame = new Button((int)_windowCenter.X, (int)_windowCenter.Y + 5, _playerTexture, "ResumeGameButton", Color.Green);
             _optionButtons.Add(ResumeGame);
             ResumeGame.BtnClicked += ButtonCheck;
 
             // Options exit game button
-            Button optionsExit = new Button((int)_windowCenter.X - 120, (int)_windowCenter.Y, _playerTexture, "ExitGameButton", Color.Red);
+            Button optionsExit = new Button((int)_windowCenter.X - 120, (int)_windowCenter.Y + 5, _playerTexture, "ExitGameButton", Color.Red);
             _optionButtons.Add(optionsExit);
             optionsExit.BtnClicked += ButtonCheck;
 
@@ -195,7 +195,7 @@ namespace YouveBeenAudited
                     break;
                 // Active game
                 case GameStates.Game:
-                    _spriteBatch.DrawString(_arial25, "GameState", new Vector2(_windowCenter.X - 5 * 25, _windowCenter.Y - 25), Color.Red);
+                    _spriteBatch.DrawString(_arial25, "GameState: Escape to enter options", new Vector2(_windowCenter.X - 13 * 25, _windowCenter.Y - 25), Color.Red);
                     _player.Draw(_spriteBatch);
                     break;
                 // Options/pause menu
