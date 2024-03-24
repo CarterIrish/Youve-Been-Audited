@@ -35,6 +35,12 @@ namespace YouveBeenAudited
 
         #region Methods
 
+        public override void Update(GameTime gametime)
+        {
+            Move();
+            base.Update(gametime);
+        }
+
         /// <summary>
         /// Create a new player object.
         /// </summary>
