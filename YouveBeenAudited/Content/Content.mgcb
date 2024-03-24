@@ -30,7 +30,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:auditor.png;auditorStanding.png
+/build:auditor.png
 
 #begin playerStanding.png
 /importer:TextureImporter

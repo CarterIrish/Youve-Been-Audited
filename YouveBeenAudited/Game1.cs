@@ -243,7 +243,7 @@ namespace YouveBeenAudited
                 case "StartButton":
                     System.Diagnostics.Debug.WriteLine("Change State ==> Game");
                     _gameState = GameStates.Game;
-                    NextLevel("../../../" + "testingFile");
+                    NextLevel("../../../../testingLevel.level");
                     break;
                 // If its the exit game button
                 case "ExitGameButton":
@@ -260,6 +260,7 @@ namespace YouveBeenAudited
         private void NextLevel(string fileName)
         {
             enemyManager = new EnemyManager(3);
+            enemyManager.LoadContent(Content);
             ReadFile(fileName);
             enemyManager.CreateEnemies();
         }

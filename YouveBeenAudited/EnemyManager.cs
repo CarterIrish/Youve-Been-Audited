@@ -33,6 +33,7 @@ namespace YouveBeenAudited
         {
             _numOfEnemies = numOfEnemies;
             _path = path;
+            _enemies = new List<Enemy>();
         }
 
         /// <summary>
@@ -42,6 +43,7 @@ namespace YouveBeenAudited
         {
             _numOfEnemies = numOfEnemies;
             _path = new List<Point>();
+            _enemies = new List<Enemy>();
         }
 
         /// <summary>
