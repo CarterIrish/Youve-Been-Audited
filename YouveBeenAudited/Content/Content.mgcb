@@ -20,6 +20,30 @@
 /processorParam:TextureFormat=Compressed
 /build:Arial25.spritefont
 
+#begin auditor_spritesheet_0.0.1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:auditor_spritesheet_0.0.1.png;auditorStanding.png
+
+#begin auditor.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:auditor.png;auditorStanding.png
+
 #begin playerStanding.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -31,4 +55,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:playerStanding.png
+
+#begin Spikes.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Spikes.png
 

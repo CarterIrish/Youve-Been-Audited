@@ -78,6 +78,7 @@ namespace YouveBeenAudited
             _speed = 10;
         }
 
+
         #endregion Methods
 
         // TODO: Make any methods necessary for characters as a whole.

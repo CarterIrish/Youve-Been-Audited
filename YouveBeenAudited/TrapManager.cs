@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Net.Mime;
 
 namespace YouveBeenAudited
 {
@@ -12,6 +14,8 @@ namespace YouveBeenAudited
     internal class TrapManager
     {
         private List<Trap> _traps;
+
+        private Texture2D nailTexture;
 
         #region Properties
 
@@ -62,5 +66,10 @@ namespace YouveBeenAudited
             _traps.Add(trap);
         }
         #endregion
+
+        public void LoadContent(ContentManager content)
+        {
+            nailTexture = content.Load<Texture2D>("Spikes");
+        }
     }
 }

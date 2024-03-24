@@ -55,10 +55,15 @@ namespace YouveBeenAudited
         /// <param name="y"></param>
         /// <param name="texture"></param>
         /// <param name="health"></param>
-        public Enemy(int x, int y, Texture2D texture, int health) : base(x, y, texture, health)
+        public Enemy(int x, int y, Texture2D texture, int health, List<Point> path) : base(x, y, texture, health)
         {
-            // TODO: Create logic for object creation. also, review method parameters.
+            _path = path;
+            base._position.X = x;
+            base._position.Y = y;
+            base._health = health;
+            base._texture = texture;
         }
+
 
         /// <summary>
         /// Makes the enemy object take damage.
