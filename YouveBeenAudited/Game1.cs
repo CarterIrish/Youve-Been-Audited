@@ -155,7 +155,7 @@ namespace YouveBeenAudited
                     {
                         _gameState = GameStates.Options;
                     }
-                    _player.Move();
+                    _player.Update(gameTime);
                     break;
 
                 // Options screen / paused

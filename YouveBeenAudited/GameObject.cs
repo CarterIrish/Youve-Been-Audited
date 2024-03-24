@@ -20,7 +20,7 @@ namespace YouveBeenAudited
 
         #endregion Fields
 
-        #region Fields
+        #region Properties
 
         /// <summary>
         /// Gets the rectangle position of an object.
