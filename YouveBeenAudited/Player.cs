@@ -72,6 +72,7 @@ namespace YouveBeenAudited
         public override void Update(GameTime gametime)
         {
             Move();
+            PlaceTrap();
             base.Update(gametime);
         }
 
@@ -100,12 +101,10 @@ namespace YouveBeenAudited
         /// </summary>
         public void PlaceTrap()
         {
-            KeyboardState kbs = Keyboard.GetState();
 
-            if(SingleKeyPress(Keys.D1) && _money >= 20)
+            if(SingleKeyPress(Keys.D1))
             {
                 _traps.Add(new Trap(_position.X, Position.Y, _nailTexture, 20, 100));
-                _money -= 20;
             }
             else if(SingleKeyPress(Keys.D2))
             {
@@ -116,6 +115,7 @@ namespace YouveBeenAudited
 
             }
 
+            _prevKB = Keyboard.GetState();
         }
         
         /// <summary>
