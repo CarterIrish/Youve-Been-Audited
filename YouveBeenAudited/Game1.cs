@@ -162,6 +162,7 @@ namespace YouveBeenAudited
                         _gameState = GameStates.Options;
                     }
                     _player.Update(gameTime);
+
                     break;
 
                 // Options screen / paused
@@ -203,6 +204,7 @@ namespace YouveBeenAudited
                 case GameStates.Game:
                     _spriteBatch.DrawString(_arial25, "GameState: Escape to enter options", new Vector2(_windowCenter.X - 13 * 25, _windowCenter.Y - 25), Color.Red);
                     _player.Draw(_spriteBatch);
+                    enemyManager.DrawEnemies();
                     break;
                 // Options/pause menu
                 case GameStates.Options:
@@ -234,6 +236,7 @@ namespace YouveBeenAudited
                 case "StartButton":
                     System.Diagnostics.Debug.WriteLine("Change State ==> Game");
                     _gameState = GameStates.Game;
+                    NextLevel("../../../" + "testingFile");
                     break;
                 // If its the exit game button
                 case "ExitGameButton":
@@ -245,6 +248,13 @@ namespace YouveBeenAudited
                     _gameState = GameStates.Game;
                     break;
             }
+        }
+
+        private void NextLevel(string fileName)
+        {
+            enemyManager = new EnemyManager(3);
+            ReadFile(fileName);
+            enemyManager.CreateEnemies();
         }
 
         /// <summary>
