@@ -24,6 +24,10 @@ namespace LevelEditor
         //dimensions of a single tile
         private int tileLength;
 
+        //Width and height of monitor
+        private int screenWidth;
+        private int screenHeight;
+
         //2d array to hold tiles
         PictureBox[,] map;
 
@@ -80,6 +84,8 @@ namespace LevelEditor
             isPathing = false;
             currentColor = Color.White;
             enemyPath = new List<Point>();
+            screenWidth = Screen.PrimaryScreen.Bounds.Width;
+            screenHeight = Screen.PrimaryScreen.Bounds.Height;
 
             //initializes the buttons' click events
             buttonGreen.Click += SelectColor;
@@ -114,7 +120,7 @@ namespace LevelEditor
                     map[r, c] = new PictureBox();
                     this.Controls.Add(map[r, c]);
                     map[r, c].Size = new Size(tileLength, tileLength);
-                    map[r, c].Location = new Point((c * tileLength) + 115, (r * tileLength) + 100);
+                    map[r, c].Location = new Point((c * tileLength) + 115, (r * tileLength) + 70);
                     map[r, c].Click += PaintFloor;
                     map[r, c].Click += AddPoint;
                     map[r, c].BackColor = Color.White;
@@ -199,6 +205,7 @@ namespace LevelEditor
                     if (p == pointLocation)
                     {
                         pointExists = true;
+                        break;
                     }
                 }
 
@@ -210,6 +217,25 @@ namespace LevelEditor
                     tile.Refresh();
                 }
             }
+        }
+
+        void DeletePoint(object sender, EventArgs e)
+        {
+            //Finds the coordinates for the center of the tile that was clicked on
+            PictureBox tile = (PictureBox)sender;
+            Point pointLocation = new Point(tile.Location.X + (tile.Width / 2), tile.Location.Y + (tile.Height / 2));
+
+            for (int i = 0; i < enemyPath.Count; i++)
+            {
+                if (enemyPath[i] == pointLocation)
+                {
+                    enemyPath.RemoveAt(i);
+                    break;
+                }
+            }
+
+            tile.Paint -= PaintPoint;
+            tile.Refresh();
         }
 
         /// <summary>
@@ -435,7 +461,6 @@ namespace LevelEditor
                                 }
                             }
                         }
-
                     }
                 }
                 catch (Exception ex)

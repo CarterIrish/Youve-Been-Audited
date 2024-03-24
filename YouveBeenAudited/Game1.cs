@@ -30,6 +30,10 @@ namespace YouveBeenAudited
     {
         #region Key Game Fields
 
+        //Managers
+        EnemyManager enemyManager;
+        TrapManager trapManager;
+
         // Monogame fields
         private GraphicsDeviceManager _graphics;
 
@@ -155,7 +159,7 @@ namespace YouveBeenAudited
                     {
                         _gameState = GameStates.Options;
                     }
-                    _player.Move();
+                    _player.Update(gameTime);
                     break;
 
                 // Options screen / paused
@@ -239,6 +243,11 @@ namespace YouveBeenAudited
                     _gameState = GameStates.Game;
                     break;
             }
+        }
+
+        private void ReadFile(string fileName)
+        {
+            
         }
 
         #endregion Methods
