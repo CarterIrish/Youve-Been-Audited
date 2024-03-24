@@ -36,6 +36,15 @@ namespace YouveBeenAudited
         }
 
         /// <summary>
+        /// Creates a new EnemyManager with an empty enemy path
+        /// </summary>
+        public EnemyManager(int numOfEnemies)
+        {
+            _numOfEnemies = numOfEnemies;
+            _path = new List<Point>();
+        }
+
+        /// <summary>
         /// Loads Enemy Textures
         /// </summary>
         /// <param name="content"></param>
@@ -66,11 +75,15 @@ namespace YouveBeenAudited
             }
         }
 
+        /// <summary>
+        /// Draws all of the enemies.
+        /// </summary>
+        /// <param name="sb"></param>
         public void DrawEnemies(SpriteBatch sb)
         {
-            foreach (Enemy goober in _enemies)
+            foreach (Enemy enemy in _enemies)
             {
-                goober.Draw(sb);
+                enemy.Draw(sb);
             }
         }
     }
