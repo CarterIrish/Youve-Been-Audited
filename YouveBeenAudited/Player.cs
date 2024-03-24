@@ -16,6 +16,8 @@ namespace YouveBeenAudited
 
         private List<Trap> _inventory;
 
+        private KeyboardState _prevKB;
+
         #endregion Fields
 
         #region Properties
@@ -73,7 +75,21 @@ namespace YouveBeenAudited
         /// <param name="t">The trap to be placed.</param>
         public void PlaceTrap(Trap t)
         {
-            // TODO: Create trap placement logic.
+            KeyboardState kbs = Keyboard.GetState();
+
+            if(SingleKeyPress(Keys.D1) && _money <= 50)
+            {
+
+            }
+            else if(SingleKeyPress(Keys.D2))
+            {
+
+            }
+            else if(SingleKeyPress(Keys.D2))
+            {
+
+            }
+
         }
 
         public void Move()
@@ -95,6 +111,11 @@ namespace YouveBeenAudited
             {
                 _position.X += _speed;
             }
+        }
+
+        public bool SingleKeyPress(Keys key)
+        {
+            return Keyboard.GetState().IsKeyDown(key) && _prevKB.IsKeyUp(key);
         }
 
         #endregion Methods
