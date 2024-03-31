@@ -70,6 +70,9 @@ namespace YouveBeenAudited
         private Texture2D _exitButtonTexture;
         private Texture2D _resumeButtonTexture;
 
+        //Title Textures
+        private Texture2D _titleTexture;
+
         // Input sources
         private MouseState _mouseState;
 
@@ -118,6 +121,7 @@ namespace YouveBeenAudited
             _exitButtonTexture = Content.Load<Texture2D>("ExitButton");
             _optionsButtonTexture = Content.Load<Texture2D>("OptionsButton");
             _resumeButtonTexture = Content.Load<Texture2D>("ResumeButton");
+            _titleTexture = Content.Load<Texture2D>("Title");
             _player.LoadContent(Content);
 
             #region Button creation
@@ -216,6 +220,9 @@ namespace YouveBeenAudited
                     {
                         b.Draw(_spriteBatch, b.Color);
                     }
+                    _spriteBatch.Draw(_titleTexture, 
+                        new Rectangle(new Point(_windowCenter.X - 400, _windowCenter.Y - 650), new Point(800, 800)),
+                        Color.White);
                     break;
                 // Active game
                 case GameStates.Game:
