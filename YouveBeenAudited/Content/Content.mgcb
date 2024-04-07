@@ -20,6 +20,18 @@
 /processorParam:TextureFormat=Compressed
 /build:Arial25.spritefont
 
+#begin auditor_spritesheet.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:auditor_spritesheet.png
+
 #begin auditor.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -43,6 +55,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:ExitButton.png
+
+#begin glue.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:glue.png
 
 #begin LevelEditorButton.png
 /importer:TextureImporter
@@ -68,6 +92,18 @@
 /processorParam:TextureFormat=Color
 /build:OptionsButton.png
 
+#begin player_spritesheet.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:player_spritesheet.png
+
 #begin playerStanding.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -92,7 +128,7 @@
 /processorParam:TextureFormat=Color
 /build:ResumeButton.png
 
-#begin Spikes.png
+#begin spikes.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -102,7 +138,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Spikes.png
+/build:spikes.png
 
 #begin StartButton.png
 /importer:TextureImporter
@@ -118,6 +154,18 @@
 
 #begin testingLevel.level
 /copy:testingLevel.level
+
+#begin tile_wood_floor.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:tile_wood_floor.png
 
 #begin Title.png
 /importer:TextureImporter

@@ -62,7 +62,7 @@ namespace YouveBeenAudited
         /// <param name="content">ContentManager to load from</param>
         public void LoadContent(ContentManager content)
         {
-            _nailTexture = content.Load<Texture2D>("Spikes");
+            _nailTexture = content.Load<Texture2D>("spikes");
             _font = content.Load<SpriteFont>("Arial25");
         }
 
@@ -140,7 +140,7 @@ namespace YouveBeenAudited
             {
                 trap.Draw(sb);
             }
-            base.Draw(sb);
+            sb.Draw(Texture, new Rectangle(_position.X, _position.Y, 55, 125), new Rectangle(400, 0, 55, 125), Color.White);
         }
 
         #endregion Methods

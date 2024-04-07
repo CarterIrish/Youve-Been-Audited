@@ -88,6 +88,16 @@ namespace YouveBeenAudited
             _currentPoint++;
         }
 
+        /// <summary>
+        /// Draws an enemy.
+        /// </summary>
+        /// <param name="sb"></param>
+        public override void Draw(SpriteBatch sb)
+        {
+            sb.Draw(Texture, new Rectangle(_position.X, _position.Y, 55, 100), new Rectangle(400, 0, 55, 100), Color.White);
+        }
+
+
         #endregion Methods
     }
 }

@@ -66,7 +66,7 @@ namespace YouveBeenAudited
         /// <param name="content"></param>
         public void LoadContent(ContentManager content)
         {
-            _auditorTexture = content.Load<Texture2D>("auditor");
+            _auditorTexture = content.Load<Texture2D>("auditor_spritesheet");
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace YouveBeenAudited
         }
 
         /// <summary>
-        /// Moves all enemies.
+        /// Moves all enemies.  
         /// </summary>
         public void UpdateEnemies(GameTime gt)
         {

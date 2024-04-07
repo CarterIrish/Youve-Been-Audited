@@ -112,7 +112,7 @@ namespace YouveBeenAudited
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            _playerTexture = this.Content.Load<Texture2D>("playerStanding");
+            _playerTexture = this.Content.Load<Texture2D>("player_spritesheet");
             _player = new Player(50, 50, _playerTexture, 100, 100);
             _arial25 = Content.Load<SpriteFont>("Arial25");
             _windowCenter = new Point(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
