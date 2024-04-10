@@ -10,8 +10,8 @@ namespace YouveBeenAudited
         Idle,
         Left,
         Right,
-        Up,
-        Down
+        FaceLeft,
+        FaceRight
     }
 
     /// <summary>
@@ -24,6 +24,7 @@ namespace YouveBeenAudited
         protected int _health;
         protected int _speed;
         protected bool _isDead;
+        protected CharacterStates _currentState;
 
         #endregion Fields
 
@@ -76,6 +77,7 @@ namespace YouveBeenAudited
         {
             _health = health;
             _speed = 10;
+            _currentState = CharacterStates.Idle;
         }
 
 

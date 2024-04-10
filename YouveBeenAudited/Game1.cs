@@ -50,6 +50,10 @@ namespace YouveBeenAudited
         // Player
         private Player _player;
 
+        //Animation
+        public const double _secondsPerFrame = 6.5f / 60; //This is here for reference.
+        private double _timeCount;
+
         private Texture2D _playerTexture;
 
         // SpriteFonts
@@ -124,6 +128,10 @@ namespace YouveBeenAudited
             _titleTexture = Content.Load<Texture2D>("Title");
             _player.LoadContent(Content);
 
+            
+            //Animation Setup
+            _timeCount = 0;
+
             #region Button creation
 
             // Menu start button
@@ -178,7 +186,9 @@ namespace YouveBeenAudited
                     {
                         _gameState = GameStates.Options;
                     }
+                    _timeCount += gameTime.ElapsedGameTime.TotalSeconds;
                     _player.Update(gameTime);
+                    _timeCount = _player.UpdateAnimation(_timeCount);
                     enemyManager.UpdateEnemies(gameTime);
                     if (enemyManager.enemyAtGoal)
                     {
