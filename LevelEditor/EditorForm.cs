@@ -11,6 +11,11 @@ using System.Windows.Forms;
 
 namespace LevelEditor
 {
+    enum Floor
+    {
+        Wood
+    }
+
     /// <summary>
     /// Chase Collins
     /// Defines the form for editing a level
@@ -30,9 +35,6 @@ namespace LevelEditor
 
         //2d array to hold tiles
         PictureBox[,] map;
-
-        //2d bool array to signify which tiles on the map contain a point on the enemy path
-        bool[,] pointMap;
 
         Color currentColor;
 
@@ -57,7 +59,6 @@ namespace LevelEditor
             this.height = height;
             tileLength = 450 / height;
             map = new PictureBox[height, width];
-            pointMap = new bool[height, width];
 
 
             //Creates the level canvas in the correct dimensions
@@ -90,10 +91,6 @@ namespace LevelEditor
             //initializes the buttons' click events
             buttonGreen.Click += SelectColor;
             buttonMidnight.Click += SelectColor;
-            buttonYellow.Click += SelectColor;
-            buttonSky.Click += SelectColor;
-            buttonGray.Click += SelectColor;
-            buttonWhite.Click += SelectColor;
 
             buttonSave.Click += SaveFile;
             buttonLoad.Click += LoadFile;
@@ -125,6 +122,7 @@ namespace LevelEditor
                     map[r, c].Click += AddPoint;
                     map[r, c].DoubleClick += DeletePoint;
                     map[r, c].BackColor = Color.White;
+                    map[r, c].SizeMode = PictureBoxSizeMode.StretchImage;
                 }
             }
 
@@ -154,13 +152,16 @@ namespace LevelEditor
         /// <param name="e"></param>
         void PathingMode(object sender, EventArgs e)
         {
+            Button button = (Button)sender;
             if (isPathing)
             {
                 isPathing = false;
+                button.ForeColor = Color.Black;
             }
             else if (!isPathing)
             {
                 isPathing = true;
+                button.ForeColor = Color.Red;
             }
         }
 
@@ -175,6 +176,18 @@ namespace LevelEditor
             {
                 PictureBox tile = (PictureBox)sender;
                 tile.BackColor = currentColor;
+
+                //Tiles that are painted green will have the WOOD floor texture
+                if (tile.BackColor == Color.Green)
+                {
+                    tile.Image = buttonGreen.Image = Properties.Resources.tile_wood_floor;
+                }
+                else
+                {
+                    tile.Image = null;
+                }
+
+                //Tile that are painted BLACK will have a wall
 
                 //If there is a point there, it will redraw the point so the map texture doesn't cover it up
                 tile.Refresh();
@@ -197,7 +210,7 @@ namespace LevelEditor
             {
                 //Finds the coordinates for the center of the tile that was clicked on
                 PictureBox tile = (PictureBox)sender;
-                Point pointLocation = new Point(tile.Location.X + (tile.Width / 2), tile.Location.Y + (tile.Height / 2));
+                Point pointLocation = new Point((tile.Location.X - 115) / tileLength, (tile.Location.Y - 70) / tileLength);
 
                 //checks to make sure there isn't already a point there
                 bool pointExists = false;
@@ -226,7 +239,7 @@ namespace LevelEditor
             {
                 //Finds the coordinates for the center of the tile that was clicked on
                 PictureBox tile = (PictureBox)sender;
-                Point pointLocation = new Point(tile.Location.X + (tile.Width / 2), tile.Location.Y + (tile.Height / 2));
+                Point pointLocation = new Point((tile.Location.X - 115) / tileLength, (tile.Location.Y - 70) / tileLength);
 
                 for (int i = 0; i < enemyPath.Count; i++)
                 {
@@ -268,6 +281,7 @@ namespace LevelEditor
 
             Point pointLocation = new Point((tile.Width / 2) - 3, (tile.Height / 2) - 3);
 
+
             e.Graphics.FillEllipse(myBrush, new Rectangle(pointLocation, new Size(6, 6)));
         }
 
@@ -299,25 +313,13 @@ namespace LevelEditor
                         {
                             output.Write("w");
                         }
-                        else if (map[i, k].BackColor == Color.MidnightBlue)
+                        else if (map[i, k].BackColor == Color.Black)
                         {
-                            output.Write("m");
+                            output.Write("b");
                         }
                         else if (map[i, k].BackColor == Color.Green)
                         {
                             output.Write("g");
-                        }
-                        else if (map[i, k].BackColor == Color.Gold)
-                        {
-                            output.Write("y");
-                        }
-                        else if (map[i, k].BackColor == Color.DarkGray)
-                        {
-                            output.Write("d");
-                        }
-                        else if (map[i, k].BackColor == Color.SkyBlue)
-                        {
-                            output.Write("s");
                         }
                     }
                     output.Write("\n");
@@ -417,22 +419,11 @@ namespace LevelEditor
 
                             case 'g':
                                 map[i, k].BackColor = Color.Green;
+                                map[i, k].Image = Properties.Resources.tile_wood_floor;
                                 break;
 
-                            case 'm':
-                                map[i, k].BackColor = Color.MidnightBlue;
-                                break;
-
-                            case 'y':
-                                map[i, k].BackColor = Color.Gold;
-                                break;
-
-                            case 'd':
-                                map[i, k].BackColor = Color.DarkGray;
-                                break;
-
-                            case 's':
-                                map[i, k].BackColor = Color.SkyBlue;
+                            case 'b':
+                                map[i, k].BackColor = Color.Black;
                                 break;
                         }
                     }
@@ -457,17 +448,8 @@ namespace LevelEditor
                     //for each of the points, draw paint the point on the corresponding tile
                     foreach (Point p in enemyPath)
                     {
-                        for (int r = 0; r < height; r++)
-                        {
-                            for (int c = 0; c < width; c++)
-                            {
-                                if (map[r, c].Bounds.Contains(p))
-                                {
-                                    map[r, c].Paint += PaintPoint;
-                                    map[r, c].Refresh();
-                                }
-                            }
-                        }
+                        map[p.Y, p.X].Paint += PaintPoint;
+                        map[p.Y, p.X].Refresh();
                     }
                 }
                 catch (Exception ex)
@@ -517,5 +499,9 @@ namespace LevelEditor
             }
         }
 
+        private void EditorForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

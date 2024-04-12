@@ -18,6 +18,12 @@ namespace YouveBeenAudited
         GameOver
     }
 
+    internal enum TileType
+    {
+        Wall,
+        Wood
+    }
+
     internal delegate void BtnClickedDelegate(Button b);
 
     internal delegate void EnemyAtGoal();
@@ -77,10 +83,18 @@ namespace YouveBeenAudited
         //Title Textures
         private Texture2D _titleTexture;
 
+        //Map Textures
+        private Texture2D _woodFloorTexture;
+
         // Input sources
         private MouseState _mouseState;
-
         private KeyboardState _prevKbState;
+
+        //Level Information
+        private int _tileLength; // Dimensions of a square tile
+        private TileType[,] _map; // 2D array representing the tile types of the map
+        private int _mapWidth; // pixel width of the playable map
+        private int _marginWidth; // pixel width of the side margins
 
         #endregion Key Game Fields
 
@@ -126,6 +140,7 @@ namespace YouveBeenAudited
             _optionsButtonTexture = Content.Load<Texture2D>("OptionsButton");
             _resumeButtonTexture = Content.Load<Texture2D>("ResumeButton");
             _titleTexture = Content.Load<Texture2D>("Title");
+            _woodFloorTexture = Content.Load<Texture2D>("tile_wood_floor");
             _player.LoadContent(Content);
 
             
@@ -240,6 +255,7 @@ namespace YouveBeenAudited
                     _player.Draw(_spriteBatch);
                     _spriteBatch.DrawString(_arial25, $"${_player.Money}", new Vector2(50, 50), Color.DarkGreen);
                     enemyManager.DrawEnemies(_spriteBatch);
+                    DrawLevel(_spriteBatch);
                     break;
                 // Options/pause menu
                 case GameStates.Options:
@@ -306,19 +322,36 @@ namespace YouveBeenAudited
         {
             StreamReader input = new StreamReader(fileName);
             string[] dimensions;
-            int height;
-            int width;
-
+            
+            //reads the dimensions
             dimensions = input.ReadLine().Split(",");
-            width = int.Parse(dimensions[0]);
-            height = int.Parse(dimensions[1]);
+            int width = int.Parse(dimensions[0]);
+            int height = int.Parse(dimensions[1]);
+            _map = new TileType[height, width];
 
+
+            _tileLength = _graphics.PreferredBackBufferHeight / _map.GetLength(0);
+            int mapWidth = _tileLength * _map.GetLength(1);
+            int MarginWidth = (_graphics.PreferredBackBufferWidth - mapWidth) / 2;
+
+            //reads in the floors/walls
             for (int i = 0; i < height; i++)
             {
                 for (int k = 0; k < width; k++)
                 {
                     switch (input.Read())
                     {
+                        case 'w':
+                                break;
+
+                        case 'g':
+                            _map[i, k] = TileType.Wood;
+                            break;
+
+                        case 'b':
+                            _map[i, k] = TileType.Wall;
+                            break;
+
                         default:
                             break;
                     }
@@ -335,11 +368,51 @@ namespace YouveBeenAudited
                 if (!p.Equals(""))
                 {
                     string[] coordinates = p.Split(",");
-                    enemyManager._Path.Add(new Point(int.Parse(coordinates[0]), int.Parse(coordinates[1])));
+                    int x = (int.Parse(coordinates[0]) * _tileLength) + _marginWidth;
+                    int y = (int.Parse(coordinates[1]) * _tileLength);
+                    enemyManager._Path.Add(new Point(x, y));
                 }
             }
 
             #endregion Methods
+        }
+
+        /// <summary>
+        /// Draws the level
+        /// </summary>
+        /// <param name="sb"></param>
+        private void DrawLevel(SpriteBatch sb)
+        {
+            int height = _graphics.PreferredBackBufferHeight;
+            int width = _graphics.PreferredBackBufferWidth;
+
+            _tileLength = height / _map.GetLength(0);
+
+            int mapWidth = _tileLength * _map.GetLength(1);
+            int MarginWidth = (width - mapWidth)/2;
+
+            for(int i = 0; i< _map.GetLength(0); i++)
+            {
+                for(int k = 0; k< _map.GetLength(1); k++)
+                {
+                    switch (_map[i, k])
+                    {
+                        case TileType.Wall:
+                            sb.Draw(_titleTexture, new Rectangle(MarginWidth + (k * _tileLength), (i * _tileLength),
+                                _tileLength, _tileLength), Color.Black);
+                            break;
+
+                        case TileType.Wood:
+                            sb.Draw(_titleTexture, new Rectangle(MarginWidth + (k * _tileLength), (i * _tileLength),
+                                _tileLength, _tileLength), Color.White);
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+            }
+            
         }
     }
 }
