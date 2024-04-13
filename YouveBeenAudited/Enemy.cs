@@ -55,7 +55,7 @@ namespace YouveBeenAudited
         /// <param name="y"></param>
         /// <param name="texture"></param>
         /// <param name="health"></param>
-        public Enemy(int x, int y, Texture2D texture, int health, List<Point> path) : base(x, y, texture, health)
+        public Enemy(int x, int y, Texture2D texture, int health, List<Point> path, double scalar) : base(x, y, texture, health, scalar)
         {
             Path = path;
             base._position.X = x;
