@@ -17,8 +17,6 @@ namespace YouveBeenAudited
         private int _currentPoint;
         private List<Point> _path;
 
-        public event EnemyAtGoal EnemyAtGoal;
-
         #endregion Fields
 
         #region Properties
@@ -96,7 +94,6 @@ namespace YouveBeenAudited
         {
             sb.Draw(Texture, new Rectangle(_position.X, _position.Y, 55, 100), new Rectangle(400, 0, 55, 100), Color.White);
         }
-
 
         #endregion Methods
     }

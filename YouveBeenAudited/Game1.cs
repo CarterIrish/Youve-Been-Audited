@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -26,8 +25,6 @@ namespace YouveBeenAudited
 
     internal delegate void BtnClickedDelegate(Button b);
 
-    internal delegate void EnemyAtGoal();
-
     /// <summary>
     /// Authors: Carter I, Chase C, Jesse M & Jack M.
     /// Class: IGME 106.
@@ -37,7 +34,7 @@ namespace YouveBeenAudited
     /// </summary>
     public class Game1 : Game
     {
-        #region Key Game Fields
+        #region Game Fields
 
         //Managers
         private EnemyManager enemyManager;
@@ -47,8 +44,13 @@ namespace YouveBeenAudited
 
         private SpriteBatch _spriteBatch;
 
-        // Window center
+        // Window fields
         private Point _windowCenter;
+
+        private Point _windowSize;
+
+        private readonly Point _ReferenceWindow;
+        public readonly double _UIscalar;
 
         // Game States
         private GameStates _gameState;
@@ -58,6 +60,7 @@ namespace YouveBeenAudited
 
         //Animation
         public const double _secondsPerFrame = 6.5f / 60; //This is here for reference.
+
         private double _timeCount;
 
         private Texture2D _playerTexture;
@@ -88,20 +91,21 @@ namespace YouveBeenAudited
 
         // Input sources
         private MouseState _mouseState;
+
         private KeyboardState _prevKbState;
 
         //Level Information
         private int _tileLength; // Dimensions of a square tile
+
         private TileType[,] _map; // 2D array representing the tile types of the map
         private int _mapWidth; // pixel width of the playable map
         private int _marginWidth; // pixel width of the side margins
 
-        #endregion Key Game Fields
+        #endregion Game Fields
 
         #region Pre GameLoop
 
         public Game1()
-
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -112,6 +116,14 @@ namespace YouveBeenAudited
             _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
             _graphics.ApplyChanges();
+
+            // set up ui scaler
+            _ReferenceWindow = new Point(_graphics.GraphicsDevice.DisplayMode.Width, _graphics.GraphicsDevice.DisplayMode.Height);
+            _UIscalar = _graphics.PreferredBackBufferWidth / (double)_ReferenceWindow.Y;
+
+            // initialize useful window measurements
+            _windowCenter = new Point(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
+            _windowSize = new Point(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
         }
 
         protected override void Initialize()
@@ -130,10 +142,9 @@ namespace YouveBeenAudited
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            _playerTexture = this.Content.Load<Texture2D>("player_spritesheet");
+            _playerTexture = Content.Load<Texture2D>("player_spritesheet");
             _player = new Player(50, 50, _playerTexture, 100, 100);
             _arial25 = Content.Load<SpriteFont>("Arial25");
-            _windowCenter = new Point(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
 
             _startButtonTexture = Content.Load<Texture2D>("StartButton");
             _exitButtonTexture = Content.Load<Texture2D>("ExitButton");
@@ -143,29 +154,28 @@ namespace YouveBeenAudited
             _woodFloorTexture = Content.Load<Texture2D>("tile_wood_floor");
             _player.LoadContent(Content);
 
-            
             //Animation Setup
             _timeCount = 0;
 
             #region Button creation
 
             // Menu start button
-            Button StartButton = new Button(_windowCenter.X - (_startButtonTexture.Width * 5) / 2, _windowCenter.Y - (_startButtonTexture.Height * 5) - 10, _startButtonTexture, "StartButton", Color.White);
+            Button StartButton = new Button(_windowCenter.X - (_startButtonTexture.Width / 2), (_windowSize.Y / 100) * 65, _startButtonTexture, "StartButton", Color.White);
             _menuButtons.Add(StartButton);
             StartButton.BtnClicked += ButtonCheck;
 
             // MenuExit game button
-            Button ExitGameButton = new Button(_windowCenter.X - (_exitButtonTexture.Width * 5) / 2, _windowCenter.Y + 10, _exitButtonTexture, "ExitGameButton", Color.White);
+            Button ExitGameButton = new Button(_windowCenter.X - (_exitButtonTexture.Width / 2), (_windowSize.Y / 100) * 68, _exitButtonTexture, "ExitGameButton", Color.White);
             _menuButtons.Add(ExitGameButton);
             ExitGameButton.BtnClicked += ButtonCheck;
 
             // resume game button
-            Button ResumeGame = new Button(_windowCenter.X - (_resumeButtonTexture.Width * 5) / 2, _windowCenter.Y - (_resumeButtonTexture.Height * 5) - 10, _resumeButtonTexture, "ResumeGameButton", Color.White);
+            Button ResumeGame = new Button(_windowCenter.X - (_resumeButtonTexture.Width / 2), _windowCenter.Y - (_resumeButtonTexture.Height) - 10, _resumeButtonTexture, "ResumeGameButton", Color.White);
             _optionButtons.Add(ResumeGame);
             ResumeGame.BtnClicked += ButtonCheck;
 
             // Options exit game button
-            Button optionsExit = new Button(_windowCenter.X - (_exitButtonTexture.Width * 5) / 2, _windowCenter.Y + 10, _exitButtonTexture, "ExitGameButton", Color.White);
+            Button optionsExit = new Button(_windowCenter.X - (_exitButtonTexture.Width / 2), _windowCenter.Y + 10, _exitButtonTexture, "ExitGameButton", Color.White);
             _optionButtons.Add(optionsExit);
             optionsExit.BtnClicked += ButtonCheck;
 
@@ -232,30 +242,33 @@ namespace YouveBeenAudited
         /// <param name="gameTime">The game time.</param>
         protected override void Draw(GameTime gameTime)
         {
+            // Designed for a 2560x1440p monitor - ref size
+
             GraphicsDevice.Clear(Color.SaddleBrown);
 
             // Start the sprite batch for drawing all elements to screen
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
+
             // Draw according to game state
             switch (_gameState)
             {
                 // On menu
                 case GameStates.Menu:
+                    _spriteBatch.Draw(_titleTexture, new Rectangle((int)(_windowCenter.X - (_titleTexture.Width) / 2 * _UIscalar), (int)(_windowSize.Y / 100 * 2 * _UIscalar),
+                        (int)((_titleTexture.Width) * _UIscalar), (int)((_titleTexture.Height) * _UIscalar)), Color.White);
                     foreach (Button b in _menuButtons)
                     {
                         b.Draw(_spriteBatch, b.Color);
                     }
-                    _spriteBatch.Draw(_titleTexture, 
-                        new Rectangle(new Point(_windowCenter.X - 400, _windowCenter.Y - 650), new Point(800, 800)),
-                        Color.White);
+
                     break;
                 // Active game
                 case GameStates.Game:
+                    DrawLevel(_spriteBatch);
                     _spriteBatch.DrawString(_arial25, "GameState: Escape to enter options", new Vector2(_windowCenter.X - 13 * 25, _windowCenter.Y - 25), Color.Red);
-                    _player.Draw(_spriteBatch);
                     _spriteBatch.DrawString(_arial25, $"${_player.Money}", new Vector2(50, 50), Color.DarkGreen);
                     enemyManager.DrawEnemies(_spriteBatch);
-                    DrawLevel(_spriteBatch);
+                    _player.Draw(_spriteBatch);
                     break;
                 // Options/pause menu
                 case GameStates.Options:
@@ -322,13 +335,12 @@ namespace YouveBeenAudited
         {
             StreamReader input = new StreamReader(fileName);
             string[] dimensions;
-            
+
             //reads the dimensions
             dimensions = input.ReadLine().Split(",");
             int width = int.Parse(dimensions[0]);
             int height = int.Parse(dimensions[1]);
             _map = new TileType[height, width];
-
 
             _tileLength = _graphics.PreferredBackBufferHeight / _map.GetLength(0);
             int mapWidth = _tileLength * _map.GetLength(1);
@@ -342,7 +354,7 @@ namespace YouveBeenAudited
                     switch (input.Read())
                     {
                         case 'w':
-                                break;
+                            break;
 
                         case 'g':
                             _map[i, k] = TileType.Wood;
@@ -373,8 +385,6 @@ namespace YouveBeenAudited
                     enemyManager._Path.Add(new Point(x, y));
                 }
             }
-
-            #endregion Methods
         }
 
         /// <summary>
@@ -389,11 +399,11 @@ namespace YouveBeenAudited
             _tileLength = height / _map.GetLength(0);
 
             int mapWidth = _tileLength * _map.GetLength(1);
-            int MarginWidth = (width - mapWidth)/2;
+            int MarginWidth = (width - mapWidth) / 2;
 
-            for(int i = 0; i< _map.GetLength(0); i++)
+            for (int i = 0; i < _map.GetLength(0); i++)
             {
-                for(int k = 0; k< _map.GetLength(1); k++)
+                for (int k = 0; k < _map.GetLength(1); k++)
                 {
                     switch (_map[i, k])
                     {
@@ -412,7 +422,8 @@ namespace YouveBeenAudited
                     }
                 }
             }
-            
         }
+
+        #endregion Methods
     }
 }
