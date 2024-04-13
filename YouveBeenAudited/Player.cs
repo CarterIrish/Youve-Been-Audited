@@ -60,7 +60,7 @@ namespace YouveBeenAudited
         /// <param name="texture"></param>
         /// <param name="startingMoney"></param>
         /// <param name="health"></param>
-        public Player(int x, int y, Texture2D texture, int health, int startingMoney) : base(x, y, texture, health)
+        public Player(int x, int y, Texture2D texture, int health, int startingMoney, double scalar) : base(x, y, texture, health, scalar)
         {
             _money = startingMoney;
             _traps = new List<Trap>();
@@ -87,7 +87,7 @@ namespace YouveBeenAudited
             Move();
             PlaceTrap();
             base.Update(gametime);
-            if (_currentState != CharacterStates.Idle) 
+            if (_currentState != CharacterStates.Idle)
             {
                 _prevState = _currentState;
             }
@@ -100,7 +100,7 @@ namespace YouveBeenAudited
         {
             if (SingleKeyPress(Keys.Space) && _money >= 20)
             {
-                _traps.Add(new Trap(_position.X, Position.Y + Position.Height / 3, _nailTexture, 20, 100));
+                _traps.Add(new Trap(_position.X, Position.Y + Position.Height / 3, _nailTexture, 20, 100, _UIscalar));
                 _money -= 20;
             }
             else if (SingleKeyPress(Keys.D1))
@@ -158,11 +158,10 @@ namespace YouveBeenAudited
                 _currentState = CharacterStates.Right;
                 _destinationRectangle.X = _position.X;
             }
-            if (kbs.IsKeyUp(Keys.W) && kbs.IsKeyUp(Keys.A) && kbs.IsKeyUp(Keys.S) && kbs.IsKeyUp(Keys.D)) 
+            if (kbs.IsKeyUp(Keys.W) && kbs.IsKeyUp(Keys.A) && kbs.IsKeyUp(Keys.S) && kbs.IsKeyUp(Keys.D))
             {
                 _currentState = CharacterStates.Idle;
             }
-
         }
 
         /// <summary>
@@ -235,8 +234,8 @@ namespace YouveBeenAudited
                 _timeCount -= (6.5f / 60.0);
             }
             return _timeCount;
-
         }
+
         #endregion Methods
     }
 }

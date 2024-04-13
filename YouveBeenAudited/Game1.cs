@@ -74,7 +74,6 @@ namespace YouveBeenAudited
         private List<Button> _gameButtons;
         private List<Button> _optionButtons;
         private List<Button> _gameOverButtons;
-        private List<Button> _masterButtonList;
 
         // Button textures
         private Texture2D _optionsButtonTexture;
@@ -112,9 +111,9 @@ namespace YouveBeenAudited
             IsMouseVisible = true;
 
             // Set window to borderless windowed as default
-            Window.IsBorderless = true;
-            _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-            _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            //Window.IsBorderless = true;
+            //_graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            //_graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
             _graphics.ApplyChanges();
 
             // set up ui scaler
@@ -143,7 +142,7 @@ namespace YouveBeenAudited
 
             // TODO: use this.Content to load your game content here
             _playerTexture = Content.Load<Texture2D>("player_spritesheet");
-            _player = new Player(50, 50, _playerTexture, 100, 100);
+            _player = new Player(50, 50, _playerTexture, 100, 100, _UIscalar);
             _arial25 = Content.Load<SpriteFont>("Arial25");
 
             _startButtonTexture = Content.Load<Texture2D>("StartButton");
@@ -160,22 +159,22 @@ namespace YouveBeenAudited
             #region Button creation
 
             // Menu start button
-            Button StartButton = new Button(_windowCenter.X - (_startButtonTexture.Width / 2), (_windowSize.Y / 100) * 65, _startButtonTexture, "StartButton", Color.White);
+            Button StartButton = new Button(10, 10, _startButtonTexture, "StartButton", Color.White, _UIscalar);
             _menuButtons.Add(StartButton);
             StartButton.BtnClicked += ButtonCheck;
 
             // MenuExit game button
-            Button ExitGameButton = new Button(_windowCenter.X - (_exitButtonTexture.Width / 2), (_windowSize.Y / 100) * 68, _exitButtonTexture, "ExitGameButton", Color.White);
+            Button ExitGameButton = new Button(10, 20, _exitButtonTexture, "ExitGameButton", Color.White, _UIscalar);
             _menuButtons.Add(ExitGameButton);
             ExitGameButton.BtnClicked += ButtonCheck;
 
             // resume game button
-            Button ResumeGame = new Button(_windowCenter.X - (_resumeButtonTexture.Width / 2), _windowCenter.Y - (_resumeButtonTexture.Height) - 10, _resumeButtonTexture, "ResumeGameButton", Color.White);
+            Button ResumeGame = new Button(_windowCenter.X - (_resumeButtonTexture.Width / 2), _windowCenter.Y - (_resumeButtonTexture.Height) - 10, _resumeButtonTexture, "ResumeGameButton", Color.White, _UIscalar);
             _optionButtons.Add(ResumeGame);
             ResumeGame.BtnClicked += ButtonCheck;
 
             // Options exit game button
-            Button optionsExit = new Button(_windowCenter.X - (_exitButtonTexture.Width / 2), _windowCenter.Y + 10, _exitButtonTexture, "ExitGameButton", Color.White);
+            Button optionsExit = new Button(_windowCenter.X - (_exitButtonTexture.Width / 2), _windowCenter.Y + 10, _exitButtonTexture, "ExitGameButton", Color.White, _UIscalar);
             _optionButtons.Add(optionsExit);
             optionsExit.BtnClicked += ButtonCheck;
 
@@ -286,6 +285,9 @@ namespace YouveBeenAudited
             base.Draw(gameTime);
         }
 
+        /// <summary>
+        /// Sets gamestate to GameOver
+        /// </summary>
         public void GameOver()
         {
             _gameState = GameStates.GameOver;
@@ -319,9 +321,13 @@ namespace YouveBeenAudited
             }
         }
 
+        /// <summary>
+        /// Creates the next level.
+        /// </summary>
+        /// <param name="fileName">Name of the file.</param>
         private void NextLevel(string fileName)
         {
-            enemyManager = new EnemyManager(3);
+            enemyManager = new EnemyManager(3, _UIscalar);
             enemyManager.LoadContent(Content);
             ReadFile(fileName);
             enemyManager.CreateEnemies();

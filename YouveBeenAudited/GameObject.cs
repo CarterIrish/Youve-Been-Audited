@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Linq.Expressions;
+using System.Reflection.Metadata.Ecma335;
 using System.Runtime.InteropServices;
 
 namespace YouveBeenAudited
@@ -17,6 +18,7 @@ namespace YouveBeenAudited
 
         protected Rectangle _position;
         protected Texture2D _texture;
+        protected readonly double _UIscalar;
 
         #endregion Fields
 
@@ -42,10 +44,11 @@ namespace YouveBeenAudited
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <param name="texture"></param>
-        public GameObject(int x, int y, Texture2D texture)
+        public GameObject(int x, int y, Texture2D texture, double scalar)
         {
             _texture = texture;
-            _position = new Rectangle(x, y, texture.Width, texture.Height);
+            _UIscalar = scalar;
+            _position = new Rectangle((int)(x * scalar), (int)(y * scalar), (int)(texture.Width * scalar), (int)(texture.Height * scalar));
         }
 
         /// <summary>

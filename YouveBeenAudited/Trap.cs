@@ -47,7 +47,7 @@ namespace YouveBeenAudited
         /// <param name="texture"></param>
         /// <param name="cost"></param>
         /// <param name="damageAmnt"></param>
-        public Trap(int x, int y, Texture2D texture, int cost, int damageAmnt) : base(x, y, texture)
+        public Trap(int x, int y, Texture2D texture, int cost, int damageAmnt, double scalar) : base(x, y, texture, scalar)
         {
             _damageAmnt = damageAmnt;
             _cost = cost;
