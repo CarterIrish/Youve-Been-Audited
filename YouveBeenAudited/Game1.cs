@@ -408,7 +408,7 @@ namespace YouveBeenAudited
                 input.ReadLine();
             }
 
-            //adds the points to the enemy path List
+            //adds the vectors to the enemy path List
             string[] points;
             enemyManager._Path.Clear();
             points = input.ReadToEnd().Split('|');
@@ -419,7 +419,7 @@ namespace YouveBeenAudited
                     string[] coordinates = p.Split(",");
                     int x = (int.Parse(coordinates[0]) * _tileLength) + _marginWidth + (_tileLength / 2);
                     int y = (int.Parse(coordinates[1]) * _tileLength) + (_tileLength / 2);
-                    enemyManager._Path.Add(new Point(x, y));
+                    enemyManager._Path.Add(new Vector2((float)x, (float)y));
                 }
             }
         }
@@ -461,11 +461,11 @@ namespace YouveBeenAudited
                 }
             }
 
-            foreach (Point p in enemyManager._Path)
+            foreach (Vector2 p in enemyManager._Path)
             {
-                int x = p.X;
-                int y = p.Y;
-                Rectangle pointRect = new Rectangle(x - 5, y - 5, 10, 10);
+                float x = p.X;
+                float y = p.Y;
+                Rectangle pointRect = new Rectangle((int)(x - 5), (int)(y - 5), 10, 10);
                 sb.Draw(_woodFloorTexture, pointRect, Color.Blue);
             }
         }

@@ -14,7 +14,7 @@ namespace YouveBeenAudited
         #region Fields
 
         private List<Enemy> _enemies;
-        private List<Point> _path;
+        private List<Vector2> _path;
         private int _numOfEnemies;
 
         public bool enemyAtGoal;
@@ -26,7 +26,7 @@ namespace YouveBeenAudited
 
         #region Properties
 
-        public List<Point> _Path
+        public List<Vector2> _Path
         {
             get { return _path; }
             set { _path = value; }
@@ -41,7 +41,7 @@ namespace YouveBeenAudited
         /// </summary>
         /// <param name="numOfEnemies"> Number of desired enemies. </param>
         /// <param name="path"> List of points for the enemies to follow. </param>
-        public EnemyManager(int numOfEnemies, List<Point> path)
+        public EnemyManager(int numOfEnemies, List<Vector2> path)
         {
             _numOfEnemies = numOfEnemies;
             _path = path;
@@ -55,7 +55,7 @@ namespace YouveBeenAudited
         public EnemyManager(int numOfEnemies)
         {
             _numOfEnemies = numOfEnemies;
-            _path = new List<Point>();
+            _path = new List<Vector2>();
             _enemies = new List<Enemy>();
             enemyAtGoal = false;
         }
@@ -76,7 +76,7 @@ namespace YouveBeenAudited
         {
             for (int i = 0; i < _numOfEnemies; i++)
             {
-                _enemies.Add(new Enemy(_path[0].X, _path[0].Y, _auditorTexture, 150, _path));
+                _enemies.Add(new Enemy((int)_path[0].X, (int)_path[0].Y, _auditorTexture, 150, _path));
             }
         }
 
