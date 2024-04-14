@@ -60,9 +60,9 @@ namespace YouveBeenAudited
         /// <returns>True if collision detected</returns>
         public bool CheckCollisions(GameObject obj)
         {
-            if (obj is IDamageable)
+            if (obj is IDamageable && Position.Intersects(obj.Position))
             {
-                return Position.Intersects(obj.Position);
+                return true;
             }
             return false;
         }
