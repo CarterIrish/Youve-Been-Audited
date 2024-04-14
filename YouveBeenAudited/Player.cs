@@ -190,7 +190,7 @@ namespace YouveBeenAudited
                     sb.Draw(
                 Texture,
                 new Vector2(_position.X, _position.Y),
-                new Rectangle(((_spriteWidth + 25) * _currentFrame) + 560, 0, (int)(_spriteWidth * _UIscalar), (int)(_spriteHeight * _UIscalar)),
+                new Rectangle(((_spriteWidth + 25) * _currentFrame) + 560, 0, _spriteWidth, _spriteHeight),
                 Color.White,
                 0.0f,
                 Vector2.Zero,
@@ -203,7 +203,7 @@ namespace YouveBeenAudited
                     sb.Draw(
                 Texture,
                 new Vector2(_position.X, _position.Y),
-                new Rectangle(((_spriteWidth + 25) * _currentFrame) + 560, 0, (int)(_spriteWidth * _UIscalar), (int)(_spriteHeight * _UIscalar)),
+                new Rectangle(((_spriteWidth + 25) * _currentFrame) + 560, 0, _spriteWidth, _spriteHeight),
                 Color.White,
                 0.0f,
                 Vector2.Zero,
@@ -213,7 +213,7 @@ namespace YouveBeenAudited
                     break;
 
                 default:
-                    sb.Draw(Texture, _destinationRectangle, new Rectangle(400, 0, (int)(_spriteWidth * _UIscalar), (int)(_spriteHeight * _UIscalar)), Color.White);
+                    sb.Draw(Texture, _destinationRectangle, new Rectangle(400, 0, _spriteWidth, _spriteHeight), Color.White);
                     break;
             }
         }
