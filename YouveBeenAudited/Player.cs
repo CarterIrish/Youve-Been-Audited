@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 
 namespace YouveBeenAudited
@@ -229,6 +230,47 @@ namespace YouveBeenAudited
                 _timeCount -= (6.5f / 60.0);
             }
             return _timeCount;
+        }
+
+        public void ResolveCollisions(List<GameObject> walls)
+        {
+            List<Rectangle> intersections = new List<Rectangle>();
+            Rectangle playerRect = new Rectangle(Position.X, Position.Y, SpriteSize.X, SpriteSize.Y);
+            Rectangle overlapRect;
+
+            // Find the collisions
+            foreach (GameObject wall in walls)
+            {
+                if (playerRect.Intersects(wall.Position))
+                {
+                    intersections.Add(wall.Position);
+                }
+            }
+
+            // X collisions
+            foreach (Rectangle r in intersections)
+            {
+                overlapRect = Rectangle.Intersect(playerRect, r);
+                if (overlapRect.Height > overlapRect.Width)
+                {
+                    int xdiff = Math.Sign(playerRect.X - r.X);
+                    playerRect.X += (xdiff * overlapRect.Width);
+                }
+            }
+
+            // Y collisions
+            foreach (Rectangle r in intersections)
+            {
+                overlapRect = Rectangle.Intersect(playerRect, r);
+                if (overlapRect.Height < overlapRect.Width)
+                {
+                    int ydiff = Math.Sign(playerRect.Y - r.Y);
+                    playerRect.Y += (ydiff * overlapRect.Height);
+                }
+            }
+
+            _position.X = playerRect.X;
+            _position.Y = playerRect.Y;
         }
 
         #endregion Methods

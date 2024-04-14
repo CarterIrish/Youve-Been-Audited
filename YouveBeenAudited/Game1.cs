@@ -319,14 +319,6 @@ namespace YouveBeenAudited
             base.Draw(gameTime);
         }
 
-        /// <summary>
-        /// Sets gamestate to GameOver
-        /// </summary>
-        public void GameOver()
-        {
-            _gameState = GameStates.GameOver;
-        }
-
         #endregion GameLoop
 
         #region Methods
@@ -477,7 +469,7 @@ namespace YouveBeenAudited
 
         public void Collisions()
         {
-            // Checks trap collisions against 
+            // Checks trap collisions against
             foreach (Enemy enemy in enemyManager.Enemies)
             {
                 for (int i = 0; i < _traps.Count;)
@@ -496,44 +488,9 @@ namespace YouveBeenAudited
             }
 
             // Check collisions with walls
-            {
-                List<Rectangle> intersections = new List<Rectangle>();
-                Rectangle playerRect = new Rectangle(_player.Position.X, _player.Position.Y, _player.SpriteSize.X, _player.SpriteSize.Y);
-                Rectangle overlapRect;
-
-                // Find the collisions
-                foreach (GameObject wall in _wallList)
-                {
-                    if (playerRect.Intersects(wall.Position))
-                    {
-                        intersections.Add(wall.Position);
-                    }
-                }
-
-                // X collisions
-                foreach (Rectangle r in intersections)
-                {
-                    overlapRect = Rectangle.Intersect(playerRect, r);
-                    if (overlapRect.Height > overlapRect.Width)
-                    {
-                        int xdiff = Math.Sign(playerRect.X - r.X);
-                        playerRect.X += (xdiff * overlapRect.Width);
-                    }
-                }
-
-                // Y collisions
-                foreach (Rectangle r in intersections)
-                {
-                    overlapRect = Rectangle.Intersect(playerRect, r);
-                    if (overlapRect.Height < overlapRect.Width)
-                    {
-                        int ydiff = Math.Sign(playerRect.Y - r.Y);
-                        playerRect.Y += (ydiff * overlapRect.Height);
-                    }
-                }
-            }
+            _player.ResolveCollisions(_wallList);
         }
-
-        #endregion Methods
     }
+
+    #endregion Methods
 }
