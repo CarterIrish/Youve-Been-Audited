@@ -7,7 +7,7 @@ namespace YouveBeenAudited
     /// <summary>
     /// Purpose: To represent a UI/X button on the screen.
     /// </summary>
-    internal class Button : GameObject
+    internal class Button
     {
         #region Fields
 
@@ -16,6 +16,9 @@ namespace YouveBeenAudited
         private bool _isActive;
 
         private Color _color;
+
+        private Rectangle _boundingBox;
+        private Texture2D _texture;
 
         // Button clicked event
         public event BtnClickedDelegate BtnClicked;
@@ -29,6 +32,7 @@ namespace YouveBeenAudited
         public bool IsActive { get => _isActive; set => _isActive = value; }
 
         public Color Color { get => _color; }
+        public Rectangle Position { get => _boundingBox; }
 
         #endregion Properties
 
@@ -40,11 +44,13 @@ namespace YouveBeenAudited
         /// <param name="x">X coord of button.</param>
         /// <param name="y">Y coord of button.</param>
         /// <param name="texture">The buttons texture.</param>
-        public Button(int x, int y, Texture2D texture, string buttonName, Color color, double scalar) : base(x, y, texture)
+        public Button(int x, int y, Texture2D texture, string buttonName, Color color, double scalar)
         {
             // TODO: Create button constructor.
             _buttonName = buttonName;
             _color = color;
+            _texture = texture;
+            _boundingBox = new Rectangle(x, y, (int)(texture.Width * scalar), (int)(texture.Height * scalar));
         }
 
         /// <summary>
@@ -54,9 +60,9 @@ namespace YouveBeenAudited
         /// <returns>True if mouse is within the bounds of the button</returns>
         public bool ButtonHover(MouseState mouse)
         {
-            if (mouse.Position.X < Position.X + _position.Width &&
+            if (mouse.Position.X < Position.X + _boundingBox.Width &&
                mouse.Position.X > Position.X &&
-               mouse.Position.Y < Position.Y + _position.Height &&
+               mouse.Position.Y < Position.Y + _boundingBox.Height &&
                mouse.Position.Y > Position.Y
                )
             {
@@ -79,6 +85,14 @@ namespace YouveBeenAudited
                     BtnClicked(this);
                 }
             }
+        }
+
+        /// <summary>Draws this instance of an object.</summary>
+        /// <param name="sb">The SpriteBatch.</param>
+        public virtual void Draw(SpriteBatch sb, Color tint)
+        {
+            // TODO: If needed change this so that it more aligns with our game
+            sb.Draw(_texture, _boundingBox, tint);
         }
 
         #endregion Methods

@@ -166,14 +166,21 @@ namespace YouveBeenAudited
             #region Button creation
 
             // Menu start button
-            Button StartButton = new Button(10, 10, _startButtonTexture, "StartButton", Color.White, _UIscalar);
+            Button StartButton = new Button(
+                _windowCenter.X - (int)(_startButtonTexture.Width * _UIscalar) / 2,
+                _windowCenter.Y + (int)(40 * _UIscalar),
+                _startButtonTexture,
+                "StartButton",
+                Color.White,
+                _UIscalar);
+
             _menuButtons.Add(StartButton);
             StartButton.BtnClicked += ButtonCheck;
 
             // MenuExit game button
             Button ExitGameButton = new Button(
-                10,
-                20,
+                _windowCenter.X - (int)(_exitButtonTexture.Width * _UIscalar) / 2,
+                StartButton.Position.Y + (int)(_exitButtonTexture.Height * _UIscalar + 40),
                 _exitButtonTexture,
                 "ExitGameButton",
                 Color.White,
@@ -284,7 +291,7 @@ namespace YouveBeenAudited
             {
                 // On menu
                 case GameStates.Menu:
-                    _spriteBatch.Draw(_titleTexture, new Rectangle((int)(_windowCenter.X - (_titleTexture.Width) / 2 * _UIscalar), (int)(_windowSize.Y / 100 * 2 * _UIscalar),
+                    _spriteBatch.Draw(_titleTexture, new Rectangle((int)(_windowCenter.X - _titleTexture.Width / 2 * _UIscalar), (int)(_windowSize.Y / 100 * 2),
                         (int)((_titleTexture.Width) * _UIscalar), (int)((_titleTexture.Height) * _UIscalar)), Color.White);
                     foreach (Button b in _menuButtons)
                     {
