@@ -13,6 +13,9 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin actualTestingFile.level
+/copy:actualTestingFile.level
+
 #begin Arial25.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
