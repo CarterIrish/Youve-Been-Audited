@@ -25,14 +25,16 @@ namespace YouveBeenAudited
         /// <summary>
         /// Gets whether or not enemy is at goal.
         /// </summary>
-        public bool AtGoal 
-        { 
-            get {if (_currentPoint == _path.Count - 1)
+        public bool AtGoal
+        {
+            get
+            {
+                if (_currentPoint == _path.Count - 1)
                 {
                     return true;
                 }
                 return false;
-            } 
+            }
         }
 
         /// <summary>
@@ -100,9 +102,13 @@ namespace YouveBeenAudited
                 {
                     _currentPoint++;
                 }
+
+                if (_currentPoint == _path.Count)
+                {
+                    _atGoal = true;
+                }
             }
         }
-
 
         /// <summary>
         /// Draws an enemy.
