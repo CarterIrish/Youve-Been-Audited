@@ -357,7 +357,6 @@ namespace YouveBeenAudited
             enemyManager = new EnemyManager(3);
             enemyManager.LoadContent(Content);
             ReadFile(fileName);
-            enemyManager.CreateEnemies();
         }
 
         /// <summary>

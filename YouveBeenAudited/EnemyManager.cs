@@ -83,17 +83,6 @@ namespace YouveBeenAudited
         }
 
         /// <summary>
-        /// Creates the list of enemies.
-        /// </summary>
-        public void CreateEnemies()
-        {
-            for (int i = 0; i < _numOfEnemies; i++)
-            {
-                //_enemies.Add(new Enemy((int)_path[0].X, (int)_path[0].Y, _auditorTexture, 150, _path));
-            }
-        }
-
-        /// <summary>
         /// Moves all enemies.
         /// </summary>
         public void UpdateEnemies(GameTime gt)
