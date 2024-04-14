@@ -139,6 +139,7 @@ namespace YouveBeenAudited
             _gameButtons = new List<Button>();
             _gameState = GameStates.Menu;
             _traps = new List<Trap>();
+            _wallList = new List<GameObject>();
             base.Initialize();
         }
 
