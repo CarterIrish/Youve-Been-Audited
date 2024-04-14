@@ -114,6 +114,9 @@ namespace YouveBeenAudited
             ProcessInput();
         }
 
+        /// <summary>
+        /// Processes the user input.
+        /// </summary>
         private void ProcessInput()
         {
             KeyboardState kbs = Keyboard.GetState();

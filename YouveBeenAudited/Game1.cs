@@ -234,13 +234,13 @@ namespace YouveBeenAudited
                     }
                     _timeCount += gameTime.ElapsedGameTime.TotalSeconds;
                     _player.Update(gameTime);
-                    _timeCount = _player.UpdateAnimation(_timeCount);
-
                     Trap trap;
                     if ((trap = _player.PlaceTrap()) != null)
                     {
                         _traps.Add(trap);
                     }
+                    Collisions();
+                    _timeCount = _player.UpdateAnimation(_timeCount);
                     enemyManager.UpdateEnemies(gameTime);
                     if (enemyManager.enemyAtGoal)
                     {
@@ -468,6 +468,21 @@ namespace YouveBeenAudited
                 float y = p.Y;
                 Rectangle pointRect = new Rectangle((int)(x - 5), (int)(y - 5), 10, 10);
                 sb.Draw(_woodFloorTexture, pointRect, Color.Blue);
+            }
+        }
+
+        public void Collisions()
+        {
+            foreach(Trap trap in _traps)
+            {
+                foreach(Enemy enemy in enemyManager.Enemies)
+                {
+                    if(trap.CheckCollisions(enemy))
+                    {
+                        enemy.TakeDamage(trap.DamageAmnt);
+                        _traps.Remove(trap);
+                    }
+                }
             }
         }
 

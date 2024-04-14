@@ -32,6 +32,11 @@ namespace YouveBeenAudited
             set { _path = value; }
         }
 
+        public List<Enemy> Enemies
+        {
+            get => _enemies;
+        }
+
         #endregion Properties
 
         #region Methods
@@ -85,13 +90,17 @@ namespace YouveBeenAudited
         /// </summary>
         public void UpdateEnemies(GameTime gt)
         {
-            foreach (Enemy goober in _enemies)
+            for (int i = 0; i < _enemies.Count;)
             {
-                goober.Update(gt);
-                //if (goober.AtGoal)
-                //{
-                //    enemyAtGoal = true;
-                //}
+                _enemies[i].Update(gt);
+                if (_enemies[i].Health <= 0)
+                {
+                    _enemies.RemoveAt(i);
+                }
+                else
+                {
+                    i++;
+                }
             }
         }
 
