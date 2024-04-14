@@ -66,7 +66,7 @@ namespace YouveBeenAudited
             _traps = new List<Trap>();
             _spriteWidth = 55;
             _spriteHeight = 125;
-            _destinationRectangle = new Rectangle(_position.X, _position.Y, _spriteWidth, _spriteHeight);
+            _destinationRectangle = new Rectangle((int)(_position.X * _UIscalar), (int)(_position.Y * _UIscalar), (int)(_spriteWidth * _UIscalar), (int)(_spriteHeight * _UIscalar));
             _speed = 6;
         }
 
