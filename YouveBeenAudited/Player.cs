@@ -21,8 +21,6 @@ namespace YouveBeenAudited
 
         private int _spriteHeight;
 
-        private List<Trap> _traps;
-
         private Texture2D _nailTexture;
 
         private SpriteFont _font;
@@ -43,11 +41,6 @@ namespace YouveBeenAudited
         /// </summary>
         public int Money { get => _money; }
 
-        /// <summary>
-        /// Gets the placed traps
-        /// </summary>
-        public List<Trap> Traps { get => _traps; }
-
         #endregion Properties
 
         #region Methods
@@ -63,7 +56,6 @@ namespace YouveBeenAudited
         public Player(int x, int y, Texture2D texture, int health, int startingMoney, double scalar) : base(x, y, texture, health, scalar)
         {
             _money = startingMoney;
-            _traps = new List<Trap>();
             _spriteWidth = 55;
             _spriteHeight = 125;
             _destinationRectangle = new Rectangle(_position.X, _position.Y, _spriteWidth, _spriteHeight);
@@ -85,7 +77,6 @@ namespace YouveBeenAudited
         public override void Update(GameTime gametime)
         {
             Move();
-            PlaceTrap();
             base.Update(gametime);
             if (_currentState != CharacterStates.Idle)
             {
@@ -96,12 +87,13 @@ namespace YouveBeenAudited
         /// <summary>
         /// Place a trap based on input
         /// </summary>
-        public void PlaceTrap()
+        public Trap PlaceTrap()
         {
+            Trap trap = null;
             if (SingleKeyPress(Keys.Space) && _money >= 20)
             {
-                _traps.Add(new Trap(_position.X, Position.Y + Position.Height / 3, _nailTexture, 20, 100, _UIscalar));
                 _money -= 20;
+                trap = new Trap(_position.X, Position.Y + Position.Height / 3, _nailTexture, 20, 100, 1);
             }
             else if (SingleKeyPress(Keys.D1))
             {
@@ -109,9 +101,10 @@ namespace YouveBeenAudited
             }
             else if (SingleKeyPress(Keys.D2))
             {
-            }
 
+            }
             _prevKB = Keyboard.GetState();
+            return trap;
         }
 
         /// <summary>
@@ -180,10 +173,6 @@ namespace YouveBeenAudited
         /// <param name="sb"></param>
         public override void Draw(SpriteBatch sb)
         {
-            foreach (Trap trap in _traps)
-            {
-                trap.Draw(sb);
-            }
             switch (_currentState)
             {
                 case CharacterStates.Left:
