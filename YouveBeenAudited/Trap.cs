@@ -60,7 +60,7 @@ namespace YouveBeenAudited
         /// <returns>True if collision detected</returns>
         public bool CheckCollisions(GameObject obj)
         {
-            if (obj is IDamageable && Position.Intersects(obj.Position))
+            if (obj is IDamageable && Position.Intersects(new Rectangle(obj.Position.X,obj.Position.Y, 55, 100)))
             {
                 return true;
             }
