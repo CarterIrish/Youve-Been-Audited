@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -77,6 +78,7 @@ namespace YouveBeenAudited
         private List<Button> _gameButtons;
         private List<Button> _optionButtons;
         private List<Button> _gameOverButtons;
+        private List<GameObject> _wallList;
 
         // Button textures
         private Texture2D _optionsButtonTexture;
@@ -473,11 +475,12 @@ namespace YouveBeenAudited
 
         public void Collisions()
         {
-            foreach(Trap trap in _traps)
+            // Check trap collisions
+            foreach (Trap trap in _traps)
             {
-                foreach(Enemy enemy in enemyManager.Enemies)
+                foreach (Enemy enemy in enemyManager.Enemies)
                 {
-                    if(trap.CheckCollisions(enemy))
+                    if (trap.CheckCollisions(enemy))
                     {
                         enemy.TakeDamage(trap.DamageAmnt);
                         _traps.Remove(trap);
