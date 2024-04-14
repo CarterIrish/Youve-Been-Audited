@@ -15,13 +15,23 @@ namespace YouveBeenAudited
 
         private int _money;
 
+        private int _currentFrame;
+
+        private int _spriteWidth;
+
+        private int _spriteHeight;
+
         private List<Trap> _traps;
 
         private Texture2D _nailTexture;
 
         private SpriteFont _font;
 
+        private Rectangle _destinationRectangle;
+
         private KeyboardState _prevKB;
+
+        private CharacterStates _prevState;
 
         #endregion Fields
 
@@ -54,6 +64,10 @@ namespace YouveBeenAudited
         {
             _money = startingMoney;
             _traps = new List<Trap>();
+            _spriteWidth = 55;
+            _spriteHeight = 125;
+            _destinationRectangle = new Rectangle(_position.X, _position.Y, _spriteWidth, _spriteHeight);
+            _speed = 6;
         }
 
         /// <summary>
@@ -73,6 +87,10 @@ namespace YouveBeenAudited
             Move();
             PlaceTrap();
             base.Update(gametime);
+            if (_currentState != CharacterStates.Idle) 
+            {
+                _prevState = _currentState;
+            }
         }
 
         /// <summary>
@@ -104,20 +122,47 @@ namespace YouveBeenAudited
             KeyboardState kbs = Keyboard.GetState();
             if (kbs.IsKeyDown(Keys.W))
             {
+                if (_currentState == CharacterStates.Idle)
+                {
+                    _currentState = _prevState;
+                    if (_currentState == CharacterStates.Idle)
+                    {
+                        _currentState = CharacterStates.Right;
+                    }
+                }
                 _position.Y -= _speed;
+                _destinationRectangle.Y = _position.Y;
             }
             if (kbs.IsKeyDown(Keys.A))
             {
                 _position.X -= _speed;
+                _currentState = CharacterStates.Left;
+                _destinationRectangle.X = _position.X;
             }
             if (kbs.IsKeyDown(Keys.S))
             {
+                if (_currentState == CharacterStates.Idle)
+                {
+                    _currentState = _prevState;
+                    if (_currentState == CharacterStates.Idle)
+                    {
+                        _currentState = CharacterStates.Right;
+                    }
+                }
                 _position.Y += _speed;
+                _destinationRectangle.Y = _position.Y;
             }
             if (kbs.IsKeyDown(Keys.D))
             {
                 _position.X += _speed;
+                _currentState = CharacterStates.Right;
+                _destinationRectangle.X = _position.X;
             }
+            if (kbs.IsKeyUp(Keys.W) && kbs.IsKeyUp(Keys.A) && kbs.IsKeyUp(Keys.S) && kbs.IsKeyUp(Keys.D)) 
+            {
+                _currentState = CharacterStates.Idle;
+            }
+
         }
 
         /// <summary>
@@ -140,9 +185,58 @@ namespace YouveBeenAudited
             {
                 trap.Draw(sb);
             }
-            sb.Draw(Texture, new Rectangle(_position.X, _position.Y, 55, 125), new Rectangle(400, 0, 55, 125), Color.White);
+            switch (_currentState)
+            {
+                case CharacterStates.Left:
+                    sb.Draw(
+                Texture,
+                new Vector2(_position.X, _position.Y),
+                new Rectangle(((_spriteWidth + 25) * _currentFrame) + 560, 0, _spriteWidth, _spriteHeight),
+                Color.White,
+                0.0f,
+                Vector2.Zero,
+                1.0f,
+                SpriteEffects.FlipHorizontally,
+                0.0f);
+                    break;
+
+                case CharacterStates.Right:
+                    sb.Draw(
+                Texture,
+                new Vector2(_position.X, _position.Y),
+                new Rectangle(((_spriteWidth + 25) * _currentFrame) + 560, 0, _spriteWidth, _spriteHeight),
+                Color.White,
+                0.0f,
+                Vector2.Zero,
+                1.0f,
+                SpriteEffects.None,
+                0.0f);
+                    break;
+
+                default:
+                    sb.Draw(Texture, _destinationRectangle, new Rectangle(400, 0, _spriteWidth, _spriteHeight), Color.White);
+                    break;
+            }
         }
 
+        /// <summary>
+        /// Updates the animation.
+        /// </summary>
+        /// <param name="gameTime">Game time information</param>
+        public double UpdateAnimation(double _timeCount)
+        {
+            if (_timeCount >= 6.5f / 60.0)
+            {
+                // Update the frame and wrap
+                _currentFrame++;
+                if (_currentFrame >= 4) _currentFrame = 1;
+
+                // Remove one "frame" worth of time
+                _timeCount -= (6.5f / 60.0);
+            }
+            return _timeCount;
+
+        }
         #endregion Methods
     }
 }
