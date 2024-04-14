@@ -224,6 +224,16 @@ namespace YouveBeenAudited
             return _timeCount;
         }
 
+        /// <summary>
+        /// Returns intersection rectangle with another object
+        /// </summary>
+        /// <param name="obj">Object to check collisions with</param>
+        /// <returns>Rectangle of intersection size</returns>
+        public Rectangle CheckCollisions(GameObject obj)
+        {
+            return Rectangle.Intersect(_position, obj.Position);
+        }
+
         #endregion Methods
     }
 }
