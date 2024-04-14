@@ -190,8 +190,8 @@ namespace YouveBeenAudited
 
             // resume game button
             Button ResumeGame = new Button(
-                _windowCenter.X - (_resumeButtonTexture.Width / 2),
-                _windowCenter.Y - (_resumeButtonTexture.Height) - 10,
+                _windowCenter.X - (int)(_resumeButtonTexture.Width * _UIscalar) / 2,
+                _windowCenter.Y - (int)(_resumeButtonTexture.Height * _UIscalar),
                 _resumeButtonTexture,
                 "ResumeGameButton",
                 Color.White,
@@ -201,8 +201,8 @@ namespace YouveBeenAudited
 
             // Options exit game button
             Button optionsExit = new Button(
-                _windowCenter.X - (_exitButtonTexture.Width / 2),
-                _windowCenter.Y + 10,
+                _windowCenter.X - (int)(_exitButtonTexture.Width * _UIscalar) / 2,
+                _windowCenter.Y + (int)(_exitButtonTexture.Height * _UIscalar),
                 _exitButtonTexture,
                 "ExitGameButton",
                 Color.White,
