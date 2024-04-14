@@ -17,9 +17,7 @@ namespace YouveBeenAudited
 
         private int _currentFrame;
 
-        private int _spriteWidth;
-
-        private int _spriteHeight;
+        private Point _spriteSize;
 
         private Texture2D _nailTexture;
 
@@ -41,6 +39,8 @@ namespace YouveBeenAudited
         /// </summary>
         public int Money { get => _money; }
 
+        public Point SpriteSize { get => _spriteSize; }
+
         #endregion Properties
 
         #region Methods
@@ -56,9 +56,8 @@ namespace YouveBeenAudited
         public Player(int x, int y, Texture2D texture, int health, int startingMoney) : base(x, y, texture, health)
         {
             _money = startingMoney;
-            _spriteWidth = 55;
-            _spriteHeight = 125;
-            _destinationRectangle = new Rectangle(_position.X, _position.Y, _spriteWidth, _spriteHeight);
+            _spriteSize = new Point(55, 125);
+            _destinationRectangle = new Rectangle(_position.X, _position.Y, _spriteSize.X, _spriteSize.Y);
             _speed = 6;
         }
 
@@ -186,7 +185,7 @@ namespace YouveBeenAudited
                     sb.Draw(
                 Texture,
                 new Vector2(_position.X, _position.Y),
-                new Rectangle(((_spriteWidth + 25) * _currentFrame) + 560, 0, _spriteWidth, _spriteHeight),
+                new Rectangle(((_spriteSize.X + 25) * _currentFrame) + 560, 0, _spriteSize.X, _spriteSize.Y),
                 Color.White,
                 0.0f,
                 Vector2.Zero,
@@ -199,7 +198,7 @@ namespace YouveBeenAudited
                     sb.Draw(
                 Texture,
                 new Vector2(_position.X, _position.Y),
-                new Rectangle(((_spriteWidth + 25) * _currentFrame) + 560, 0, _spriteWidth, _spriteHeight),
+                new Rectangle(((_spriteSize.X + 25) * _currentFrame) + 560, 0, _spriteSize.X, _spriteSize.Y),
                 Color.White,
                 0.0f,
                 Vector2.Zero,
@@ -209,7 +208,7 @@ namespace YouveBeenAudited
                     break;
 
                 default:
-                    sb.Draw(Texture, _destinationRectangle, new Rectangle(400, 0, _spriteWidth, _spriteHeight), Color.White);
+                    sb.Draw(Texture, _destinationRectangle, new Rectangle(400, 0, _spriteSize.X, _spriteSize.Y), Color.White);
                     break;
             }
         }

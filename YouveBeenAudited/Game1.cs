@@ -78,7 +78,6 @@ namespace YouveBeenAudited
         private List<Button> _gameButtons;
         private List<Button> _optionButtons;
         private List<Button> _gameOverButtons;
-        private List<GameObject> _wallList;
 
         // Button textures
         private Texture2D _optionsButtonTexture;
@@ -100,11 +99,11 @@ namespace YouveBeenAudited
 
         //Level Information
         private int _tileLength; // Dimensions of a square tile
+
         private TileType[,] _map; // 2D array representing the tile types of the map
         private int _mapWidth; // pixel width of the playable map
         private int _marginWidth; // pixel width of the side margins
-        private List<GameObject> _walls; // list of walls in the map
-
+        private List<GameObject> _wallList; // list of walls in the map
 
         #endregion Game Fields
 
@@ -403,7 +402,7 @@ namespace YouveBeenAudited
 
                         case 'b':
                             _map[i, k] = TileType.Wall;
-                            _walls.Add(new GameObject(new Rectangle(_marginWidth + (k * _tileLength), (i * _tileLength),
+                            _wallList.Add(new GameObject(new Rectangle(_marginWidth + (k * _tileLength), (i * _tileLength),
                                 _tileLength, _tileLength), _woodFloorTexture));
                             break;
 
@@ -487,6 +486,44 @@ namespace YouveBeenAudited
                     {
                         enemy.TakeDamage(trap.DamageAmnt);
                         _traps.Remove(trap);
+                    }
+                }
+            }
+
+            // Check collisions with walls
+            {
+                List<Rectangle> intersections = new List<Rectangle>();
+                Rectangle playerRect = new Rectangle(_player.Position.X, _player.Position.Y, _player.SpriteSize.X, _player.SpriteSize.Y);
+                Rectangle overlapRect;
+
+                // Find the collisions
+                foreach (GameObject wall in _wallList)
+                {
+                    if (playerRect.Intersects(wall.Position))
+                    {
+                        intersections.Add(wall.Position);
+                    }
+                }
+
+                // X collisions
+                foreach (Rectangle r in intersections)
+                {
+                    overlapRect = Rectangle.Intersect(playerRect, r);
+                    if (overlapRect.Height > overlapRect.Width)
+                    {
+                        int xdiff = Math.Sign(playerRect.X - r.X);
+                        playerRect.X += (xdiff * overlapRect.Width);
+                    }
+                }
+
+                // Y collisions
+                foreach (Rectangle r in intersections)
+                {
+                    overlapRect = Rectangle.Intersect(playerRect, r);
+                    if (overlapRect.Height < overlapRect.Width)
+                    {
+                        int ydiff = Math.Sign(playerRect.Y - r.Y);
+                        playerRect.Y += (ydiff * overlapRect.Height);
                     }
                 }
             }
