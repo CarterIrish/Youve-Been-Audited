@@ -73,7 +73,7 @@ namespace YouveBeenAudited
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <param name="texture"></param>
-        public Character(int x, int y, Texture2D texture, int health, double scalar) : base(x, y, texture, scalar)
+        public Character(int x, int y, Texture2D texture, int health) : base(x, y, texture)
         {
             _health = health;
             _speed = 10;

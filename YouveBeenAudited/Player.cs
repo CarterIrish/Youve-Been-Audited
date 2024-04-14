@@ -53,12 +53,12 @@ namespace YouveBeenAudited
         /// <param name="texture"></param>
         /// <param name="startingMoney"></param>
         /// <param name="health"></param>
-        public Player(int x, int y, Texture2D texture, int health, int startingMoney, double scalar) : base(x, y, texture, health, scalar)
+        public Player(int x, int y, Texture2D texture, int health, int startingMoney) : base(x, y, texture, health)
         {
             _money = startingMoney;
             _spriteWidth = 55;
             _spriteHeight = 125;
-            _destinationRectangle = new Rectangle((int)(_position.X * _UIscalar), (int)(_position.Y * _UIscalar), (int)(_spriteWidth * _UIscalar), (int)(_spriteHeight * _UIscalar));
+            _destinationRectangle = new Rectangle(_position.X, _position.Y, _spriteWidth, _spriteHeight);
             _speed = 6;
         }
 
@@ -93,7 +93,7 @@ namespace YouveBeenAudited
             if (SingleKeyPress(Keys.Space) && _money >= 20)
             {
                 _money -= 20;
-                trap = new Trap(_position.X, Position.Y + Position.Height / 3, _nailTexture, 20, 100, 1);
+                trap = new Trap(_position.X, Position.Y + Position.Height / 3, _nailTexture, 20, 100);
             }
             else if (SingleKeyPress(Keys.D1))
             {
@@ -101,7 +101,6 @@ namespace YouveBeenAudited
             }
             else if (SingleKeyPress(Keys.D2))
             {
-
             }
             _prevKB = Keyboard.GetState();
             return trap;

@@ -56,7 +56,7 @@ namespace YouveBeenAudited
         /// <param name="y"></param>
         /// <param name="texture"></param>
         /// <param name="health"></param>
-        public Enemy(int x, int y, Texture2D texture, int health, List<Point> path, double scalar) : base(x, y, texture, health, scalar)
+        public Enemy(int x, int y, Texture2D texture, int health, List<Point> path) : base(x, y, texture, health)
         {
             Path = path;
             base._position.X = x;
@@ -81,19 +81,18 @@ namespace YouveBeenAudited
         /// </summary>
         public override void Update(GameTime gt)
         {
-            if(_currentPoint < Path.Count)
+            if (_currentPoint < Path.Count)
             {
                 Vector2 direction = new Vector2(Path[_currentPoint].X - Position.X, Path[_currentPoint].Y - Position.Y);
                 direction.Normalize();
                 _position.X += (int)(direction.X * Speed);
                 _position.Y += (int)(direction.Y * Speed);
-                if((Position.X + Speed >= Path[_currentPoint].X || Position.X + Speed < Path[_currentPoint].X)
+                if ((Position.X + Speed >= Path[_currentPoint].X || Position.X + Speed < Path[_currentPoint].X)
                     && (Position.Y + Speed >= Path[_currentPoint].Y || Position.Y + Speed < Path[_currentPoint].Y))
                 {
                     _currentPoint++;
                 }
             }
-            
         }
 
         /// <summary>

@@ -18,7 +18,6 @@ namespace YouveBeenAudited
 
         protected Rectangle _position;
         protected Texture2D _texture;
-        protected readonly double _UIscalar;
 
         #endregion Fields
 
@@ -44,11 +43,10 @@ namespace YouveBeenAudited
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <param name="texture"></param>
-        public GameObject(int x, int y, Texture2D texture, double scalar)
+        public GameObject(int x, int y, Texture2D texture)
         {
             _texture = texture;
-            _UIscalar = scalar;
-            _position = new Rectangle((int)(x * scalar), (int)(y * scalar), (int)(texture.Width * scalar), (int)(texture.Height * scalar));
+            _position = new Rectangle(x, y, texture.Width, texture.Height);
         }
 
         /// <summary>

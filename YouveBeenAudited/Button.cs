@@ -41,7 +41,7 @@ namespace YouveBeenAudited
         /// <param name="x">X coord of button.</param>
         /// <param name="y">Y coord of button.</param>
         /// <param name="texture">The buttons texture.</param>
-        public Button(int x, int y, Texture2D texture, string buttonName, Color color, double scalar) : base(x, y, texture, scalar)
+        public Button(int x, int y, Texture2D texture, string buttonName, Color color, double scalar) : base(x, y, texture)
         {
             // TODO: Create button constructor.
             _buttonName = buttonName;

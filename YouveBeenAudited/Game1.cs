@@ -59,7 +59,7 @@ namespace YouveBeenAudited
         private Player _player;
 
         // Traps
-        List<Trap> _traps;
+        private List<Trap> _traps;
 
         //Animation
         public const double _secondsPerFrame = 6.5f / 60; //This is here for reference.
@@ -146,7 +146,7 @@ namespace YouveBeenAudited
 
             // TODO: use this.Content to load your game content here
             _playerTexture = Content.Load<Texture2D>("player_spritesheet");
-            _player = new Player(50, 50, _playerTexture, 100, 100, _UIscalar);
+            _player = new Player(50, 50, _playerTexture, 100, 100);
             _arial25 = Content.Load<SpriteFont>("Arial25");
 
             _startButtonTexture = Content.Load<Texture2D>("StartButton");
@@ -168,17 +168,35 @@ namespace YouveBeenAudited
             StartButton.BtnClicked += ButtonCheck;
 
             // MenuExit game button
-            Button ExitGameButton = new Button(10, 20, _exitButtonTexture, "ExitGameButton", Color.White, _UIscalar);
+            Button ExitGameButton = new Button(
+                10,
+                20,
+                _exitButtonTexture,
+                "ExitGameButton",
+                Color.White,
+                _UIscalar);
             _menuButtons.Add(ExitGameButton);
             ExitGameButton.BtnClicked += ButtonCheck;
 
             // resume game button
-            Button ResumeGame = new Button(_windowCenter.X - (_resumeButtonTexture.Width / 2), _windowCenter.Y - (_resumeButtonTexture.Height) - 10, _resumeButtonTexture, "ResumeGameButton", Color.White, _UIscalar);
+            Button ResumeGame = new Button(
+                _windowCenter.X - (_resumeButtonTexture.Width / 2),
+                _windowCenter.Y - (_resumeButtonTexture.Height) - 10,
+                _resumeButtonTexture,
+                "ResumeGameButton",
+                Color.White,
+                _UIscalar);
             _optionButtons.Add(ResumeGame);
             ResumeGame.BtnClicked += ButtonCheck;
 
             // Options exit game button
-            Button optionsExit = new Button(_windowCenter.X - (_exitButtonTexture.Width / 2), _windowCenter.Y + 10, _exitButtonTexture, "ExitGameButton", Color.White, _UIscalar);
+            Button optionsExit = new Button(
+                _windowCenter.X - (_exitButtonTexture.Width / 2),
+                _windowCenter.Y + 10,
+                _exitButtonTexture,
+                "ExitGameButton",
+                Color.White,
+                _UIscalar);
             _optionButtons.Add(optionsExit);
             optionsExit.BtnClicked += ButtonCheck;
 
@@ -217,7 +235,7 @@ namespace YouveBeenAudited
                     _timeCount += gameTime.ElapsedGameTime.TotalSeconds;
                     _player.Update(gameTime);
                     Trap trap;
-                    if((trap = _player.PlaceTrap()) != null)
+                    if ((trap = _player.PlaceTrap()) != null)
                     {
                         _traps.Add(trap);
                     }
@@ -276,7 +294,7 @@ namespace YouveBeenAudited
                     _spriteBatch.DrawString(_arial25, "GameState: Escape to enter options", new Vector2(_windowCenter.X - 13 * 25, _windowCenter.Y - 25), Color.Red);
                     _spriteBatch.DrawString(_arial25, $"${_player.Money}", new Vector2(50, 50), Color.DarkGreen);
                     enemyManager.DrawEnemies(_spriteBatch);
-                    foreach(Trap trap in _traps)
+                    foreach (Trap trap in _traps)
                     {
                         trap.Draw(_spriteBatch);
                     }
@@ -340,7 +358,7 @@ namespace YouveBeenAudited
         /// <param name="fileName">Name of the file.</param>
         private void NextLevel(string fileName)
         {
-            enemyManager = new EnemyManager(3, _UIscalar);
+            enemyManager = new EnemyManager(3);
             enemyManager.LoadContent(Content);
             ReadFile(fileName);
             enemyManager.CreateEnemies();
@@ -399,8 +417,8 @@ namespace YouveBeenAudited
                 if (!p.Equals(""))
                 {
                     string[] coordinates = p.Split(",");
-                    int x = (int.Parse(coordinates[0]) * _tileLength) + _marginWidth + (_tileLength/2);
-                    int y = (int.Parse(coordinates[1]) * _tileLength) + (_tileLength/2);
+                    int x = (int.Parse(coordinates[0]) * _tileLength) + _marginWidth + (_tileLength / 2);
+                    int y = (int.Parse(coordinates[1]) * _tileLength) + (_tileLength / 2);
                     enemyManager._Path.Add(new Point(x, y));
                 }
             }

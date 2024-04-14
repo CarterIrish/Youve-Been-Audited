@@ -19,8 +19,6 @@ namespace YouveBeenAudited
 
         public bool enemyAtGoal;
 
-        private readonly double _UIscalar;
-
         //Enemy Textures
         private Texture2D _auditorTexture;
 
@@ -54,13 +52,12 @@ namespace YouveBeenAudited
         /// <summary>
         /// Creates a new EnemyManager with an empty enemy path
         /// </summary>
-        public EnemyManager(int numOfEnemies, double scalar)
+        public EnemyManager(int numOfEnemies)
         {
             _numOfEnemies = numOfEnemies;
             _path = new List<Point>();
             _enemies = new List<Enemy>();
             enemyAtGoal = false;
-            _UIscalar = scalar;
         }
 
         /// <summary>
@@ -79,7 +76,7 @@ namespace YouveBeenAudited
         {
             for (int i = 0; i < _numOfEnemies; i++)
             {
-                _enemies.Add(new Enemy(_path[0].X, _path[0].Y, _auditorTexture, 150, _path, _UIscalar));
+                _enemies.Add(new Enemy(_path[0].X, _path[0].Y, _auditorTexture, 150, _path));
             }
         }
 
