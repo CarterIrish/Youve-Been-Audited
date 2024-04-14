@@ -58,6 +58,9 @@ namespace YouveBeenAudited
         // Player
         private Player _player;
 
+        // Traps
+        List<Trap> _traps;
+
         //Animation
         public const double _secondsPerFrame = 6.5f / 60; //This is here for reference.
 
@@ -133,6 +136,7 @@ namespace YouveBeenAudited
             _optionButtons = new List<Button>();
             _gameButtons = new List<Button>();
             _gameState = GameStates.Menu;
+            _traps = new List<Trap>();
             base.Initialize();
         }
 
@@ -212,6 +216,11 @@ namespace YouveBeenAudited
                     }
                     _timeCount += gameTime.ElapsedGameTime.TotalSeconds;
                     _player.Update(gameTime);
+                    Trap trap;
+                    if((trap = _player.PlaceTrap()) != null)
+                    {
+                        _traps.Add(trap);
+                    }
                     _timeCount = _player.UpdateAnimation(_timeCount);
                     enemyManager.UpdateEnemies(gameTime);
                     if (enemyManager.enemyAtGoal)
@@ -267,6 +276,10 @@ namespace YouveBeenAudited
                     _spriteBatch.DrawString(_arial25, "GameState: Escape to enter options", new Vector2(_windowCenter.X - 13 * 25, _windowCenter.Y - 25), Color.Red);
                     _spriteBatch.DrawString(_arial25, $"${_player.Money}", new Vector2(50, 50), Color.DarkGreen);
                     enemyManager.DrawEnemies(_spriteBatch);
+                    foreach(Trap trap in _traps)
+                    {
+                        trap.Draw(_spriteBatch);
+                    }
                     _player.Draw(_spriteBatch);
                     break;
                 // Options/pause menu
@@ -350,7 +363,7 @@ namespace YouveBeenAudited
 
             _tileLength = _graphics.PreferredBackBufferHeight / _map.GetLength(0);
             int mapWidth = _tileLength * _map.GetLength(1);
-            int MarginWidth = (_graphics.PreferredBackBufferWidth - mapWidth) / 2;
+            _marginWidth = (_graphics.PreferredBackBufferWidth - mapWidth) / 2;
 
             //reads in the floors/walls
             for (int i = 0; i < height; i++)
@@ -386,8 +399,8 @@ namespace YouveBeenAudited
                 if (!p.Equals(""))
                 {
                     string[] coordinates = p.Split(",");
-                    int x = (int.Parse(coordinates[0]) * _tileLength) + _marginWidth;
-                    int y = (int.Parse(coordinates[1]) * _tileLength);
+                    int x = (int.Parse(coordinates[0]) * _tileLength) + _marginWidth + (_tileLength/2);
+                    int y = (int.Parse(coordinates[1]) * _tileLength) + (_tileLength/2);
                     enemyManager._Path.Add(new Point(x, y));
                 }
             }
@@ -407,6 +420,7 @@ namespace YouveBeenAudited
             int mapWidth = _tileLength * _map.GetLength(1);
             int MarginWidth = (width - mapWidth) / 2;
 
+            //Drawing the  map
             for (int i = 0; i < _map.GetLength(0); i++)
             {
                 for (int k = 0; k < _map.GetLength(1); k++)
@@ -427,6 +441,14 @@ namespace YouveBeenAudited
                             break;
                     }
                 }
+            }
+
+            foreach (Point p in enemyManager._Path)
+            {
+                int x = p.X;
+                int y = p.Y;
+                Rectangle pointRect = new Rectangle(x - 5, y - 5, 10, 10);
+                sb.Draw(_woodFloorTexture, pointRect, Color.Blue);
             }
         }
 
