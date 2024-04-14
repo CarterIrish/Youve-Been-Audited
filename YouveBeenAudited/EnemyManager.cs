@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace YouveBeenAudited
 {
@@ -16,6 +17,8 @@ namespace YouveBeenAudited
         private List<Enemy> _enemies;
         private List<Vector2> _path;
         private int _numOfEnemies;
+        private int _killedEnemies;
+        private double _timer;
 
         public bool enemyAtGoal;
 
@@ -36,6 +39,7 @@ namespace YouveBeenAudited
         {
             get => _enemies;
         }
+        
 
         #endregion Properties
 
@@ -51,7 +55,9 @@ namespace YouveBeenAudited
             _numOfEnemies = numOfEnemies;
             _path = path;
             _enemies = new List<Enemy>();
+            _killedEnemies = 0;
             enemyAtGoal = false;
+            _timer = 0;
         }
 
         /// <summary>
@@ -62,7 +68,9 @@ namespace YouveBeenAudited
             _numOfEnemies = numOfEnemies;
             _path = new List<Vector2>();
             _enemies = new List<Enemy>();
+            _killedEnemies = 0;
             enemyAtGoal = false;
+            _timer = 0;
         }
 
         /// <summary>
@@ -81,7 +89,7 @@ namespace YouveBeenAudited
         {
             for (int i = 0; i < _numOfEnemies; i++)
             {
-                _enemies.Add(new Enemy((int)_path[0].X, (int)_path[0].Y, _auditorTexture, 150, _path));
+                //_enemies.Add(new Enemy((int)_path[0].X, (int)_path[0].Y, _auditorTexture, 150, _path));
             }
         }
 
@@ -90,12 +98,20 @@ namespace YouveBeenAudited
         /// </summary>
         public void UpdateEnemies(GameTime gt)
         {
+            _timer += gt.ElapsedGameTime.TotalSeconds;
+            
+            if(_timer >= 3 && _enemies.Count+_killedEnemies < _numOfEnemies)
+            {
+                _enemies.Add(new Enemy((int)_path[0].X, (int)_path[0].Y, _auditorTexture, 150, _path));
+                _timer = 0;
+            }
             for (int i = 0; i < _enemies.Count;)
             {
                 _enemies[i].Update(gt);
                 if (_enemies[i].Health <= 0)
                 {
                     _enemies.RemoveAt(i);
+                    _killedEnemies++;
                 }
                 else
                 {
