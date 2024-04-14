@@ -73,10 +73,10 @@ namespace YouveBeenAudited
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <param name="texture"></param>
-        public Character(int x, int y, Texture2D texture, int health) : base(x, y, texture)
+        public Character(int x, int y, Texture2D texture, int health, int speed) : base(x, y, texture)
         {
             _health = health;
-            _speed = 10;
+            _speed = speed;
             _currentState = CharacterStates.Idle;
         }
 

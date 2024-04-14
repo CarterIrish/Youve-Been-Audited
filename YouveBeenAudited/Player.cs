@@ -53,7 +53,7 @@ namespace YouveBeenAudited
         /// <param name="texture"></param>
         /// <param name="startingMoney"></param>
         /// <param name="health"></param>
-        public Player(int x, int y, Texture2D texture, int health, int startingMoney) : base(x, y, texture, health)
+        public Player(int x, int y, Texture2D texture, int health, int startingMoney) : base(x, y, texture, health, 10)
         {
             _money = startingMoney;
             _spriteWidth = 55;
