@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -65,6 +66,7 @@ namespace YouveBeenAudited
             base._health = health;
             base._texture = texture;
             _atGoal = false;
+            _currentPoint = 0;
         }
 
         /// <summary>
@@ -81,11 +83,19 @@ namespace YouveBeenAudited
         /// </summary>
         public override void Update(GameTime gt)
         {
-            if (_path.Count - 1 == _currentPoint) //Checks if enemy is at the end of the path.
+            if(_currentPoint < Path.Count)
             {
-                _atGoal = true;
+                Vector2 direction = new Vector2(Path[_currentPoint].X - Position.X, Path[_currentPoint].Y - Position.Y);
+                direction.Normalize();
+                _position.X += (int)(direction.X * Speed);
+                _position.Y += (int)(direction.Y * Speed);
+                if((Position.X + Speed >= Path[_currentPoint].X || Position.X + Speed < Path[_currentPoint].X)
+                    && (Position.Y + Speed >= Path[_currentPoint].Y || Position.Y + Speed < Path[_currentPoint].Y))
+                {
+                    _currentPoint++;
+                }
             }
-            _currentPoint++;
+            
         }
 
         /// <summary>
