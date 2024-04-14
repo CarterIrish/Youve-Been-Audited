@@ -363,7 +363,7 @@ namespace YouveBeenAudited
 
             _tileLength = _graphics.PreferredBackBufferHeight / _map.GetLength(0);
             int mapWidth = _tileLength * _map.GetLength(1);
-            int MarginWidth = (_graphics.PreferredBackBufferWidth - mapWidth) / 2;
+            _marginWidth = (_graphics.PreferredBackBufferWidth - mapWidth) / 2;
 
             //reads in the floors/walls
             for (int i = 0; i < height; i++)
@@ -399,8 +399,8 @@ namespace YouveBeenAudited
                 if (!p.Equals(""))
                 {
                     string[] coordinates = p.Split(",");
-                    int x = (int.Parse(coordinates[0]) * _tileLength) + _marginWidth;
-                    int y = (int.Parse(coordinates[1]) * _tileLength);
+                    int x = (int.Parse(coordinates[0]) * _tileLength) + _marginWidth + (_tileLength/2);
+                    int y = (int.Parse(coordinates[1]) * _tileLength) + (_tileLength/2);
                     enemyManager._Path.Add(new Point(x, y));
                 }
             }
@@ -420,6 +420,7 @@ namespace YouveBeenAudited
             int mapWidth = _tileLength * _map.GetLength(1);
             int MarginWidth = (width - mapWidth) / 2;
 
+            //Drawing the  map
             for (int i = 0; i < _map.GetLength(0); i++)
             {
                 for (int k = 0; k < _map.GetLength(1); k++)
@@ -440,6 +441,14 @@ namespace YouveBeenAudited
                             break;
                     }
                 }
+            }
+
+            foreach (Point p in enemyManager._Path)
+            {
+                int x = p.X;
+                int y = p.Y;
+                Rectangle pointRect = new Rectangle(x - 5, y - 5, 10, 10);
+                sb.Draw(_woodFloorTexture, pointRect, Color.Blue);
             }
         }
 
