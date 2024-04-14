@@ -234,12 +234,13 @@ namespace YouveBeenAudited
                     }
                     _timeCount += gameTime.ElapsedGameTime.TotalSeconds;
                     _player.Update(gameTime);
+                    _timeCount = _player.UpdateAnimation(_timeCount);
+
                     Trap trap;
                     if ((trap = _player.PlaceTrap()) != null)
                     {
                         _traps.Add(trap);
                     }
-                    _timeCount = _player.UpdateAnimation(_timeCount);
                     enemyManager.UpdateEnemies(gameTime);
                     if (enemyManager.enemyAtGoal)
                     {
