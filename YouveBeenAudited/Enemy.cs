@@ -25,7 +25,15 @@ namespace YouveBeenAudited
         /// <summary>
         /// Gets whether or not enemy is at goal.
         /// </summary>
-        public bool AtGoal { get => _atGoal; }
+        public bool AtGoal 
+        { 
+            get {if (_currentPoint == _path.Count - 1)
+                {
+                    return true;
+                }
+                return false;
+            } 
+        }
 
         /// <summary>
         /// Gets current point in path.
@@ -94,6 +102,7 @@ namespace YouveBeenAudited
                 }
             }
         }
+
 
         /// <summary>
         /// Draws an enemy.
