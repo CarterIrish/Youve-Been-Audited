@@ -408,12 +408,12 @@ namespace YouveBeenAudited
                     switch (_map[i, k])
                     {
                         case TileType.Wall:
-                            sb.Draw(_titleTexture, new Rectangle(MarginWidth + (k * _tileLength), (i * _tileLength),
+                            sb.Draw(_woodFloorTexture, new Rectangle(MarginWidth + (k * _tileLength), (i * _tileLength),
                                 _tileLength, _tileLength), Color.Black);
                             break;
 
                         case TileType.Wood:
-                            sb.Draw(_titleTexture, new Rectangle(MarginWidth + (k * _tileLength), (i * _tileLength),
+                            sb.Draw(_woodFloorTexture, new Rectangle(MarginWidth + (k * _tileLength), (i * _tileLength),
                                 _tileLength, _tileLength), Color.White);
                             break;
 
