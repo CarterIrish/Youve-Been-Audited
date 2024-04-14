@@ -98,10 +98,11 @@ namespace YouveBeenAudited
 
         //Level Information
         private int _tileLength; // Dimensions of a square tile
-
         private TileType[,] _map; // 2D array representing the tile types of the map
         private int _mapWidth; // pixel width of the playable map
         private int _marginWidth; // pixel width of the side margins
+        private List<GameObject> _walls; // list of walls in the map
+
 
         #endregion Game Fields
 
@@ -400,6 +401,8 @@ namespace YouveBeenAudited
 
                         case 'b':
                             _map[i, k] = TileType.Wall;
+                            _walls.Add(new GameObject(new Rectangle(_marginWidth + (k * _tileLength), (i * _tileLength),
+                                _tileLength, _tileLength), _woodFloorTexture));
                             break;
 
                         default:

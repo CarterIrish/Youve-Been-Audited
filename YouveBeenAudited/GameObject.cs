@@ -50,6 +50,17 @@ namespace YouveBeenAudited
         }
 
         /// <summary>
+        /// Creates a new GameObject object
+        /// </summary>
+        /// <param name="rect">position/dimensions of the gameObject</param>
+        /// <param name="texture">texture of the GameObject</param>
+        public GameObject(Rectangle rect, Texture2D texture)
+        {
+            _texture = texture;
+            _position = rect;
+        }
+
+        /// <summary>
         /// Updates the objects information.
         /// </summary>
         /// <param name="gametime"></param>
