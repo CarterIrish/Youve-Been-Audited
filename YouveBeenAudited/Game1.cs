@@ -477,15 +477,20 @@ namespace YouveBeenAudited
 
         public void Collisions()
         {
-            // Check trap collisions
-            foreach (Trap trap in _traps)
+            // Checks trap collisions against 
+            foreach (Enemy enemy in enemyManager.Enemies)
             {
-                foreach (Enemy enemy in enemyManager.Enemies)
+                for (int i = 0; i < _traps.Count;)
                 {
-                    if (trap.CheckCollisions(enemy))
+                    if (_traps[i].CheckCollisions(enemy))
                     {
-                        enemy.TakeDamage(trap.DamageAmnt);
-                        _traps.Remove(trap);
+                        enemy.TakeDamage(_traps[i].DamageAmnt);
+                        _traps.RemoveAt(i);
+                        break;
+                    }
+                    else
+                    {
+                        i++;
                     }
                 }
             }
