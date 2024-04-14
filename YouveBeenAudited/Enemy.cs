@@ -41,7 +41,7 @@ namespace YouveBeenAudited
             set
             {
                 _path = value;
-                _currentPoint = 0;
+                _currentPoint = 1;
             }
         }
 
@@ -64,7 +64,7 @@ namespace YouveBeenAudited
             base._health = health;
             base._texture = texture;
             _atGoal = false;
-            _currentPoint = 0;
+            _currentPoint = 1;
         }
 
         /// <summary>
@@ -83,14 +83,15 @@ namespace YouveBeenAudited
         {
             if (_currentPoint < Path.Count)
             {
-                //Vector2 direction = new Vector2(_path[CurrentPoint].X, _path[CurrentPoint].Y) - new Vector2(Position.X, Position.Y);
-                //direction.Normalize();
-                //_position.X += (int)(direction.X * 2);
-                //_position.Y += (int)(direction.Y * 2);
-                //if (true)
-                //{
-                //    _currentPoint++;
-                //}
+                Vector2 direction = _path[_currentPoint] - new Vector2(_position.X, _position.Y);
+                direction = Vector2.Normalize(direction) * Speed;
+                _position.X += (int)(direction.X);
+                _position.Y += (int)(direction.Y);
+                if ((_position.X < _path[CurrentPoint].X + Speed && _position.X > _path[CurrentPoint].X - Speed) &&
+                _position.Y < _path[CurrentPoint].Y + Speed && _position.Y > _path[CurrentPoint].Y - Speed)
+                {
+                    _currentPoint++;
+                }
             }
         }
 
