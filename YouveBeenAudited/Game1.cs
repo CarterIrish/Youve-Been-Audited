@@ -58,6 +58,9 @@ namespace YouveBeenAudited
         // Player
         private Player _player;
 
+        // Traps
+        List<Trap> _traps;
+
         //Animation
         public const double _secondsPerFrame = 6.5f / 60; //This is here for reference.
 
@@ -133,6 +136,7 @@ namespace YouveBeenAudited
             _optionButtons = new List<Button>();
             _gameButtons = new List<Button>();
             _gameState = GameStates.Menu;
+            _traps = new List<Trap>();
             base.Initialize();
         }
 
@@ -212,6 +216,11 @@ namespace YouveBeenAudited
                     }
                     _timeCount += gameTime.ElapsedGameTime.TotalSeconds;
                     _player.Update(gameTime);
+                    Trap trap;
+                    if((trap = _player.PlaceTrap()) != null)
+                    {
+                        _traps.Add(trap);
+                    }
                     _timeCount = _player.UpdateAnimation(_timeCount);
                     enemyManager.UpdateEnemies(gameTime);
                     if (enemyManager.enemyAtGoal)
@@ -267,6 +276,10 @@ namespace YouveBeenAudited
                     _spriteBatch.DrawString(_arial25, "GameState: Escape to enter options", new Vector2(_windowCenter.X - 13 * 25, _windowCenter.Y - 25), Color.Red);
                     _spriteBatch.DrawString(_arial25, $"${_player.Money}", new Vector2(50, 50), Color.DarkGreen);
                     enemyManager.DrawEnemies(_spriteBatch);
+                    foreach(Trap trap in _traps)
+                    {
+                        trap.Draw(_spriteBatch);
+                    }
                     _player.Draw(_spriteBatch);
                     break;
                 // Options/pause menu
