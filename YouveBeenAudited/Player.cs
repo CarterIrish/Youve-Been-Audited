@@ -111,6 +111,14 @@ namespace YouveBeenAudited
         /// </summary>
         public void Move()
         {
+            ProcessInput();
+        }
+
+        /// <summary>
+        /// Processes the user input.
+        /// </summary>
+        private void ProcessInput()
+        {
             KeyboardState kbs = Keyboard.GetState();
             if (kbs.IsKeyDown(Keys.W))
             {

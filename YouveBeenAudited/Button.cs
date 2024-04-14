@@ -24,7 +24,6 @@ namespace YouveBeenAudited
 
         #region Properties
 
-        // Properties
         public string Name { get => _buttonName; }
 
         public bool IsActive { get => _isActive; set => _isActive = value; }
