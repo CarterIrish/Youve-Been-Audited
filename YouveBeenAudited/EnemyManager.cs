@@ -39,7 +39,6 @@ namespace YouveBeenAudited
         {
             get => _enemies;
         }
-        
 
         #endregion Properties
 
@@ -85,11 +84,10 @@ namespace YouveBeenAudited
         /// <summary>
         /// Moves all enemies.
         /// </summary>
-        public void UpdateEnemies(GameTime gt)
+        public void UpdateEnemies(GameTime gt, Game1 game)
         {
             _timer += gt.ElapsedGameTime.TotalSeconds;
-            
-            if(_timer >= 3 && _enemies.Count+_killedEnemies < _numOfEnemies)
+            if (_timer >= 3 && _enemies.Count + _killedEnemies < _numOfEnemies)
             {
                 _enemies.Add(new Enemy((int)_path[0].X, (int)_path[0].Y, _auditorTexture, 150, _path));
                 _timer = 0;
@@ -105,6 +103,10 @@ namespace YouveBeenAudited
                 else
                 {
                     i++;
+                }
+                if (_enemies[i].AtGoal == true)
+                {
+                    game.GameOver();
                 }
             }
         }

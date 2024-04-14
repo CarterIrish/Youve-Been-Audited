@@ -251,7 +251,7 @@ namespace YouveBeenAudited
                     }
                     Collisions();
                     _timeCount = _player.UpdateAnimation(_timeCount);
-                    enemyManager.UpdateEnemies(gameTime);
+                    enemyManager.UpdateEnemies(gameTime, this);
                     if (enemyManager.enemyAtGoal)
                     {
                         _gameState = GameStates.GameOver;
@@ -330,6 +330,14 @@ namespace YouveBeenAudited
         #endregion GameLoop
 
         #region Methods
+
+        /// <summary>
+        /// Sets game state to game over.
+        /// </summary>
+        public void GameOver()
+        {
+            _gameState = GameStates.GameOver;
+        }
 
         /// <summary>Checks all buttons in provided list for click state, and performs actions based off that information.</summary>
         /// <param name="b">The button to be checked</param>
