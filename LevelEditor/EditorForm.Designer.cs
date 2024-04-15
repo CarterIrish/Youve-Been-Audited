@@ -36,6 +36,12 @@
             labelTileSelector = new Label();
             labelCurrentTile = new Label();
             buttonPathing = new Button();
+            textBoxStartEnemies = new TextBox();
+            labelStartEnemies = new Label();
+            textBoxNumWaves = new TextBox();
+            labelNumWaves = new Label();
+            labelEnemyMultiplier = new Label();
+            textBoxEnemyMultiplier = new TextBox();
             ((System.ComponentModel.ISupportInitialize)pictureBoxCurrentTile).BeginInit();
             SuspendLayout();
             // 
@@ -62,7 +68,7 @@
             // 
             // buttonSave
             // 
-            buttonSave.Location = new Point(17, 508);
+            buttonSave.Location = new Point(13, 542);
             buttonSave.Margin = new Padding(4, 5, 4, 5);
             buttonSave.Name = "buttonSave";
             buttonSave.Size = new Size(120, 128);
@@ -81,7 +87,7 @@
             // 
             // buttonLoad
             // 
-            buttonLoad.Location = new Point(17, 647);
+            buttonLoad.Location = new Point(13, 680);
             buttonLoad.Margin = new Padding(4, 5, 4, 5);
             buttonLoad.Name = "buttonLoad";
             buttonLoad.Size = new Size(120, 128);
@@ -111,7 +117,7 @@
             // 
             // buttonPathing
             // 
-            buttonPathing.Location = new Point(174, 62);
+            buttonPathing.Location = new Point(172, 19);
             buttonPathing.Margin = new Padding(4, 5, 4, 5);
             buttonPathing.Name = "buttonPathing";
             buttonPathing.Size = new Size(107, 38);
@@ -119,11 +125,65 @@
             buttonPathing.Text = "Pathing";
             buttonPathing.UseVisualStyleBackColor = true;
             // 
+            // textBoxStartEnemies
+            // 
+            textBoxStartEnemies.Location = new Point(495, 23);
+            textBoxStartEnemies.Name = "textBoxStartEnemies";
+            textBoxStartEnemies.Size = new Size(70, 31);
+            textBoxStartEnemies.TabIndex = 11;
+            // 
+            // labelStartEnemies
+            // 
+            labelStartEnemies.AutoSize = true;
+            labelStartEnemies.Location = new Point(353, 26);
+            labelStartEnemies.Name = "labelStartEnemies";
+            labelStartEnemies.Size = new Size(147, 25);
+            labelStartEnemies.TabIndex = 12;
+            labelStartEnemies.Text = "Starting Enemies:";
+            // 
+            // textBoxNumWaves
+            // 
+            textBoxNumWaves.Location = new Point(807, 23);
+            textBoxNumWaves.Name = "textBoxNumWaves";
+            textBoxNumWaves.Size = new Size(70, 31);
+            textBoxNumWaves.TabIndex = 13;
+            // 
+            // labelNumWaves
+            // 
+            labelNumWaves.AutoSize = true;
+            labelNumWaves.Location = new Point(652, 26);
+            labelNumWaves.Name = "labelNumWaves";
+            labelNumWaves.Size = new Size(159, 25);
+            labelNumWaves.TabIndex = 14;
+            labelNumWaves.Text = "Number of Waves:";
+            // 
+            // labelEnemyMultiplier
+            // 
+            labelEnemyMultiplier.AutoSize = true;
+            labelEnemyMultiplier.Location = new Point(919, 29);
+            labelEnemyMultiplier.Name = "labelEnemyMultiplier";
+            labelEnemyMultiplier.Size = new Size(148, 25);
+            labelEnemyMultiplier.TabIndex = 15;
+            labelEnemyMultiplier.Text = "Enemy Multiplier:";
+            // 
+            // textBoxEnemyMultiplier
+            // 
+            textBoxEnemyMultiplier.Location = new Point(1061, 23);
+            textBoxEnemyMultiplier.Name = "textBoxEnemyMultiplier";
+            textBoxEnemyMultiplier.Size = new Size(70, 31);
+            textBoxEnemyMultiplier.TabIndex = 16;
+            // 
             // EditorForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1679, 878);
+            Controls.Add(textBoxEnemyMultiplier);
+            Controls.Add(labelEnemyMultiplier);
+            Controls.Add(labelNumWaves);
+            Controls.Add(textBoxNumWaves);
+            Controls.Add(labelStartEnemies);
+            Controls.Add(textBoxStartEnemies);
             Controls.Add(buttonPathing);
             Controls.Add(labelCurrentTile);
             Controls.Add(labelTileSelector);
@@ -150,5 +210,11 @@
         private Label labelCurrentTile;
         private Button buttonPathing;
         private PictureBox pictureBox1;
+        private TextBox textBoxStartEnemies;
+        private Label labelStartEnemies;
+        private TextBox textBoxNumWaves;
+        private Label labelNumWaves;
+        private Label labelEnemyMultiplier;
+        private TextBox textBoxEnemyMultiplier;
     }
 }
