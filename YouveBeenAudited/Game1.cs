@@ -239,6 +239,9 @@ namespace YouveBeenAudited
 
         #region GameLoop
 
+        /// <summary>
+        /// Updates the game elements.
+        /// </summary>
         protected override void Update(GameTime gameTime)
         {
             // TODO: remove this statement after menu UI functional
@@ -312,7 +315,7 @@ namespace YouveBeenAudited
         {
             // Designed for a 2560x1440p monitor - ref size
 
-            GraphicsDevice.Clear(Color.SaddleBrown);
+            GraphicsDevice.Clear(Color.GreenYellow);
 
             // Start the sprite batch for drawing all elements to screen
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
