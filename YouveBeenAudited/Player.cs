@@ -94,7 +94,7 @@ namespace YouveBeenAudited
             if (SingleKeyPress(Keys.Space) && _money >= 20)
             {
                 _money -= 20;
-                trap = new Trap(_position.X, Position.Y + Position.Height / 3, _nailTexture, 20, 100);
+                trap = new Trap(_position.X - 10, _position.Y + Position.Height / 6, _nailTexture, 20, 100);
             }
             else if (SingleKeyPress(Keys.D1))
             {
@@ -111,14 +111,6 @@ namespace YouveBeenAudited
         /// Changes the players position based on WASD input
         /// </summary>
         public void Move()
-        {
-            ProcessInput();
-        }
-
-        /// <summary>
-        /// Processes the user input.
-        /// </summary>
-        private void ProcessInput()
         {
             KeyboardState kbs = Keyboard.GetState();
             if (kbs.IsKeyDown(Keys.W))

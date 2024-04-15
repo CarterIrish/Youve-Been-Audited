@@ -14,10 +14,16 @@ namespace YouveBeenAudited
     {
         #region Fields
 
-        private List<Enemy> _enemies;
         private List<Vector2> _path;
+
+        private List<Enemy> _enemies;
         private int _numOfEnemies;
         private int _killedEnemies;
+
+        private int _totalWaves;
+        private int _currentWave;
+        private double _waveModifier;
+
         private double _timer;
 
         public bool enemyAtGoal;
@@ -29,16 +35,32 @@ namespace YouveBeenAudited
 
         #region Properties
 
+        /// <summary>
+        /// Gets and sets path
+        /// </summary>
         public List<Vector2> _Path
         {
             get { return _path; }
             set { _path = value; }
         }
 
+        /// <summary>
+        /// Gets enemy list
+        /// </summary>
         public List<Enemy> Enemies
         {
             get => _enemies;
         }
+
+        /// <summary>
+        /// Gets and sets Current Wave
+        /// </summary>
+        public int CurrentWave { get => _currentWave; set { _currentWave = value; } }
+
+        /// <summary>
+        /// Gets and sets total waves
+        /// </summary>
+        public int TotalWaves { get => _totalWaves; set { _totalWaves = value; } }
 
         #endregion Properties
 
@@ -52,21 +74,25 @@ namespace YouveBeenAudited
         public EnemyManager(int numOfEnemies, List<Vector2> path)
         {
             _numOfEnemies = numOfEnemies;
+
             _path = path;
             _enemies = new List<Enemy>();
             _killedEnemies = 0;
-            enemyAtGoal = false;
             _timer = 0;
+            enemyAtGoal = false;
         }
 
         /// <summary>
         /// Creates a new EnemyManager with an empty enemy path
         /// </summary>
-        public EnemyManager(int numOfEnemies)
+        public EnemyManager(int numOfEnemies, int numOfWaves, int waveModifier)
         {
             _numOfEnemies = numOfEnemies;
             _path = new List<Vector2>();
             _enemies = new List<Enemy>();
+            _totalWaves = numOfWaves;
+            _waveModifier = waveModifier;
+            _currentWave = 1;
             _killedEnemies = 0;
             enemyAtGoal = false;
             _timer = 0;
@@ -92,6 +118,14 @@ namespace YouveBeenAudited
                 _enemies.Add(new Enemy((int)_path[0].X, (int)_path[0].Y, _auditorTexture, 150, _path));
                 _timer = 0;
             }
+            if (_killedEnemies == _numOfEnemies)
+            {
+                if (TotalWaves == CurrentWave)
+                {
+                    game.GameOver();
+                }
+                NextWave();
+            }
             for (int i = 0; i < _enemies.Count;)
             {
                 if (_enemies[i].AtGoal == true)
@@ -109,6 +143,13 @@ namespace YouveBeenAudited
                     i++;
                 }
             }
+        }
+
+        public void NextWave()
+        {
+            CurrentWave++;
+            _numOfEnemies = (int)(_numOfEnemies * _waveModifier);
+            _killedEnemies = 0;
         }
 
         /// <summary>
