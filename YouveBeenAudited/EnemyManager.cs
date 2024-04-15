@@ -94,6 +94,10 @@ namespace YouveBeenAudited
             }
             for (int i = 0; i < _enemies.Count;)
             {
+                if (_enemies[i].AtGoal == true)
+                {
+                    game.GameOver();
+                }
                 _enemies[i].Update(gt);
                 if (_enemies[i].Health <= 0)
                 {
@@ -103,10 +107,6 @@ namespace YouveBeenAudited
                 else
                 {
                     i++;
-                }
-                if (_enemies[i].AtGoal == true)
-                {
-                    game.GameOver();
                 }
             }
         }
