@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Xml;
 
 namespace YouveBeenAudited
 {
@@ -264,6 +265,17 @@ namespace YouveBeenAudited
 
             _position.X = playerRect.X;
             _position.Y = playerRect.Y;
+        }
+
+        /// <summary>
+        /// Moves the player to a specified position
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public void MoveToSpawn(int x, int y)
+        {
+            _position.X = x;
+            _position.Y = y;
         }
 
         #endregion Methods

@@ -58,6 +58,7 @@ namespace YouveBeenAudited
 
         // Player
         private Player _player;
+        
 
         // Traps
         private List<Trap> _traps;
@@ -390,7 +391,7 @@ namespace YouveBeenAudited
                 case "StartButton":
                     System.Diagnostics.Debug.WriteLine("Change State ==> Game");
                     _gameState = GameStates.Game;
-                    NextLevel("../../../../actualTestingFile.level");
+                    NextLevel("../../../../finalTestingFile.level");
                     break;
                 // If its the exit game button
                 case "ExitGameButton":
@@ -468,7 +469,7 @@ namespace YouveBeenAudited
             //adds the vectors to the enemy path List
             string[] points;
             enemyManager._Path.Clear();
-            points = input.ReadToEnd().Split('|');
+            points = input.ReadLine().Split('|');
             foreach (string p in points)
             {
                 if (!p.Equals(""))
@@ -479,6 +480,14 @@ namespace YouveBeenAudited
                     enemyManager._Path.Add(new Vector2((float)x, (float)y));
                 }
             }
+
+            enemyManager.NumOfEnemies = int.Parse(input.ReadLine());
+            enemyManager.TotalWaves = int.Parse(input.ReadLine());
+            enemyManager.WaveModifier = double.Parse(input.ReadLine());
+
+            string[] spawn;
+            spawn = input.ReadLine().Split(','); 
+            _player.MoveToSpawn((int.Parse(spawn[0]) * _tileLength) + _marginWidth, int.Parse(spawn[1]) * _tileLength);
         }
 
         /// <summary>

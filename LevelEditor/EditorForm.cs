@@ -11,9 +11,11 @@ using System.Windows.Forms;
 
 namespace LevelEditor
 {
-    enum Floor
+    enum EditorState
     {
-        Wood
+        Painting,
+        Pathing,
+        Spawning
     }
 
     /// <summary>
@@ -43,11 +45,15 @@ namespace LevelEditor
 
         Color currentColor;
 
-        //Is the user in "pathing" mode and can add points to the enemy path
-        bool isPathing;
+        //Current mode the editor is in
+        EditorState currentState;
+        EditorState lastState;
 
         //Enemy path
         List<Point> enemyPath;
+
+        Point playerSpawn;
+        PictureBox spawnTile;
 
         bool isSaved;
 
@@ -59,7 +65,6 @@ namespace LevelEditor
         public EditorForm(int width, int height)
             : this()
         {
-
             this.width = width;
             this.height = height;
             tileLength = 450 / height;
@@ -87,11 +92,13 @@ namespace LevelEditor
         {
             InitializeComponent();
 
-            isPathing = false;
+            currentState = EditorState.Painting;
+            lastState = currentState;
             currentColor = Color.White;
             enemyPath = new List<Point>();
             screenWidth = Screen.PrimaryScreen.Bounds.Width;
             screenHeight = Screen.PrimaryScreen.Bounds.Height;
+            playerSpawn = new Point(0, 0);
 
             //initializes the buttons' click events
             buttonGreen.Click += SelectColor;
@@ -99,6 +106,7 @@ namespace LevelEditor
             buttonSave.Click += SaveFile;
             buttonLoad.Click += LoadFile;
             buttonPathing.Click += PathingMode;
+            buttonPlayerSpawn.Click += SpawningMode;
 
             pictureBoxCurrentTile.SizeMode = PictureBoxSizeMode.StretchImage;
 
@@ -141,8 +149,9 @@ namespace LevelEditor
         /// <param name="e"></param>
         void SelectColor(object sender, EventArgs e)
         {
-            //turns of pathing mode
-            isPathing = false;
+            //turns on painting mode
+            currentState = EditorState.Painting;
+            buttonPathing.ForeColor = Color.Black;
 
             Button color = (Button)sender;
             currentColor = color.BackColor;
@@ -163,16 +172,15 @@ namespace LevelEditor
         void PathingMode(object sender, EventArgs e)
         {
             Button button = (Button)sender;
-            if (isPathing)
-            {
-                isPathing = false;
-                button.ForeColor = Color.Black;
-            }
-            else if (!isPathing)
-            {
-                isPathing = true;
-                button.ForeColor = Color.Red;
-            }
+            currentState = EditorState.Pathing;
+            button.ForeColor = Color.Red;
+        }
+
+        void SpawningMode(object sender, EventArgs e)
+        {
+            Button button = (Button)sender;
+            currentState = EditorState.Spawning;
+            button.ForeColor = Color.Blue;
         }
 
         /// <summary>
@@ -182,7 +190,7 @@ namespace LevelEditor
         /// <param name="e"></param>
         void PaintFloor(object sender, EventArgs e)
         {
-            if (!isPathing)
+            if (currentState == EditorState.Painting)
             {
                 PictureBox tile = (PictureBox)sender;
                 tile.BackColor = currentColor;
@@ -216,7 +224,7 @@ namespace LevelEditor
         /// </summary>
         void AddPoint(object sender, EventArgs e)
         {
-            if (isPathing)
+            if (currentState == EditorState.Pathing)
             {
                 //Finds the coordinates for the center of the tile that was clicked on
                 PictureBox tile = (PictureBox)sender;
@@ -241,11 +249,34 @@ namespace LevelEditor
                     tile.Refresh();
                 }
             }
+            else if (currentState == EditorState.Spawning)
+            {
+                PictureBox tile = (PictureBox)sender;
+
+                if (spawnTile == null)
+                {
+                    playerSpawn = new Point((tile.Location.X - 115) / tileLength, (tile.Location.Y - 70) / tileLength);
+                    tile.Paint += PaintSpawn;
+                    tile.Refresh();
+                }
+                else
+                {
+                    spawnTile.Paint -= PaintSpawn;
+                    Graphics gr = spawnTile.CreateGraphics();
+                    gr.Clear(spawnTile.BackColor);
+                    spawnTile.Refresh();
+
+                    spawnTile = tile;
+                    playerSpawn = new Point((tile.Location.X - 115) / tileLength, (tile.Location.Y - 70) / tileLength);
+                    tile.Paint += PaintSpawn;
+                    tile.Refresh();
+                }
+            }
         }
 
         void DeletePoint(object sender, EventArgs e)
         {
-            if (isPathing)
+            if (currentState == EditorState.Pathing)
             {
                 //Finds the coordinates for the center of the tile that was clicked on
                 PictureBox tile = (PictureBox)sender;
@@ -269,17 +300,6 @@ namespace LevelEditor
         }
 
         /// <summary>
-        /// Paints a line connecting two points in an enemy path
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void PaintLine(object sender, PaintEventArgs e)
-        {
-            Pen pen = new Pen(Color.FromArgb(255, 0, 0, 0));
-            e.Graphics.DrawLine(pen, 20, 10, 300, 100);
-        }
-
-        /// <summary>
         /// Paints a point to the map
         /// </summary>
         /// <param name="sender"></param>
@@ -288,10 +308,17 @@ namespace LevelEditor
         {
             PictureBox tile = (PictureBox)sender;
             SolidBrush myBrush = new SolidBrush(Color.Red);
-
             Point pointLocation = new Point((tile.Width / 2) - 3, (tile.Height / 2) - 3);
+            e.Graphics.FillEllipse(myBrush, new Rectangle(pointLocation, new Size(6, 6)));
+        }
 
+        void PaintSpawn(object sender, PaintEventArgs e)
+        {
 
+            PictureBox tile = (PictureBox)sender;
+            spawnTile = tile;
+            SolidBrush myBrush = new SolidBrush(Color.Blue);
+            Point pointLocation = new Point((tile.Width / 2) - 3, (tile.Height / 2) - 3);
             e.Graphics.FillEllipse(myBrush, new Rectangle(pointLocation, new Size(6, 6)));
         }
 
@@ -320,7 +347,7 @@ namespace LevelEditor
                 errors += "Enemy Multiplier does not have a double value.";
             }
 
-            if(errors != "")
+            if (errors != "")
             {
                 MessageBox.Show(errors, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -366,6 +393,7 @@ namespace LevelEditor
                 output.WriteLine(startingEnemies);
                 output.WriteLine(numWaves);
                 output.WriteLine(enemyMultiplier);
+                output.Write(playerSpawn.X + "," + playerSpawn.Y);
 
 
 

@@ -42,6 +42,7 @@
             labelNumWaves = new Label();
             labelEnemyMultiplier = new Label();
             textBoxEnemyMultiplier = new TextBox();
+            buttonPlayerSpawn = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBoxCurrentTile).BeginInit();
             SuspendLayout();
             // 
@@ -127,7 +128,7 @@
             // 
             // textBoxStartEnemies
             // 
-            textBoxStartEnemies.Location = new Point(495, 23);
+            textBoxStartEnemies.Location = new Point(769, 20);
             textBoxStartEnemies.Name = "textBoxStartEnemies";
             textBoxStartEnemies.Size = new Size(70, 31);
             textBoxStartEnemies.TabIndex = 11;
@@ -135,7 +136,7 @@
             // labelStartEnemies
             // 
             labelStartEnemies.AutoSize = true;
-            labelStartEnemies.Location = new Point(353, 26);
+            labelStartEnemies.Location = new Point(627, 23);
             labelStartEnemies.Name = "labelStartEnemies";
             labelStartEnemies.Size = new Size(147, 25);
             labelStartEnemies.TabIndex = 12;
@@ -143,7 +144,7 @@
             // 
             // textBoxNumWaves
             // 
-            textBoxNumWaves.Location = new Point(807, 23);
+            textBoxNumWaves.Location = new Point(1081, 20);
             textBoxNumWaves.Name = "textBoxNumWaves";
             textBoxNumWaves.Size = new Size(70, 31);
             textBoxNumWaves.TabIndex = 13;
@@ -151,7 +152,7 @@
             // labelNumWaves
             // 
             labelNumWaves.AutoSize = true;
-            labelNumWaves.Location = new Point(652, 26);
+            labelNumWaves.Location = new Point(926, 23);
             labelNumWaves.Name = "labelNumWaves";
             labelNumWaves.Size = new Size(159, 25);
             labelNumWaves.TabIndex = 14;
@@ -160,7 +161,7 @@
             // labelEnemyMultiplier
             // 
             labelEnemyMultiplier.AutoSize = true;
-            labelEnemyMultiplier.Location = new Point(919, 29);
+            labelEnemyMultiplier.Location = new Point(1193, 26);
             labelEnemyMultiplier.Name = "labelEnemyMultiplier";
             labelEnemyMultiplier.Size = new Size(148, 25);
             labelEnemyMultiplier.TabIndex = 15;
@@ -168,16 +169,26 @@
             // 
             // textBoxEnemyMultiplier
             // 
-            textBoxEnemyMultiplier.Location = new Point(1061, 23);
+            textBoxEnemyMultiplier.Location = new Point(1337, 23);
             textBoxEnemyMultiplier.Name = "textBoxEnemyMultiplier";
             textBoxEnemyMultiplier.Size = new Size(70, 31);
             textBoxEnemyMultiplier.TabIndex = 16;
+            // 
+            // buttonPlayerSpawn
+            // 
+            buttonPlayerSpawn.Location = new Point(299, 21);
+            buttonPlayerSpawn.Name = "buttonPlayerSpawn";
+            buttonPlayerSpawn.Size = new Size(268, 34);
+            buttonPlayerSpawn.TabIndex = 17;
+            buttonPlayerSpawn.Text = "Player Spawn Placer";
+            buttonPlayerSpawn.UseVisualStyleBackColor = true;
             // 
             // EditorForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1679, 878);
+            Controls.Add(buttonPlayerSpawn);
             Controls.Add(textBoxEnemyMultiplier);
             Controls.Add(labelEnemyMultiplier);
             Controls.Add(labelNumWaves);
@@ -216,5 +227,6 @@
         private Label labelNumWaves;
         private Label labelEnemyMultiplier;
         private TextBox textBoxEnemyMultiplier;
+        private Button buttonPlayerSpawn;
     }
 }

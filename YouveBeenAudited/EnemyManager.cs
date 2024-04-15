@@ -52,6 +52,16 @@ namespace YouveBeenAudited
             get => _enemies;
         }
 
+        public int NumOfEnemies
+        {
+            set { _numOfEnemies = value; }
+        }
+
+        public double WaveModifier
+        {
+            set { _waveModifier = value; }
+        }
+
         /// <summary>
         /// Returns the number of enemies left in a wave
         /// </summary>
