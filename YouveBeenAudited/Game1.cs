@@ -136,7 +136,7 @@ namespace YouveBeenAudited
             _menuButtons = new List<Button>();
             _gameButtons = new List<Button>();
             _optionButtons = new List<Button>();
-            _gameButtons = new List<Button>();
+            _gameOverButtons = new List<Button>();
             _gameState = GameStates.Menu;
             _traps = new List<Trap>();
             _wallList = new List<GameObject>();
@@ -209,6 +209,27 @@ namespace YouveBeenAudited
                 _UIscalar);
             _optionButtons.Add(optionsExit);
             optionsExit.BtnClicked += ButtonCheck;
+
+            // game over exit game
+            Button gameOverExit = new Button(
+                _windowCenter.X - (int)(_exitButtonTexture.Width * _UIscalar) / 2,
+                _windowCenter.Y + (int)(_exitButtonTexture.Height * _UIscalar),
+                _exitButtonTexture,
+                "ExitGameButton",
+                Color.White,
+                _UIscalar);
+            _gameOverButtons.Add(gameOverExit);
+            gameOverExit.BtnClicked += ButtonCheck;
+
+            Button gameOverMenu = new Button(
+                _windowCenter.X - (int)(_resumeButtonTexture.Width * _UIscalar) / 2,
+                _windowCenter.Y - (int)(_resumeButtonTexture.Height * _UIscalar),
+                _resumeButtonTexture,
+                "MenuButton",
+                Color.White,
+                _UIscalar);
+            _gameOverButtons.Add(gameOverMenu);
+            gameOverMenu.BtnClicked += ButtonCheck;
 
             #endregion Button creation
         }
