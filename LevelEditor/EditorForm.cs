@@ -33,6 +33,11 @@ namespace LevelEditor
         private int screenWidth;
         private int screenHeight;
 
+        //Enemy info
+        private int startingEnemies;
+        private int numWaves;
+        private double enemyMultiplier;
+
         //2d array to hold tiles
         PictureBox[,] map;
 
@@ -91,11 +96,11 @@ namespace LevelEditor
             //initializes the buttons' click events
             buttonGreen.Click += SelectColor;
             buttonMidnight.Click += SelectColor;
-
             buttonSave.Click += SaveFile;
             buttonLoad.Click += LoadFile;
-
             buttonPathing.Click += PathingMode;
+
+            pictureBoxCurrentTile.SizeMode = PictureBoxSizeMode.StretchImage;
 
             this.FormClosing += UnsavedChanges;
 
@@ -143,6 +148,11 @@ namespace LevelEditor
             currentColor = color.BackColor;
             pictureBoxCurrentTile.BackColor = currentColor;
 
+            if (currentColor == Color.Green)
+            {
+                pictureBoxCurrentTile.Image = Properties.Resources.tile_wood_floor;
+            }
+
         }
 
         /// <summary>
@@ -187,7 +197,7 @@ namespace LevelEditor
                     tile.Image = null;
                 }
 
-                //Tile that are painted BLACK will have a wall
+                //Tiles that are painted BLACK will have a wall
 
                 //If there is a point there, it will redraw the point so the map texture doesn't cover it up
                 tile.Refresh();
@@ -294,6 +304,28 @@ namespace LevelEditor
         /// <param name="e"></param>
         void SaveFile(object sender, EventArgs e)
         {
+            //Keeps track of all errors that happen due to invalid values in text boxes
+            string errors = "";
+
+            if (!int.TryParse(textBoxStartEnemies.Text, out startingEnemies))
+            {
+                errors += "Starting Enemies does not have an int value.\n";
+            }
+            if (!int.TryParse(textBoxNumWaves.Text, out numWaves))
+            {
+                errors += "Number of Waves does not have an int value.\n";
+            }
+            if (!double.TryParse(textBoxEnemyMultiplier.Text, out enemyMultiplier))
+            {
+                errors += "Enemy Multiplier does not have a double value.";
+            }
+
+            if(errors != "")
+            {
+                MessageBox.Show(errors, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             SaveFileDialog file = new SaveFileDialog();
             file.Filter = "Level Files|*.level";
             file.Title = "Save a level file.";
@@ -329,19 +361,26 @@ namespace LevelEditor
                 {
                     output.Write("|" + p.X + "," + p.Y);
                 }
+                output.Write("\n");
+
+                output.WriteLine(startingEnemies);
+                output.WriteLine(numWaves);
+                output.WriteLine(enemyMultiplier);
+
+
 
 
                 output.Close();
-            }
 
-            //If there were unsaved changes, removes the "*" and sets isSaved to true
-            if (!isSaved)
-            {
-                this.Text = this.Text.Substring(0, this.Text.Length - 1);
-                isSaved = true;
-            }
+                //If there were unsaved changes, removes the "*" and sets isSaved to true
+                if (!isSaved)
+                {
+                    this.Text = this.Text.Substring(0, this.Text.Length - 1);
+                    isSaved = true;
+                }
 
-            MessageBox.Show("File saved successfully", "File saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("File saved successfully", "File saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
         /// <summary>
@@ -435,7 +474,7 @@ namespace LevelEditor
                     //adds the points to the enemyPath List
                     string[] points;
                     enemyPath.Clear();
-                    points = input.ReadToEnd().Split('|');
+                    points = input.ReadLine().Split('|');
                     foreach (string p in points)
                     {
                         if (!p.Equals(""))
@@ -451,6 +490,15 @@ namespace LevelEditor
                         map[p.Y, p.X].Paint += PaintPoint;
                         map[p.Y, p.X].Refresh();
                     }
+
+                    startingEnemies = int.Parse(input.ReadLine());
+                    textBoxStartEnemies.Text = "" + startingEnemies;
+
+                    numWaves = int.Parse(input.ReadLine());
+                    textBoxNumWaves.Text = "" + numWaves;
+
+                    enemyMultiplier = double.Parse(input.ReadLine());
+                    textBoxEnemyMultiplier.Text = "" + enemyMultiplier;
                 }
                 catch (Exception ex)
                 {
