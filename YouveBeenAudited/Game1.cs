@@ -263,16 +263,19 @@ namespace YouveBeenAudited
 
                 // Active game
                 case GameStates.Game:
+                    // Switches Game States if conditions met
                     if (Keyboard.GetState().IsKeyDown(Keys.Escape) == true)
                     {
                         _gameState = GameStates.Options;
                     }
-
                     if (Keyboard.GetState().IsKeyDown(Keys.F1) == true)
                     {
                         _gameState = GameStates.GameOver;
                     }
+                    int currentEnemies = enemyManager.RemainingEnemies;
                     _timeCount += gameTime.ElapsedGameTime.TotalSeconds;
+
+                    // Deals with player and trap interactions
                     _player.Update(gameTime);
                     Trap trap;
                     if ((trap = _player.PlaceTrap()) != null)
@@ -281,7 +284,9 @@ namespace YouveBeenAudited
                     }
                     Collisions();
                     _timeCount = _player.UpdateAnimation(_timeCount);
+
                     enemyManager.UpdateEnemies(gameTime, this);
+                    _player.Money += 100 * (currentEnemies - enemyManager.RemainingEnemies); // Player gets money with each kill
                     if (enemyManager.enemyAtGoal)
                     {
                         _gameState = GameStates.GameOver;
