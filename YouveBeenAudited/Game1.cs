@@ -63,7 +63,7 @@ namespace YouveBeenAudited
         private List<Trap> _traps;
 
         //Animation
-        public const double _secondsPerFrame = 6.5f / 60; //This is here for reference.
+        //public const double _secondsPerFrame = 6.5f / 60; //This is here for reference.
 
         private double _timeCount;
 
