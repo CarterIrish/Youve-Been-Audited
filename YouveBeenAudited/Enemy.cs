@@ -14,9 +14,11 @@ namespace YouveBeenAudited
     {
         #region Fields
 
+        private int _currentFrame;
         private bool _atGoal;
         private int _currentPoint;
         private List<Vector2> _path;
+        private Point _spriteSize;
 
         #endregion Fields
 
@@ -71,6 +73,9 @@ namespace YouveBeenAudited
             base._texture = texture;
             _atGoal = false;
             _currentPoint = 1;
+            _currentFrame = 0;
+            _currentState = CharacterStates.Right;
+            _spriteSize = new Point(55, 100);
         }
 
         /// <summary>
@@ -99,6 +104,16 @@ namespace YouveBeenAudited
                     _currentPoint++;
                 }
 
+                //Animation Movement Update
+                if (direction.X > 0)
+                {
+                    _currentState = CharacterStates.Right;
+                }
+                else if (direction.X < 0)
+                {
+                    _currentState = CharacterStates.Left;
+                }
+
                 if (_currentPoint == _path.Count)
                 {
                     _atGoal = true;
@@ -107,12 +122,61 @@ namespace YouveBeenAudited
         }
 
         /// <summary>
-        /// Draws an enemy.
+        /// Updates the animation enemy.
+        /// </summary>
+        /// <param name="gameTime">Game time information</param>
+        public double UpdateAnimation(double _timeCount)
+        {
+            if (_timeCount >= 6.5f / 60.0)
+            {
+                // Update the frame and wrap
+                _currentFrame++;
+                if (_currentFrame >= 4) _currentFrame = 1;
+
+                // Remove one "frame" worth of time
+                _timeCount -= (6.5f / 60.0);
+            }
+            return _timeCount;
+        }
+
+        /// <summary>
+        /// Draws enemy.
         /// </summary>
         /// <param name="sb"></param>
         public override void Draw(SpriteBatch sb)
         {
-            sb.Draw(Texture, new Rectangle(_position.X, _position.Y, 55, 100), new Rectangle(400, 0, 55, 100), Color.White);
+            switch (_currentState)
+            {
+                case CharacterStates.Left:
+                    sb.Draw(
+                Texture,
+                new Vector2(_position.X, _position.Y),
+                new Rectangle(((_spriteSize.X + 25) * _currentFrame) + 560, 0, _spriteSize.X, _spriteSize.Y),
+                Color.White,
+                0.0f,
+                Vector2.Zero,
+                1.0f,
+                SpriteEffects.FlipHorizontally,
+                0.0f);
+                    break;
+
+                case CharacterStates.Right:
+                    sb.Draw(
+                Texture,
+                new Vector2(_position.X, _position.Y),
+                new Rectangle(((_spriteSize.X + 25) * _currentFrame) + 560, 0, _spriteSize.X, _spriteSize.Y),
+                Color.White,
+                0.0f,
+                Vector2.Zero,
+                1.0f,
+                SpriteEffects.None,
+                0.0f);
+                    break;
+
+                default:
+                    sb.Draw(Texture, new Rectangle(_position.X, _position.Y, 55, 100), new Rectangle(400, 0, _spriteSize.X, _spriteSize.Y), Color.White);
+                    break;
+            }
         }
 
         #endregion Methods

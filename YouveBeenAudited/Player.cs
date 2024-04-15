@@ -60,6 +60,7 @@ namespace YouveBeenAudited
             _spriteSize = new Point(55, 125);
             _destinationRectangle = new Rectangle(_position.X, _position.Y, _spriteSize.X, _spriteSize.Y);
             _speed = 6;
+            _currentFrame = 0;
         }
 
         /// <summary>
@@ -207,7 +208,7 @@ namespace YouveBeenAudited
         }
 
         /// <summary>
-        /// Updates the animation.
+        /// Updates the animation for the player.
         /// </summary>
         /// <param name="gameTime">Game time information</param>
         public double UpdateAnimation(double _timeCount)
