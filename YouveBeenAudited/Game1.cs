@@ -303,6 +303,7 @@ namespace YouveBeenAudited
                     {
                         b.CheckClick(_mouseState);
                     }
+                    _traps.Clear();
                     break;
             }
 
@@ -409,7 +410,7 @@ namespace YouveBeenAudited
         /// <param name="fileName">Name of the file.</param>
         private void NextLevel(string fileName)
         {
-            enemyManager = new EnemyManager(3);
+            enemyManager = new EnemyManager(3, 3, 1);
             enemyManager.LoadContent(Content);
             ReadFile(fileName);
         }
