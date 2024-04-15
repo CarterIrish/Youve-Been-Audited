@@ -85,6 +85,7 @@ namespace YouveBeenAudited
         private Texture2D _startButtonTexture;
         private Texture2D _exitButtonTexture;
         private Texture2D _resumeButtonTexture;
+        private Texture2D _menuButtonTexture;
 
         //Title Textures
         private Texture2D _titleTexture;
@@ -151,7 +152,7 @@ namespace YouveBeenAudited
             _playerTexture = Content.Load<Texture2D>("player_spritesheet");
             _player = new Player(50, 50, _playerTexture, 100, 100);
             _arial25 = Content.Load<SpriteFont>("Arial25");
-
+            _menuButtonTexture = Content.Load<Texture2D>("MenuButton");
             _startButtonTexture = Content.Load<Texture2D>("StartButton");
             _exitButtonTexture = Content.Load<Texture2D>("ExitButton");
             _optionsButtonTexture = Content.Load<Texture2D>("OptionsButton");
@@ -222,9 +223,9 @@ namespace YouveBeenAudited
             gameOverExit.BtnClicked += ButtonCheck;
 
             Button gameOverMenu = new Button(
-                _windowCenter.X - (int)(_resumeButtonTexture.Width * _UIscalar) / 2,
-                _windowCenter.Y - (int)(_resumeButtonTexture.Height * _UIscalar),
-                _resumeButtonTexture,
+                _windowCenter.X - (int)(_menuButtonTexture.Width * _UIscalar) / 2,
+                _windowCenter.Y - (int)(_menuButtonTexture.Height * _UIscalar),
+                _menuButtonTexture,
                 "MenuButton",
                 Color.White,
                 _UIscalar);
