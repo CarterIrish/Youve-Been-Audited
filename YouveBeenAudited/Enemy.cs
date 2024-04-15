@@ -19,6 +19,7 @@ namespace YouveBeenAudited
         private int _currentPoint;
         private List<Vector2> _path;
         private Point _spriteSize;
+        double _timeCount;
 
         #endregion Fields
 
@@ -92,6 +93,8 @@ namespace YouveBeenAudited
         /// </summary>
         public override void Update(GameTime gt)
         {
+            _timeCount += gt.ElapsedGameTime.TotalSeconds;
+            _timeCount = UpdateAnimation(_timeCount);
             if (_currentPoint < Path.Count)
             {
                 Vector2 direction = _path[_currentPoint] - new Vector2(_position.X, _position.Y);
