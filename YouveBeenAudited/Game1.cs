@@ -263,6 +263,11 @@ namespace YouveBeenAudited
                     {
                         _gameState = GameStates.Options;
                     }
+
+                    if (Keyboard.GetState().IsKeyDown(Keys.F1) == true)
+                    {
+                        _gameState = GameStates.GameOver;
+                    }
                     _timeCount += gameTime.ElapsedGameTime.TotalSeconds;
                     _player.Update(gameTime);
                     Trap trap;
@@ -290,6 +295,10 @@ namespace YouveBeenAudited
 
                 // Game over
                 case GameStates.GameOver:
+                    foreach (Button b in _gameOverButtons)
+                    {
+                        b.CheckClick(_mouseState);
+                    }
                     break;
             }
 
@@ -323,7 +332,6 @@ namespace YouveBeenAudited
                 // Active game
                 case GameStates.Game:
                     DrawLevel(_spriteBatch);
-                    _spriteBatch.DrawString(_arial25, "GameState: Escape to enter options", new Vector2(_windowCenter.X - 13 * 25, _windowCenter.Y - 25), Color.Red);
                     _spriteBatch.DrawString(_arial25, $"${_player.Money}", new Vector2(50, 50), Color.DarkGreen);
                     enemyManager.DrawEnemies(_spriteBatch);
                     foreach (Trap trap in _traps)
@@ -334,7 +342,6 @@ namespace YouveBeenAudited
                     break;
                 // Options/pause menu
                 case GameStates.Options:
-                    _spriteBatch.DrawString(_arial25, "OptionState", new Vector2(_windowCenter.X - 5 * 25, _windowCenter.Y - 25), Color.Red);
                     foreach (Button b in _optionButtons)
                     {
                         b.Draw(_spriteBatch, b.Color);
@@ -342,6 +349,10 @@ namespace YouveBeenAudited
                     break;
                 // Game over
                 case GameStates.GameOver:
+                    foreach (Button b in _gameOverButtons)
+                    {
+                        b.Draw(_spriteBatch, b.Color);
+                    }
                     break;
             }
             _spriteBatch.End();
@@ -380,6 +391,10 @@ namespace YouveBeenAudited
 
                 case "ResumeGameButton":
                     _gameState = GameStates.Game;
+                    break;
+
+                case "MenuButton":
+                    _gameState = GameStates.Menu;
                     break;
             }
         }
