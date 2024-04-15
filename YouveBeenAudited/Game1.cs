@@ -337,8 +337,12 @@ namespace YouveBeenAudited
                 // Active game
                 case GameStates.Game:
                     DrawLevel(_spriteBatch);
-                    _spriteBatch.DrawString(_arial25, $"${_player.Money}", new Vector2(50, 50), Color.DarkGreen);
+                    // Handles Text UI
+                    _spriteBatch.DrawString(_arial25, $"${_player.Money}", new Vector2(50, 50), Color.DarkGreen, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
+                    _spriteBatch.DrawString(_arial25, $"Wave {enemyManager.CurrentWave}/{enemyManager.TotalWaves}", new Vector2(_windowCenter.X - 150, 50), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
+                    _spriteBatch.DrawString(_arial25, $"Enemies Left in Wave: {enemyManager.RemainingEnemies}", new Vector2(_windowCenter.X - 350, 150), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
                     enemyManager.DrawEnemies(_spriteBatch);
+
                     foreach (Trap trap in _traps)
                     {
                         trap.Draw(_spriteBatch);

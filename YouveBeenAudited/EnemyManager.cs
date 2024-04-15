@@ -53,6 +53,14 @@ namespace YouveBeenAudited
         }
 
         /// <summary>
+        /// Returns the number of enemies left in a wave
+        /// </summary>
+        public int RemainingEnemies
+        {
+            get { return _numOfEnemies - _killedEnemies; }
+        }
+
+        /// <summary>
         /// Gets and sets Current Wave
         /// </summary>
         public int CurrentWave { get => _currentWave; set { _currentWave = value; } }
