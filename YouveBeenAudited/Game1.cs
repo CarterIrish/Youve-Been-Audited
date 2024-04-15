@@ -287,7 +287,10 @@ namespace YouveBeenAudited
                     _timeCount = _player.UpdateAnimation(_timeCount);
 
                     enemyManager.UpdateEnemies(gameTime, this);
-                    _player.Money += 100 * (currentEnemies - enemyManager.RemainingEnemies); // Player gets money with each kill
+                    if (currentEnemies > enemyManager.RemainingEnemies)
+                    {
+                        _player.Money += 100 * (currentEnemies - enemyManager.RemainingEnemies); // Player gets money with each kill
+                    }
                     if (enemyManager.enemyAtGoal)
                     {
                         _gameState = GameStates.GameOver;
