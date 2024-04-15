@@ -80,6 +80,12 @@ namespace YouveBeenAudited
         /// </summary>
         public int TotalWaves { get => _totalWaves; set { _totalWaves = value; } }
 
+        /// <summary>
+        /// Gets Timer
+        /// </summary>
+        public double Timer { get => _timer; }
+
+
         #endregion Properties
 
         #region Methods
@@ -138,11 +144,15 @@ namespace YouveBeenAudited
             }
             if (_killedEnemies == _numOfEnemies)
             {
+                
                 if (TotalWaves == CurrentWave)
                 {
                     game.GameOver();
                 }
-                NextWave();
+                if (_timer >= 15)
+                {
+                    NextWave();
+                }
             }
             for (int i = 0; i < _enemies.Count;)
             {
@@ -163,6 +173,10 @@ namespace YouveBeenAudited
             }
         }
 
+
+        /// <summary>
+        /// Starts the next wave
+        /// </summary>
         public void NextWave()
         {
             CurrentWave++;

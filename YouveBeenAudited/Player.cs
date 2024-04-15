@@ -36,10 +36,10 @@ namespace YouveBeenAudited
         #region Properties
 
         /// <summary>
-        /// Gets the current amount of money
+        /// Gets/Sets the current amount of money
         /// posessed.
         /// </summary>
-        public int Money { get => _money; }
+        public int Money { get => _money; set { _money = value; } }
 
         public Point SpriteSize { get => _spriteSize; }
 
