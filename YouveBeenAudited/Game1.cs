@@ -85,6 +85,7 @@ namespace YouveBeenAudited
         private Texture2D _startButtonTexture;
         private Texture2D _exitButtonTexture;
         private Texture2D _resumeButtonTexture;
+        private Texture2D _menuButtonTexture;
 
         //Title Textures
         private Texture2D _titleTexture;
@@ -136,7 +137,7 @@ namespace YouveBeenAudited
             _menuButtons = new List<Button>();
             _gameButtons = new List<Button>();
             _optionButtons = new List<Button>();
-            _gameButtons = new List<Button>();
+            _gameOverButtons = new List<Button>();
             _gameState = GameStates.Menu;
             _traps = new List<Trap>();
             _wallList = new List<GameObject>();
@@ -151,7 +152,7 @@ namespace YouveBeenAudited
             _playerTexture = Content.Load<Texture2D>("player_spritesheet");
             _player = new Player(50, 50, _playerTexture, 100, 100);
             _arial25 = Content.Load<SpriteFont>("Arial25");
-
+            _menuButtonTexture = Content.Load<Texture2D>("MenuButton");
             _startButtonTexture = Content.Load<Texture2D>("StartButton");
             _exitButtonTexture = Content.Load<Texture2D>("ExitButton");
             _optionsButtonTexture = Content.Load<Texture2D>("OptionsButton");
@@ -210,6 +211,27 @@ namespace YouveBeenAudited
             _optionButtons.Add(optionsExit);
             optionsExit.BtnClicked += ButtonCheck;
 
+            // game over exit game
+            Button gameOverExit = new Button(
+                _windowCenter.X - (int)(_exitButtonTexture.Width * _UIscalar) / 2,
+                _windowCenter.Y + (int)(_exitButtonTexture.Height * _UIscalar),
+                _exitButtonTexture,
+                "ExitGameButton",
+                Color.White,
+                _UIscalar);
+            _gameOverButtons.Add(gameOverExit);
+            gameOverExit.BtnClicked += ButtonCheck;
+
+            Button gameOverMenu = new Button(
+                _windowCenter.X - (int)(_menuButtonTexture.Width * _UIscalar) / 2,
+                _windowCenter.Y - (int)(_menuButtonTexture.Height * _UIscalar),
+                _menuButtonTexture,
+                "MenuButton",
+                Color.White,
+                _UIscalar);
+            _gameOverButtons.Add(gameOverMenu);
+            gameOverMenu.BtnClicked += ButtonCheck;
+
             #endregion Button creation
         }
 
@@ -242,6 +264,11 @@ namespace YouveBeenAudited
                     {
                         _gameState = GameStates.Options;
                     }
+
+                    if (Keyboard.GetState().IsKeyDown(Keys.F1) == true)
+                    {
+                        _gameState = GameStates.GameOver;
+                    }
                     _timeCount += gameTime.ElapsedGameTime.TotalSeconds;
                     _player.Update(gameTime);
                     Trap trap;
@@ -269,6 +296,10 @@ namespace YouveBeenAudited
 
                 // Game over
                 case GameStates.GameOver:
+                    foreach (Button b in _gameOverButtons)
+                    {
+                        b.CheckClick(_mouseState);
+                    }
                     break;
             }
 
@@ -302,7 +333,6 @@ namespace YouveBeenAudited
                 // Active game
                 case GameStates.Game:
                     DrawLevel(_spriteBatch);
-                    _spriteBatch.DrawString(_arial25, "GameState: Escape to enter options", new Vector2(_windowCenter.X - 13 * 25, _windowCenter.Y - 25), Color.Red);
                     _spriteBatch.DrawString(_arial25, $"${_player.Money}", new Vector2(50, 50), Color.DarkGreen);
                     enemyManager.DrawEnemies(_spriteBatch);
                     foreach (Trap trap in _traps)
@@ -313,7 +343,6 @@ namespace YouveBeenAudited
                     break;
                 // Options/pause menu
                 case GameStates.Options:
-                    _spriteBatch.DrawString(_arial25, "OptionState", new Vector2(_windowCenter.X - 5 * 25, _windowCenter.Y - 25), Color.Red);
                     foreach (Button b in _optionButtons)
                     {
                         b.Draw(_spriteBatch, b.Color);
@@ -321,6 +350,10 @@ namespace YouveBeenAudited
                     break;
                 // Game over
                 case GameStates.GameOver:
+                    foreach (Button b in _gameOverButtons)
+                    {
+                        b.Draw(_spriteBatch, b.Color);
+                    }
                     break;
             }
             _spriteBatch.End();
@@ -359,6 +392,10 @@ namespace YouveBeenAudited
 
                 case "ResumeGameButton":
                     _gameState = GameStates.Game;
+                    break;
+
+                case "MenuButton":
+                    _gameState = GameStates.Menu;
                     break;
             }
         }
