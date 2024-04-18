@@ -125,7 +125,7 @@ namespace YouveBeenAudited
         }
 
         /// <summary>
-        /// Updates the animation enemy.
+        /// Updates the enemy animation.
         /// </summary>
         /// <param name="gameTime">Game time information</param>
         public double UpdateAnimation(double _timeCount)
@@ -143,7 +143,7 @@ namespace YouveBeenAudited
         }
 
         /// <summary>
-        /// Draws enemy.
+        /// Draws enemy according to current state.
         /// </summary>
         /// <param name="sb"></param>
         public override void Draw(SpriteBatch sb)

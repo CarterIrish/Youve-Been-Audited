@@ -93,6 +93,8 @@ namespace YouveBeenAudited
 
         //Map Textures
         private Texture2D _woodFloorTexture;
+        private Texture2D _wallFloralTexture;
+        private Texture2D _grassFloorTexture;
 
         // Input sources
         private MouseState _mouseState;
@@ -160,6 +162,8 @@ namespace YouveBeenAudited
             _resumeButtonTexture = Content.Load<Texture2D>("ResumeButton");
             _titleTexture = Content.Load<Texture2D>("Title");
             _woodFloorTexture = Content.Load<Texture2D>("tile_wood_floor");
+            _wallFloralTexture = Content.Load<Texture2D>("tile_floral_wall");
+            _grassFloorTexture = Content.Load<Texture2D>("tile_grass");
             _player.LoadContent(Content);
 
             //Animation Setup
@@ -325,7 +329,7 @@ namespace YouveBeenAudited
         {
             // Designed for a 2560x1440p monitor - ref size
 
-            GraphicsDevice.Clear(Color.GreenYellow);
+            GraphicsDevice.Clear(Color.SkyBlue);
 
             // Start the sprite batch for drawing all elements to screen
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
@@ -520,8 +524,8 @@ namespace YouveBeenAudited
                     switch (_map[i, k])
                     {
                         case TileType.Wall:
-                            sb.Draw(_woodFloorTexture, new Rectangle(MarginWidth + (k * _tileLength), (i * _tileLength),
-                                _tileLength, _tileLength), Color.Black);
+                            sb.Draw(_wallFloralTexture, new Rectangle(MarginWidth + (k * _tileLength), (i * _tileLength),
+                                _tileLength, _tileLength), Color.White);
                             break;
 
                         case TileType.Wood:
