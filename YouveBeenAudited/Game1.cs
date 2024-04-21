@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using ShapeUtils;
 
 namespace YouveBeenAudited
 {
@@ -59,6 +58,7 @@ namespace YouveBeenAudited
 
         // Player
         private Player _player;
+        
 
         // Traps
         private List<Trap> _traps;
@@ -95,7 +95,6 @@ namespace YouveBeenAudited
 
         //Map Textures
         private Texture2D _woodFloorTexture;
-
         private Texture2D _wallFloralTexture;
         private Texture2D _grassFloorTexture;
 
@@ -135,9 +134,6 @@ namespace YouveBeenAudited
             // initialize useful window measurements
             _windowCenter = new Point(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
             _windowSize = new Point(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
-
-            // Sets debug mode to on or off
-            //GameObject.Debug = true;
         }
 
         protected override void Initialize()
@@ -353,7 +349,6 @@ namespace YouveBeenAudited
                         b.Draw(_spriteBatch, b.Color);
                     }
 
-                    _spriteBatch.End();
                     break;
                 // Active game
                 case GameStates.Game:
@@ -369,12 +364,6 @@ namespace YouveBeenAudited
                         trap.Draw(_spriteBatch);
                     }
                     _player.Draw(_spriteBatch);
-                    _spriteBatch.End();
-
-                    ShapeBatch.Begin(GraphicsDevice);
-                    ShapeBatch.BoxOutline(new Rectangle(500, 500, 250, 250), Color.Red);
-                    ShapeBatch.End();
-
                     break;
                 // Options/pause menu
                 case GameStates.Options:
@@ -382,7 +371,6 @@ namespace YouveBeenAudited
                     {
                         b.Draw(_spriteBatch, b.Color);
                     }
-                    _spriteBatch.End();
                     break;
                 // Game over
                 case GameStates.GameOver:
@@ -390,9 +378,10 @@ namespace YouveBeenAudited
                     {
                         b.Draw(_spriteBatch, b.Color);
                     }
-                    _spriteBatch.End();
                     break;
             }
+            _spriteBatch.End();
+            base.Draw(gameTime);
         }
 
         #endregion GameLoop
@@ -512,8 +501,8 @@ namespace YouveBeenAudited
             enemyManager.WaveModifier = double.Parse(input.ReadLine());
 
             string[] spawn;
-            spawn = input.ReadLine().Split(',');
-            _player = new Player((int.Parse(spawn[0]) * _tileLength) + _marginWidth, int.Parse(spawn[1]) * _tileLength, _playerTexture, _player.Health, 100);
+            spawn = input.ReadLine().Split(','); 
+            _player.MoveToSpawn((int.Parse(spawn[0]) * _tileLength) + _marginWidth, int.Parse(spawn[1]) * _tileLength);
         }
 
         /// <summary>
