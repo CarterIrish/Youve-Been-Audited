@@ -88,8 +88,9 @@ namespace YouveBeenAudited
         private Texture2D _resumeButtonTexture;
         private Texture2D _menuButtonTexture;
 
-        //Title Textures
+        //Menu Textures
         private Texture2D _titleTexture;
+        private Texture2D _pauseTexture;
 
         //Map Textures
         private Texture2D _woodFloorTexture;
@@ -164,6 +165,7 @@ namespace YouveBeenAudited
             _optionsButtonTexture = Content.Load<Texture2D>("OptionsButton");
             _resumeButtonTexture = Content.Load<Texture2D>("ResumeButton");
             _titleTexture = Content.Load<Texture2D>("Title");
+            _pauseTexture = Content.Load<Texture2D>("pause_screen");
             _woodFloorTexture = Content.Load<Texture2D>("tile_wood_floor");
             _wallFloralTexture = Content.Load<Texture2D>("tile_floral_wall");
             _grassFloorTexture = Content.Load<Texture2D>("tile_grass");
@@ -332,7 +334,7 @@ namespace YouveBeenAudited
         {
             // Designed for a 2560x1440p monitor - ref size
 
-            GraphicsDevice.Clear(Color.SkyBlue);
+            GraphicsDevice.Clear(Color.Bisque);
 
             // Start the sprite batch for drawing all elements to screen
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
