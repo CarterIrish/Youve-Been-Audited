@@ -380,7 +380,7 @@ namespace YouveBeenAudited
                     _spriteBatch.DrawString(_arial25, $"Wave {enemyManager.CurrentWave}/{enemyManager.TotalWaves}", new Vector2(_windowCenter.X - 150, 50), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
                     if (enemyManager.RemainingEnemies == 0)
                     {
-                        _spriteBatch.DrawString(_arial25, $"Time Till Next Wave:" + string.Format("{0:0.00}",  15 - enemyManager.Timer), new Vector2(_windowCenter.X - 350, 150), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
+                        _spriteBatch.DrawString(_arial25, $"Time Till Next Wave:" + string.Format("{0:0.00}", 15 - enemyManager.Timer), new Vector2(_windowCenter.X - 350, 150), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
                     }
                     else
                     {
@@ -399,7 +399,7 @@ namespace YouveBeenAudited
                     {
                         _spriteBatch.DrawString(_arial25, "Debug : ON", new Vector2(50, 100), Color.Blue, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
                     }
-                    if(!_debug)
+                    if (!_debug)
                     {
                         _spriteBatch.DrawString(_arial25, "Debug : OFF", new Vector2(50, 100), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
                     }
@@ -454,7 +454,7 @@ namespace YouveBeenAudited
                 case "StartButton":
                     System.Diagnostics.Debug.WriteLine("Change State ==> Game");
                     _gameState = GameStates.Game;
-                    NextLevel("../../../../finalTestingFile.level");
+                    NextLevel("../../../../Level2.level");
                     break;
                 // If its the exit game button
                 case "ExitGameButton":
@@ -530,7 +530,7 @@ namespace YouveBeenAudited
             }
 
             //adds the vectors to the enemy path List
-            string[] points;    
+            string[] points;
             enemyManager.Path.Clear();
             points = input.ReadLine().Split('|');
             foreach (string p in points)
@@ -649,15 +649,15 @@ namespace YouveBeenAudited
             else if (SingleKeyPress(Keys.D2))
             {
             }
-            
+
             return trap;
         }
 
         private void DebugInputs()
         {
-            if(SingleKeyPress(Keys.F1))
+            if (SingleKeyPress(Keys.F1))
             {
-                if(_debug)
+                if (_debug)
                 {
                     _debug = false;
                 }
@@ -667,9 +667,9 @@ namespace YouveBeenAudited
                 }
             }
 
-            if(_debug)
+            if (_debug)
             {
-                if(SingleKeyPress(Keys.F2))
+                if (SingleKeyPress(Keys.F2))
                 {
                     _player.Money += 100;
                 }
