@@ -285,12 +285,10 @@ namespace YouveBeenAudited
                     // Switches Game States if conditions met
                     if (Keyboard.GetState().IsKeyDown(Keys.Escape) == true)
                     {
-                        System.Diagnostics.Debug.WriteLine("Change State ==> Options");
                         _gameState = GameStates.Options;
                     }
                     if (Keyboard.GetState().IsKeyDown(Keys.F1) == true)
                     {
-                        System.Diagnostics.Debug.WriteLine("Change State ==> GameOver");
                         _gameState = GameStates.GameOver;
                     }
                     int currentEnemies = enemyManager.RemainingEnemies;
@@ -303,7 +301,7 @@ namespace YouveBeenAudited
                     {
                         _traps.Add(trap);
                     }
-                    ResolveCollisions();
+                    Collisions();
                     _timeCount = _player.UpdateAnimation(_timeCount);
 
                     enemyManager.UpdateEnemies(gameTime, this);
@@ -313,7 +311,6 @@ namespace YouveBeenAudited
                     }
                     if (enemyManager.EnemyAtGoal)
                     {
-                        System.Diagnostics.Debug.WriteLine("Change State ==> GameOver");
                         _gameState = GameStates.GameOver;
                     }
 
@@ -373,7 +370,7 @@ namespace YouveBeenAudited
                     _spriteBatch.DrawString(_arial25, $"Wave {enemyManager.CurrentWave}/{enemyManager.TotalWaves}", new Vector2(_windowCenter.X - 150, 50), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
                     if (enemyManager.RemainingEnemies == 0)
                     {
-                        _spriteBatch.DrawString(_arial25, $"Time Till Next Wave:" + string.Format("{0:0.00}", 15 - enemyManager.Timer), new Vector2(_windowCenter.X - 350, 150), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
+                        _spriteBatch.DrawString(_arial25, $"Time Till Next Wave:" + string.Format("{0:0.00}",  15 - enemyManager.Timer), new Vector2(_windowCenter.X - 350, 150), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
                     }
                     else
                     {
@@ -386,6 +383,13 @@ namespace YouveBeenAudited
                         trap.Draw(_spriteBatch);
                     }
                     _player.Draw(_spriteBatch);
+
+                    //debug shit
+                    if (_debug)
+                    {
+                        _spriteBatch.DrawString(_arial25, "Debug : ON", new Vector2(50, 100), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
+                    }
+
                     _spriteBatch.End();
 
                     ShapeBatch.Begin(GraphicsDevice);
@@ -440,17 +444,15 @@ namespace YouveBeenAudited
                     break;
                 // If its the exit game button
                 case "ExitGameButton":
-                    System.Diagnostics.Debug.WriteLine("Change State ==> QuitGame");
+                    System.Diagnostics.Debug.WriteLine("ChangeState ==> QuitGame");
                     Exit();
                     break;
 
                 case "ResumeGameButton":
-                    System.Diagnostics.Debug.WriteLine("Change State ==> Game");
                     _gameState = GameStates.Game;
                     break;
 
                 case "MenuButton":
-                    System.Diagnostics.Debug.WriteLine("Change State ==> Menu");
                     _gameState = GameStates.Menu;
                     break;
             }
@@ -514,7 +516,7 @@ namespace YouveBeenAudited
             }
 
             //adds the vectors to the enemy path List
-            string[] points;
+            string[] points;    
             enemyManager.Path.Clear();
             points = input.ReadLine().Split('|');
             foreach (string p in points)
@@ -635,6 +637,29 @@ namespace YouveBeenAudited
             }
             _prevKbState = Keyboard.GetState();
             return trap;
+        }
+
+        private void DebugInputs()
+        {
+            if(SingleKeyPress(Keys.F1))
+            {
+                if(_debug)
+                {
+                    _debug = false;
+                }
+                else
+                {
+                    _debug = true;
+                }
+            }
+
+            if(_debug)
+            {
+                if(SingleKeyPress(Keys.F2))
+                {
+                    _player.Money += 100;
+                }
+            }
         }
 
         /// <summary>

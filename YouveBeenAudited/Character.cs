@@ -60,6 +60,7 @@ namespace YouveBeenAudited
 
         public int Speed
         {
+            set => _speed = value;
             get => _speed;
         }
 
