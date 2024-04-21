@@ -172,7 +172,7 @@ namespace YouveBeenAudited
             _wallFloralTexture = Content.Load<Texture2D>("tile_floral_wall");
             _grassFloorTexture = Content.Load<Texture2D>("tile_grass");
             _nailTexture = Content.Load<Texture2D>("spikes");
-            _player = new Player(0, 0, _playerTexture, 10, 12);
+            _player = new Player(999, 999, _playerTexture, 999, 999, 999);
             _player.LoadContent(Content);
 
             //Animation Setup
@@ -394,9 +394,6 @@ namespace YouveBeenAudited
                     _spriteBatch.End();
                     break;
             }
-            
-
-
 
             base.Draw(gameTime);
         }
@@ -519,7 +516,7 @@ namespace YouveBeenAudited
 
             string[] spawn;
             spawn = input.ReadLine().Split(',');
-            _player = new Player((int.Parse(spawn[0]) * _tileLength) + _marginWidth, int.Parse(spawn[1]) * _tileLength, _playerTexture, 100, 100);
+            _player = new Player((int.Parse(spawn[0]) * _tileLength) + _marginWidth, int.Parse(spawn[1]) * _tileLength, _playerTexture, 100, 100, _tileLength);
         }
 
         /// <summary>
