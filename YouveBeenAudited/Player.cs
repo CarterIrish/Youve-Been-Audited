@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using ShapeUtils;
 
 namespace YouveBeenAudited
 {
@@ -205,6 +206,14 @@ namespace YouveBeenAudited
                 default:
                     sb.Draw(Texture, _destinationRectangle, new Rectangle(400, 0, _spriteSize.X, _spriteSize.Y), Color.White);
                     break;
+            }
+        }
+
+        public void DrawShapeBatch()
+        {
+            if (GameObject.debug)
+            {
+                ShapeBatch.BoxOutline(new Rectangle(Position.X, Position.Y, SpriteSize.X, SpriteSize.Y), Color.Red);
             }
         }
 

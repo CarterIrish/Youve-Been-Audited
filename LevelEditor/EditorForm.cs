@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.Devices;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -131,14 +132,26 @@ namespace LevelEditor
                     this.Controls.Add(map[r, c]);
                     map[r, c].Size = new Size(tileLength, tileLength);
                     map[r, c].Location = new Point((c * tileLength) + 115, (r * tileLength) + 70);
-                    map[r, c].Click += PaintFloor;
+                    map[r, c].Capture = false;
+                    map[r, c].MouseDown += CaptureOff;
+                    map[r, c].MouseEnter += PaintFloor;
                     map[r, c].Click += AddPoint;
                     map[r, c].DoubleClick += DeletePoint;
                     map[r, c].BackColor = Color.White;
                     map[r, c].SizeMode = PictureBoxSizeMode.StretchImage;
                 }
             }
+        }
 
+        /// <summary>
+        /// Turns off the capture propoerty
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void CaptureOff(object sender, EventArgs e)
+        {
+            PictureBox tile = (PictureBox)sender;
+            tile.Capture = false;
         }
 
         /// <summary>
@@ -152,6 +165,7 @@ namespace LevelEditor
             //turns on painting mode
             currentState = EditorState.Painting;
             buttonPathing.ForeColor = Color.Black;
+            buttonPlayerSpawn.ForeColor = Color.Black;
 
             Button color = (Button)sender;
             currentColor = color.BackColor;
@@ -161,7 +175,6 @@ namespace LevelEditor
             {
                 pictureBoxCurrentTile.Image = Properties.Resources.tile_wood_floor;
             }
-
         }
 
         /// <summary>
@@ -174,6 +187,7 @@ namespace LevelEditor
             Button button = (Button)sender;
             currentState = EditorState.Pathing;
             button.ForeColor = Color.Red;
+            buttonPlayerSpawn.ForeColor = Color.Black;
         }
 
         void SpawningMode(object sender, EventArgs e)
@@ -181,6 +195,7 @@ namespace LevelEditor
             Button button = (Button)sender;
             currentState = EditorState.Spawning;
             button.ForeColor = Color.Blue;
+            buttonPathing.ForeColor = Color.Black;
         }
 
         /// <summary>
@@ -190,32 +205,36 @@ namespace LevelEditor
         /// <param name="e"></param>
         void PaintFloor(object sender, EventArgs e)
         {
+            PictureBox tile = (PictureBox)sender;
             if (currentState == EditorState.Painting)
             {
-                PictureBox tile = (PictureBox)sender;
-                tile.BackColor = currentColor;
-
-                //Tiles that are painted green will have the WOOD floor texture
-                if (tile.BackColor == Color.Green)
+                if (MouseButtons.Left == Control.MouseButtons)
                 {
-                    tile.Image = buttonGreen.Image = Properties.Resources.tile_wood_floor;
-                }
-                else
-                {
-                    tile.Image = null;
+                    tile.BackColor = currentColor;
+
+                    //Tiles that are painted green will have the WOOD floor texture
+                    if (tile.BackColor == Color.Green)
+                    {
+                        tile.Image = buttonGreen.Image = Properties.Resources.tile_wood_floor;
+                    }
+                    else
+                    {
+                        tile.Image = null;
+                    }
+
+                    //Tiles that are painted BLACK will have a wall
+
+                    //If there is a point there, it will redraw the point so the map texture doesn't cover it up
+                    tile.Refresh();
+
+                    //Puts a "*" whenever the file has unsaved changes and changes isSaved to false
+                    if (isSaved)
+                    {
+                        this.Text += "*";
+                        isSaved = false;
+                    }
                 }
 
-                //Tiles that are painted BLACK will have a wall
-
-                //If there is a point there, it will redraw the point so the map texture doesn't cover it up
-                tile.Refresh();
-
-                //Puts a "*" whenever the file has unsaved changes and changes isSaved to false
-                if (isSaved)
-                {
-                    this.Text += "*";
-                    isSaved = false;
-                }
             }
         }
 
