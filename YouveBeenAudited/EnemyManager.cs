@@ -18,19 +18,21 @@ namespace YouveBeenAudited
 
         // Enemy Stuff
         private List<Enemy> _enemies;
+
         private int _numOfEnemies;
         private int _killedEnemies;
         private bool _enemyAtGoal;
 
         // Wave Stuff
         private int _totalWaves;
+
         private int _currentWave;
         private double _waveModifier;
 
         // Timer
         private double _timer;
-        private bool _resetTimer;
 
+        private bool _resetTimer;
 
         //Enemy Textures
         private Texture2D _auditorTexture;
@@ -92,28 +94,29 @@ namespace YouveBeenAudited
         /// <summary>
         /// Gets and sets the current wave number
         /// </summary>
-        public int CurrentWave { get => _currentWave; set { _currentWave = value; } }
+        public int CurrentWave
+        { get => _currentWave; set { _currentWave = value; } }
 
         /// <summary>
         /// Gets and sets the total wave number
         /// </summary>
-        public int TotalWaves { get => _totalWaves; set { _totalWaves = value; } }
+        public int TotalWaves
+        { get => _totalWaves; set { _totalWaves = value; } }
 
         /// <summary>
         /// Gets the timer
         /// </summary>
         public double Timer { get => _timer; }
 
-
         #endregion Properties
 
         #region Methods
 
         /// <summary>
-        /// Creates an EnemyManager.
+        /// Initializes a new instance of the <see cref="EnemyManager"/> class.
         /// </summary>
-        /// <param name="numOfEnemies"> Number of desired enemies. </param>
-        /// <param name="path"> List of points for the enemies to follow. </param>
+        /// <param name="numOfEnemies">The number of enemies.</param>
+        /// <param name="path">The path.</param>
         public EnemyManager(int numOfEnemies, List<Vector2> path)
         {
             _numOfEnemies = numOfEnemies;
@@ -126,8 +129,11 @@ namespace YouveBeenAudited
         }
 
         /// <summary>
-        /// Creates a new EnemyManager with an empty enemy path
+        /// Initializes a new instance of the <see cref="EnemyManager"/> class.
         /// </summary>
+        /// <param name="numOfEnemies">The number of enemies.</param>
+        /// <param name="numOfWaves">The number of waves.</param>
+        /// <param name="waveModifier">The wave modifier.</param>
         public EnemyManager(int numOfEnemies, int numOfWaves, double waveModifier)
         {
             _numOfEnemies = numOfEnemies;
@@ -152,16 +158,16 @@ namespace YouveBeenAudited
         }
 
         /// <summary>
-        /// Moves all enemies.
+        /// Updates all enemies on the field.
         /// </summary>
         public void UpdateEnemies(GameTime gt, Game1 game)
         {
             _timer += gt.ElapsedGameTime.TotalSeconds;
 
             // Spawns enemies delayed depending on the current wave
-            if (_timer >= ((double)3/_currentWave) && _enemies.Count + _killedEnemies < _numOfEnemies)
+            if (_timer >= ((double)3 / _currentWave) && _enemies.Count + _killedEnemies < _numOfEnemies)
             {
-                _enemies.Add(new Enemy((int)_path[0].X, (int)_path[0].Y, 150, (int)(2*(_currentWave)), _auditorTexture, _path));
+                _enemies.Add(new Enemy((int)_path[0].X, (int)_path[0].Y, 150, (int)(2 * (_currentWave)), _auditorTexture, _path));
                 _timer = 0;
             }
 
@@ -169,7 +175,7 @@ namespace YouveBeenAudited
             // the next wave. OR call GameOver if the final wave was beat
             if (_killedEnemies == _numOfEnemies)
             {
-                if(!_resetTimer)
+                if (!_resetTimer)
                 {
                     _timer = 0;
                     _resetTimer = true;
@@ -183,8 +189,8 @@ namespace YouveBeenAudited
                     NextWave();
                 }
             }
-            
-            // Removes enemies from enemy list if they died, or call GameOver if 
+
+            // Removes enemies from enemy list if they died, or call GameOver if
             // enemies reached the goal
             for (int i = 0; i < _enemies.Count;)
             {
@@ -205,7 +211,6 @@ namespace YouveBeenAudited
             }
         }
 
-
         /// <summary>
         /// Starts the next wave
         /// </summary>
@@ -220,7 +225,7 @@ namespace YouveBeenAudited
         /// <summary>
         /// Draws all of the enemies.
         /// </summary>
-        /// <param name="sb"></param>
+        /// <param name="sb">SpriteBatch</param>
         public void DrawEnemies(SpriteBatch sb)
         {
             foreach (Enemy enemy in _enemies)

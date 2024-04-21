@@ -17,7 +17,8 @@ namespace YouveBeenAudited
     internal class Trap : GameObject
     {
         #region Fields
-        protected TrapType type;
+
+        protected TrapType _type;
 
         protected int _damageAmnt;
 
@@ -43,18 +44,26 @@ namespace YouveBeenAudited
         /// </summary>
         public bool IsActive { get => _isActive; set => _isActive = value; }
 
+        /// <summary>
+        /// Gets the type of trap.
+        /// </summary>
+        /// <value>
+        /// The type.
+        /// </value>
+        public TrapType Type { get => _type; }
+
         #endregion Properties
 
         #region Methods
 
         /// <summary>
-        /// Creates a new trap object.
+        /// Initializes a new instance of the <see cref="Trap"/> class.
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="texture"></param>
-        /// <param name="cost"></param>
-        /// <param name="damageAmnt"></param>
+        /// <param name="x">The x coord.</param>
+        /// <param name="y">The y coord.</param>
+        /// <param name="texture">The texture of trap.</param>
+        /// <param name="cost">The cost of trap.</param>
+        /// <param name="damageAmnt">The damage amnt of trap.</param>
         public Trap(int x, int y, Texture2D texture, int cost, int damageAmnt) : base(x, y, texture)
         {
             _damageAmnt = damageAmnt;
@@ -68,13 +77,17 @@ namespace YouveBeenAudited
         /// <returns>True if collision detected</returns>
         public bool CheckCollisions(GameObject obj)
         {
-            if (obj is IDamageable && Position.Intersects(new Rectangle(obj.Position.X,obj.Position.Y, 55, 100)))
+            if (obj is IDamageable && Position.Intersects(new Rectangle(obj.Position.X, obj.Position.Y, 55, 100)))
             {
                 return true;
             }
             return false;
         }
 
+        /// <summary>
+        /// Does the effect of a trap on another object.
+        /// </summary>
+        /// <param name="e">The object to perform effect on.</param>
         public virtual void DoEffect(Enemy e)
         { }
 

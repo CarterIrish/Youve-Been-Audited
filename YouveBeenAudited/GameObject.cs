@@ -29,16 +29,16 @@ namespace YouveBeenAudited
         /// </summary>
         public Texture2D Texture { get => _texture; }
 
-        #endregion Propertiesd
-         
+        #endregion Properties
+
         #region Methods
 
         /// <summary>
-        /// Create a new GameObject object.
+        /// Initializes a new instance of the <see cref="GameObject"/> class.
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="texture"></param>
+        /// <param name="x">The x coord.</param>
+        /// <param name="y">The y coord.</param>
+        /// <param name="texture">The texture.</param>
         public GameObject(int x, int y, Texture2D texture)
         {
             _texture = texture;
@@ -46,10 +46,10 @@ namespace YouveBeenAudited
         }
 
         /// <summary>
-        /// Creates a new GameObject object
+        /// Initializes a new instance of the <see cref="GameObject"/> class.
         /// </summary>
-        /// <param name="rect">position/dimensions of the gameObject</param>
-        /// <param name="texture">texture of the GameObject</param>
+        /// <param name="rect">The object Bounding Box.</param>
+        /// <param name="texture">The texture.</param>
         public GameObject(Rectangle rect, Texture2D texture)
         {
             _texture = texture;
@@ -59,7 +59,7 @@ namespace YouveBeenAudited
         /// <summary>
         /// Updates the objects information.
         /// </summary>
-        /// <param name="gametime"></param>
+        /// <param name="gametime">GameTime object</param>
         public virtual void Update(GameTime gametime)
         { }
 
@@ -67,7 +67,6 @@ namespace YouveBeenAudited
         /// <param name="sb">The SpriteBatch.</param>
         public virtual void Draw(SpriteBatch sb)
         {
-            // TODO: If needed change this so that it more aligns with our game
             sb.Draw(_texture, _position, Color.White);
         }
 
