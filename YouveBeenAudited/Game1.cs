@@ -90,6 +90,7 @@ namespace YouveBeenAudited
 
         //Menu Textures
         private Texture2D _titleTexture;
+
         private Texture2D _pauseTexture;
 
         //Map Textures
@@ -169,6 +170,7 @@ namespace YouveBeenAudited
             _woodFloorTexture = Content.Load<Texture2D>("tile_wood_floor");
             _wallFloralTexture = Content.Load<Texture2D>("tile_floral_wall");
             _grassFloorTexture = Content.Load<Texture2D>("tile_grass");
+            _player = new Player(0, 0, _playerTexture, 10, 12);
             _player.LoadContent(Content);
 
             //Animation Setup
