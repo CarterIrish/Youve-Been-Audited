@@ -119,7 +119,6 @@ namespace YouveBeenAudited
         private int _tileLength;    // Dimensions of a square tile
 
         private TileType[,] _map;   // 2D array representing the tile types of the map
-        private int _mapWidth;      // pixel width of the playable map
         private int _marginWidth;   // pixel width of the side margins
         private List<GameObject> _wallList; // list of walls in the map
 

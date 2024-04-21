@@ -22,8 +22,6 @@ namespace YouveBeenAudited
 
         private Point _spriteSize;
 
-        private Texture2D _nailTexture;
-
         private SpriteFont _font;
 
         private Rectangle _destinationRectangle;
