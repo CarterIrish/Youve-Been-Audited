@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Diagnostics;
 
 namespace YouveBeenAudited
 {
@@ -13,10 +14,19 @@ namespace YouveBeenAudited
 
         protected Rectangle _position;
         protected Texture2D _texture;
+        protected static bool debug;
 
         #endregion Fields
 
         #region Properties
+
+        /// <summary>
+        /// Sets the status of the debug mode
+        /// </summary>
+        public static bool Debug
+        {
+            set { debug = value; }
+        }
 
         /// <summary>
         /// Gets the rectangle position of an object.

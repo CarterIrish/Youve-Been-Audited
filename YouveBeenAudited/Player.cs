@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using ShapeUtils;
 
 namespace YouveBeenAudited
 {
@@ -39,7 +40,8 @@ namespace YouveBeenAudited
         /// Gets/Sets the current amount of money
         /// posessed.
         /// </summary>
-        public int Money { get => _money; set { _money = value; } }
+        public int Money
+        { get => _money; set { _money = value; } }
 
         public Point SpriteSize { get => _spriteSize; }
 
@@ -206,6 +208,14 @@ namespace YouveBeenAudited
                     sb.Draw(Texture, _destinationRectangle, new Rectangle(400, 0, _spriteSize.X, _spriteSize.Y), Color.White);
                     break;
             }
+        }
+
+        public void DrawShapeBatch()
+        {
+            //if (GameObject.debug)
+            //{
+            //    ShapeBatch.BoxOutline(new Rectangle(Position.X, Position.Y, SpriteSize.X, SpriteSize.Y), Color.Red);
+            //}
         }
 
         /// <summary>
