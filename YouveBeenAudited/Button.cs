@@ -11,6 +11,9 @@ namespace YouveBeenAudited
     {
         #region Fields
 
+        // Button clicked event
+        public event BtnClickedDelegate BtnClicked;
+
         private string _buttonName;
 
         private bool _isActive;
@@ -19,9 +22,6 @@ namespace YouveBeenAudited
 
         private Rectangle _boundingBox;
         private Texture2D _texture;
-
-        // Button clicked event
-        public event BtnClickedDelegate BtnClicked;
 
         #endregion Fields
 
@@ -33,6 +33,7 @@ namespace YouveBeenAudited
 
         public Color Color { get => _color; }
         public Rectangle Position { get => _boundingBox; }
+        public Texture2D Texture { get => _texture; }
 
         #endregion Properties
 
