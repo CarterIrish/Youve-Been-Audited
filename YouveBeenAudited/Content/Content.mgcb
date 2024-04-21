@@ -16,6 +16,12 @@
 #begin actualTestingFile.level
 /copy:actualTestingFile.level
 
+#begin Appassionata.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Appassionata.mp3
+
 #begin Arial25.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
