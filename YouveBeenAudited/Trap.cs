@@ -4,12 +4,20 @@ using Microsoft.Xna.Framework.Input;
 
 namespace YouveBeenAudited
 {
+    public enum TrapType
+    {
+        Spikes,
+        Glue,
+        Bomb
+    }
+
     /// <summary>
     /// Purpose: To hold generic information that all traps have.
     /// </summary>
     internal class Trap : GameObject
     {
         #region Fields
+        protected TrapType type;
 
         protected int _damageAmnt;
 
@@ -66,6 +74,9 @@ namespace YouveBeenAudited
             }
             return false;
         }
+
+        public virtual void DoEffect(Enemy e)
+        { }
 
         #endregion Methods
     }
