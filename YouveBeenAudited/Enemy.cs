@@ -19,7 +19,8 @@ namespace YouveBeenAudited
         private int _currentPoint;
         private List<Vector2> _path;
         private Point _spriteSize;
-        private double _timeCount;
+        double _timeCount;
+        bool isSlowed;
 
         #endregion Fields
 
@@ -42,6 +43,11 @@ namespace YouveBeenAudited
             {
                 return _atGoal;
             }
+        }
+        public bool IsSlowed
+        {
+            get { return isSlowed; }
+            set { isSlowed = value; }
         }
 
         /// <summary>

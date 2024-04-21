@@ -6,6 +6,7 @@ using ShapeUtils;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
 
@@ -105,6 +106,7 @@ namespace YouveBeenAudited
         private Texture2D _wallFloralTexture;
         private Texture2D _grassFloorTexture;
         private Texture2D _nailTexture;
+        private Texture2D _glueTexture;
 
         // Input sources
         private MouseState _mouseState;
@@ -181,6 +183,7 @@ namespace YouveBeenAudited
             _wallFloralTexture = Content.Load<Texture2D>("tile_floral_wall");
             _grassFloorTexture = Content.Load<Texture2D>("tile_grass_large");
             _nailTexture = Content.Load<Texture2D>("spikes");
+            _glueTexture = Content.Load<Texture2D>("glue");
             _player = new Player(999, 999, _playerTexture, 999, 999, 999);
             _player.LoadContent(Content);
             _moonlightSonata = Content.Load<Song>("Moonlight Sonata");
@@ -609,19 +612,23 @@ namespace YouveBeenAudited
             // Checks trap collisions against
             foreach (Enemy enemy in _enemyManager.Enemies)
             {
+                bool isSlowed = false;
                 for (int i = 0; i < _traps.Count;)
                 {
                     if (_traps[i].CheckCollisions(enemy))
                     {
+                        _traps[i].DoEffect(enemy);
                         enemy.TakeDamage(_traps[i].DamageAmnt);
                         _traps.RemoveAt(i);
+                        isSlowed = enemy.IsSlowed;
                         break;
                     }
-                    else
+                    else 
                     {
-                        i++;
+                        
                     }
                 }
+                enemy.IsSlowed = isSlowed;
             }
 
             // Check collisions with walls
@@ -634,17 +641,14 @@ namespace YouveBeenAudited
         private Trap PlaceTrap()
         {
             Trap trap = null;
-            if (SingleKeyPress(Keys.Space) && _player.Money >= 20)
+            if (SingleKeyPress(Keys.D2) && _player.Money >= 20)
             {
                 _player.Money -= 20;
-                trap = new Trap(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _nailTexture, 20, 100);
+                trap = new Glue(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _glueTexture, 20, 100);
             }
-            else if (SingleKeyPress(Keys.D1))
+            if (SingleKeyPress(Keys.D1) && _player.Money >= 20)
             {
-                _player.Money += 100;
-            }
-            else if (SingleKeyPress(Keys.D2))
-            {
+                
             }
 
             return trap;
