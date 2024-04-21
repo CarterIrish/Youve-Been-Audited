@@ -128,7 +128,7 @@ namespace YouveBeenAudited
         /// <summary>
         /// Creates a new EnemyManager with an empty enemy path
         /// </summary>
-        public EnemyManager(int numOfEnemies, int numOfWaves, int waveModifier)
+        public EnemyManager(int numOfEnemies, int numOfWaves, double waveModifier)
         {
             _numOfEnemies = numOfEnemies;
             _path = new List<Vector2>();
@@ -161,7 +161,7 @@ namespace YouveBeenAudited
             // Spawns enemies delayed depending on the current wave
             if (_timer >= ((double)3/_currentWave) && _enemies.Count + _killedEnemies < _numOfEnemies)
             {
-                _enemies.Add(new Enemy((int)_path[0].X, (int)_path[0].Y, 150, (int)(2*_waveModifier), _auditorTexture, _path));
+                _enemies.Add(new Enemy((int)_path[0].X, (int)_path[0].Y, 150, (int)(2*(_currentWave)), _auditorTexture, _path));
                 _timer = 0;
             }
 
