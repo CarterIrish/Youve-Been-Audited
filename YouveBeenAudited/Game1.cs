@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using ShapeUtils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -134,6 +135,8 @@ namespace YouveBeenAudited
             // initialize useful window measurements
             _windowCenter = new Point(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
             _windowSize = new Point(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
+
+            GameObject.Debug = true;
         }
 
         protected override void Initialize()
@@ -335,7 +338,7 @@ namespace YouveBeenAudited
             GraphicsDevice.Clear(Color.Bisque);
 
             // Start the sprite batch for drawing all elements to screen
-            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
+            _spriteBatch.Begin();
 
             // Draw according to game state
             switch (_gameState)
@@ -348,7 +351,7 @@ namespace YouveBeenAudited
                     {
                         b.Draw(_spriteBatch, b.Color);
                     }
-
+                    _spriteBatch.End();
                     break;
                 // Active game
                 case GameStates.Game:
@@ -364,6 +367,12 @@ namespace YouveBeenAudited
                         trap.Draw(_spriteBatch);
                     }
                     _player.Draw(_spriteBatch);
+                    _spriteBatch.End();
+
+                    ShapeBatch.Begin(GraphicsDevice);
+                    _player.DrawShapeBatch();
+                    ShapeBatch.End();
+
                     break;
                 // Options/pause menu
                 case GameStates.Options:
@@ -371,6 +380,7 @@ namespace YouveBeenAudited
                     {
                         b.Draw(_spriteBatch, b.Color);
                     }
+                    _spriteBatch.End();
                     break;
                 // Game over
                 case GameStates.GameOver:
@@ -378,9 +388,13 @@ namespace YouveBeenAudited
                     {
                         b.Draw(_spriteBatch, b.Color);
                     }
+                    _spriteBatch.End();
                     break;
             }
-            _spriteBatch.End();
+            
+
+
+
             base.Draw(gameTime);
         }
 

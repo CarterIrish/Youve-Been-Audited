@@ -210,12 +210,15 @@ namespace YouveBeenAudited
             }
         }
 
+        /// <summary>
+        /// Draws the ShapeBatch elements for the player
+        /// </summary>
         public void DrawShapeBatch()
         {
-            //if (GameObject.debug)
-            //{
-            //    ShapeBatch.BoxOutline(new Rectangle(Position.X, Position.Y, SpriteSize.X, SpriteSize.Y), Color.Red);
-            //}
+            if (GameObject.debug)
+            {
+                ShapeBatch.BoxOutline(new Rectangle(Position.X, Position.Y, SpriteSize.X, SpriteSize.Y), Color.Red);
+            }
         }
 
         /// <summary>
