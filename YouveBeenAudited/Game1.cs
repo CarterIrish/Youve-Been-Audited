@@ -362,7 +362,14 @@ namespace YouveBeenAudited
                     // Handles Text UI
                     _spriteBatch.DrawString(_arial25, $"${_player.Money}", new Vector2(50, 50), Color.DarkGreen, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
                     _spriteBatch.DrawString(_arial25, $"Wave {enemyManager.CurrentWave}/{enemyManager.TotalWaves}", new Vector2(_windowCenter.X - 150, 50), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
-                    _spriteBatch.DrawString(_arial25, $"Enemies Left in Wave: {enemyManager.RemainingEnemies}", new Vector2(_windowCenter.X - 350, 150), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
+                    if (enemyManager.RemainingEnemies == 0)
+                    {
+                        _spriteBatch.DrawString(_arial25, $"Time Till Next Wave:" + string.Format("{0:0.00}",  15 - enemyManager.Timer), new Vector2(_windowCenter.X - 350, 150), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
+                    }
+                    else
+                    {
+                        _spriteBatch.DrawString(_arial25, $"Enemies Left in Wave: {enemyManager.RemainingEnemies}", new Vector2(_windowCenter.X - 350, 150), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
+                    }
                     enemyManager.DrawEnemies(_spriteBatch);
 
                     foreach (Trap trap in _traps)
