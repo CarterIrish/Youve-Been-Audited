@@ -612,30 +612,43 @@ namespace YouveBeenAudited
             if (_debug)
             {
                 ShapeBatch.BoxOutline(_player.Position, Color.Red);
+                foreach (Enemy em in _enemyManager.Enemies)
+                {
+                    ShapeBatch.BoxOutline(new Rectangle(em.Position.X, em.Position.Y, em.SpriteSize.X, em.SpriteSize.Y), Color.Blue);
+                }
+                //foreach (Trap t in _traps)
+                //{
+                //    ShapeBatch.BoxOutline(t.Position, Color.Green);
+                //}
             }
         }
 
         public void ResolveCollisions()
         {
-            // Checks trap collisions against
+            // For all the enemies
             foreach (Enemy enemy in _enemyManager.Enemies)
             {
-                bool isSlowed = false;
+                // For all the traps
                 for (int i = 0; i < _traps.Count; i++)
                 {
+                    // If that trap is colliding with an enemy
                     if (_traps[i].CheckCollisions(enemy))
                     {
-                        _traps[i].DoEffect(enemy);
-                        enemy.TakeDamage(_traps[i].DamageAmnt);
-                        _traps.RemoveAt(i);
-                        isSlowed = enemy.IsSlowed;
+                        switch (_traps[i])
+                        {
+                            case Glue:
+                                _traps[i].DoEffect(enemy);
+                                break;
+
+                            default:
+                                enemy.TakeDamage(_traps[i].DamageAmnt);
+                                _traps.RemoveAt(i);
+                                break;
+                        }
+
                         break;
                     }
-                    else
-                    {
-                    }
                 }
-                enemy.IsSlowed = isSlowed;
             }
 
             // Check collisions with walls
