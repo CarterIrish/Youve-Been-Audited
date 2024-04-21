@@ -93,7 +93,7 @@ namespace YouveBeenAudited
         /// <param name="path">The path of enemy.</param>
         public Enemy(int x, int y, int health, int speed, Texture2D texture, List<Vector2> path) : base(x, y, texture, health, speed)
         {
-            Path = path;
+            _path = path;
             base._position.X = x;
             base._position.Y = y;
             base._health = health;
