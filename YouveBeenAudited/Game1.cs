@@ -67,7 +67,8 @@ namespace YouveBeenAudited
         private List<Trap> _traps;
 
         // Music
-        private Song moonlightSonata;
+        private Song _moonlightSonata;
+        private Song _appassionata;
 
         //Animation
         //public const double _secondsPerFrame = 6.5f / 60; //This is here for reference.
@@ -183,10 +184,14 @@ namespace YouveBeenAudited
             _nailTexture = Content.Load<Texture2D>("spikes");
             _player = new Player(999, 999, _playerTexture, 999, 999, 999);
             _player.LoadContent(Content);
-            moonlightSonata = Content.Load<Song>("Moonlight Sonata");
-            MediaPlayer.Play(moonlightSonata);
+            _appassionata = (Content.Load<Song>("Appassionata"));
+            _moonlightSonata = (Content.Load<Song>("Moonlight Sonata"));
+
+
+            MediaPlayer.Play(_appassionata);
             MediaPlayer.IsRepeating = true;
 
+            
             //Animation Setup
             _timeCount = 0;
 
@@ -280,7 +285,6 @@ namespace YouveBeenAudited
             {
                 // On  menu
                 case GameStates.Menu:
-                    MediaPlayer.Pause();
                     // Check all menu buttons for clicks
                     foreach (Button b in _menuButtons)
                     {
@@ -291,7 +295,6 @@ namespace YouveBeenAudited
                 // Active game
                 case GameStates.Game:
                     // Switches Game States if conditions met
-                    MediaPlayer.Resume();
                     if (Keyboard.GetState().IsKeyDown(Keys.Escape) == true)
                     {
                         _gameState = GameStates.Options;
@@ -455,6 +458,9 @@ namespace YouveBeenAudited
                     System.Diagnostics.Debug.WriteLine("Change State ==> Game");
                     _gameState = GameStates.Game;
                     NextLevel("../../../../finalTestingFile.level");
+                    MediaPlayer.Stop();
+                    MediaPlayer.Play(_moonlightSonata);
+                    MediaPlayer.IsRepeating = true;
                     break;
                 // If its the exit game button
                 case "ExitGameButton":
@@ -464,10 +470,14 @@ namespace YouveBeenAudited
 
                 case "ResumeGameButton":
                     _gameState = GameStates.Game;
+                    MediaPlayer.Resume();
                     break;
 
                 case "MenuButton":
                     _gameState = GameStates.Menu;
+                    MediaPlayer.Stop();
+                    MediaPlayer.Play(_appassionata);
+                    MediaPlayer.IsRepeating = true;
                     break;
             }
         }
