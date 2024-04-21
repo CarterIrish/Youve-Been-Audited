@@ -61,7 +61,8 @@ namespace YouveBeenAudited
         {
             _money = startingMoney;
             _spriteSize = new Point(55, 125);
-            _destinationRectangle = new Rectangle(_position.X, _position.Y, _spriteSize.X, _spriteSize.Y);
+            int scalar = (_spriteSize.X * (tileHeight)) / _spriteSize.Y;
+            _destinationRectangle = new Rectangle(_position.X, _position.Y, scalar, tileHeight);
             //_destinationRectangle = ScaledRectangle(tileHeight);
             _speed = 6;
             _currentFrame = 0;
@@ -173,17 +174,6 @@ namespace YouveBeenAudited
                 default:
                     sb.Draw(Texture, _destinationRectangle, new Rectangle(400, 0, _spriteSize.X, _spriteSize.Y), Color.White);
                     break;
-            }
-        }
-
-        /// <summary>
-        /// Draws the ShapeBatch elements for the player
-        /// </summary>
-        public void DrawShapeBatch()
-        {
-            if (GameObject.debug)
-            {
-                ShapeBatch.BoxOutline(new Rectangle(Position.X, Position.Y, SpriteSize.X, SpriteSize.Y), Color.Red);
             }
         }
 

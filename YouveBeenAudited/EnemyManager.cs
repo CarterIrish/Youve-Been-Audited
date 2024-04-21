@@ -16,17 +16,21 @@ namespace YouveBeenAudited
 
         private List<Vector2> _path;
 
+        // Enemy Stuff
         private List<Enemy> _enemies;
         private int _numOfEnemies;
         private int _killedEnemies;
+        private bool _enemyAtGoal;
 
+        // Wave Stuff
         private int _totalWaves;
         private int _currentWave;
         private double _waveModifier;
 
+        // Timer
         private double _timer;
+        private bool _resetTimer;
 
-        public bool enemyAtGoal;
 
         //Enemy Textures
         private Texture2D _auditorTexture;
@@ -38,32 +42,30 @@ namespace YouveBeenAudited
         /// <summary>
         /// Gets and sets path
         /// </summary>
-        public List<Vector2> _Path
+        public List<Vector2> Path
         {
             get { return _path; }
             set { _path = value; }
         }
 
         /// <summary>
-        /// Gets enemy list
+        /// Gets the enemy list
         /// </summary>
         public List<Enemy> Enemies
         {
             get => _enemies;
         }
 
+        /// <summary>
+        /// Gets and sets the number of enemies per wave
+        /// </summary>
         public int NumOfEnemies
         {
             set { _numOfEnemies = value; }
         }
 
-        public double WaveModifier
-        {
-            set { _waveModifier = value; }
-        }
-
         /// <summary>
-        /// Returns the number of enemies left in a wave
+        /// Gets the number of enemies left in a wave
         /// </summary>
         public int RemainingEnemies
         {
@@ -71,17 +73,34 @@ namespace YouveBeenAudited
         }
 
         /// <summary>
-        /// Gets and sets Current Wave
+        /// Gets whether an enemy has reached the goal
+        /// </summary>
+        public bool EnemyAtGoal
+        {
+            get => _enemyAtGoal;
+        }
+
+        /// <summary>
+        /// Gets and sets the wave modifier
+        /// </summary>
+        public double WaveModifier
+        {
+            get => _waveModifier;
+            set { _waveModifier = value; }
+        }
+
+        /// <summary>
+        /// Gets and sets the current wave number
         /// </summary>
         public int CurrentWave { get => _currentWave; set { _currentWave = value; } }
 
         /// <summary>
-        /// Gets and sets total waves
+        /// Gets and sets the total wave number
         /// </summary>
         public int TotalWaves { get => _totalWaves; set { _totalWaves = value; } }
 
         /// <summary>
-        /// Gets Timer
+        /// Gets the timer
         /// </summary>
         public double Timer { get => _timer; }
 
@@ -103,7 +122,7 @@ namespace YouveBeenAudited
             _enemies = new List<Enemy>();
             _killedEnemies = 0;
             _timer = 0;
-            enemyAtGoal = false;
+            _enemyAtGoal = false;
         }
 
         /// <summary>
@@ -118,8 +137,9 @@ namespace YouveBeenAudited
             _waveModifier = waveModifier;
             _currentWave = 1;
             _killedEnemies = 0;
-            enemyAtGoal = false;
+            _enemyAtGoal = false;
             _timer = 0;
+            _resetTimer = false;
         }
 
         /// <summary>
@@ -137,15 +157,24 @@ namespace YouveBeenAudited
         public void UpdateEnemies(GameTime gt, Game1 game)
         {
             _timer += gt.ElapsedGameTime.TotalSeconds;
-            if (_timer >= (3/_currentWave) && _enemies.Count + _killedEnemies < _numOfEnemies)
+
+            // Spawns enemies delayed depending on the current wave
+            if (_timer >= ((double)3/_currentWave) && _enemies.Count + _killedEnemies < _numOfEnemies)
             {
-                _enemies.Add(new Enemy((int)_path[0].X, (int)_path[0].Y, _auditorTexture, 150, _path));
+                _enemies.Add(new Enemy((int)_path[0].X, (int)_path[0].Y, 150, 2, _auditorTexture, _path));
                 _timer = 0;
             }
+
+            // If the enemies were killed, wait until 15 seconds and start
+            // the next wave. OR call GameOver if the final wave was beat
             if (_killedEnemies == _numOfEnemies)
             {
-                
-                if (TotalWaves == CurrentWave)
+                if(!_resetTimer)
+                {
+                    _timer = 0;
+                    _resetTimer = true;
+                }
+                if (_totalWaves == _currentWave)
                 {
                     game.GameOver();
                 }
@@ -154,6 +183,9 @@ namespace YouveBeenAudited
                     NextWave();
                 }
             }
+            
+            // Removes enemies from enemy list if they died, or call GameOver if 
+            // enemies reached the goal
             for (int i = 0; i < _enemies.Count;)
             {
                 if (_enemies[i].AtGoal == true)
@@ -179,7 +211,8 @@ namespace YouveBeenAudited
         /// </summary>
         public void NextWave()
         {
-            CurrentWave++;
+            _resetTimer = false;
+            _currentWave++;
             _numOfEnemies = (int)(_numOfEnemies * _waveModifier);
             _killedEnemies = 0;
         }
