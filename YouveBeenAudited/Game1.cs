@@ -114,6 +114,9 @@ namespace YouveBeenAudited
         private int _marginWidth;   // pixel width of the side margins
         private List<GameObject> _wallList; // list of walls in the map
 
+        //Debugger
+        bool _debug;
+
         #endregion Game Fields
 
         #region Pre GameLoop
@@ -138,7 +141,8 @@ namespace YouveBeenAudited
             _windowCenter = new Point(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
             _windowSize = new Point(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
 
-            GameObject.Debug = true;
+            // turns debugger on/off
+            _debug = true;
         }
 
         protected override void Initialize()
@@ -170,7 +174,7 @@ namespace YouveBeenAudited
             _pauseTexture = Content.Load<Texture2D>("pause_screen");
             _woodFloorTexture = Content.Load<Texture2D>("tile_wood_floor");
             _wallFloralTexture = Content.Load<Texture2D>("tile_floral_wall");
-            _grassFloorTexture = Content.Load<Texture2D>("tile_grass");
+            _grassFloorTexture = Content.Load<Texture2D>("tile_grass_large");
             _nailTexture = Content.Load<Texture2D>("spikes");
             _player = new Player(999, 999, _playerTexture, 999, 999, 999);
             _player.LoadContent(Content);
@@ -304,7 +308,7 @@ namespace YouveBeenAudited
                     {
                         _player.Money += 100 * (currentEnemies - enemyManager.RemainingEnemies); // Player gets money with each kill
                     }
-                    if (enemyManager.enemyAtGoal)
+                    if (enemyManager.EnemyAtGoal)
                     {
                         _gameState = GameStates.GameOver;
                     }
@@ -341,7 +345,7 @@ namespace YouveBeenAudited
             GraphicsDevice.Clear(Color.Bisque);
 
             // Start the sprite batch for drawing all elements to screen
-            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null);
 
             // Draw according to game state
             switch (_gameState)
@@ -358,6 +362,7 @@ namespace YouveBeenAudited
                     break;
                 // Active game
                 case GameStates.Game:
+                    _spriteBatch.Draw(_grassFloorTexture, new Rectangle(0,0, _grassFloorTexture.Width*3*(int)_UIscalar, _grassFloorTexture.Height*3*(int)_UIscalar), Color.White);
                     DrawLevel(_spriteBatch);
                     // Handles Text UI
                     _spriteBatch.DrawString(_arial25, $"${_player.Money}", new Vector2(50, 50), Color.DarkGreen, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
@@ -380,7 +385,7 @@ namespace YouveBeenAudited
                     _spriteBatch.End();
 
                     ShapeBatch.Begin(GraphicsDevice);
-                    _player.DrawShapeBatch();
+                    DrawDebug(_spriteBatch);
                     ShapeBatch.End();
 
                     break;
@@ -504,7 +509,7 @@ namespace YouveBeenAudited
 
             //adds the vectors to the enemy path List
             string[] points;
-            enemyManager._Path.Clear();
+            enemyManager.Path.Clear();
             points = input.ReadLine().Split('|');
             foreach (string p in points)
             {
@@ -513,7 +518,7 @@ namespace YouveBeenAudited
                     string[] coordinates = p.Split(",");
                     int x = (int.Parse(coordinates[0]) * _tileLength) + _marginWidth + (_tileLength / 2);
                     int y = (int.Parse(coordinates[1]) * _tileLength) + (_tileLength / 2);
-                    enemyManager._Path.Add(new Vector2((float)x, (float)y));
+                    enemyManager.Path.Add(new Vector2((float)x, (float)y));
                 }
             }
 
@@ -563,12 +568,20 @@ namespace YouveBeenAudited
                 }
             }
 
-            foreach (Vector2 p in enemyManager._Path)
+            foreach (Vector2 p in enemyManager.Path)
             {
                 float x = p.X;
                 float y = p.Y;
                 Rectangle pointRect = new Rectangle((int)(x - 5), (int)(y - 5), 10, 10);
                 sb.Draw(_woodFloorTexture, pointRect, Color.Blue);
+            }
+        }
+
+        private void DrawDebug(SpriteBatch sb)
+        {
+            if (_debug)
+            {
+                ShapeBatch.BoxOutline(new Rectangle(_player.Position.X, _player.Position.Y, _player.SpriteSize.X, _player.SpriteSize.Y), Color.Red);
             }
         }
 
