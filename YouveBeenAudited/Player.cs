@@ -72,7 +72,6 @@ namespace YouveBeenAudited
         /// <param name="content">ContentManager to load from</param>
         public void LoadContent(ContentManager content)
         {
-            _nailTexture = content.Load<Texture2D>("spikes");
             _font = content.Load<SpriteFont>("Arial25");
         }
 
@@ -86,28 +85,6 @@ namespace YouveBeenAudited
             {
                 _prevState = _currentState;
             }
-        }
-
-        /// <summary>
-        /// Place a trap based on input
-        /// </summary>
-        public Trap PlaceTrap()
-        {
-            Trap trap = null;
-            if (SingleKeyPress(Keys.Space) && _money >= 20)
-            {
-                _money -= 20;
-                trap = new Trap(_position.X - 10, _position.Y + Position.Height / 6, _nailTexture, 20, 100);
-            }
-            else if (SingleKeyPress(Keys.D1))
-            {
-                _money += 100;
-            }
-            else if (SingleKeyPress(Keys.D2))
-            {
-            }
-            _prevKB = Keyboard.GetState();
-            return trap;
         }
 
         /// <summary>
@@ -158,16 +135,6 @@ namespace YouveBeenAudited
             {
                 _currentState = CharacterStates.Idle;
             }
-        }
-
-        /// <summary>
-        /// Checks if a key has been pressed only this frame and not the previous
-        /// </summary>
-        /// <param name="key">key to check for a single press</param>
-        /// <returns>True if the key was pressed only this frame</returns>
-        public bool SingleKeyPress(Keys key)
-        {
-            return Keyboard.GetState().IsKeyDown(key) && _prevKB.IsKeyUp(key);
         }
 
         /// <summary>

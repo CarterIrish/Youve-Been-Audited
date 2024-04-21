@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection.Metadata;
 
 namespace YouveBeenAudited
 {
@@ -97,6 +98,7 @@ namespace YouveBeenAudited
 
         private Texture2D _wallFloralTexture;
         private Texture2D _grassFloorTexture;
+        private Texture2D _nailTexture;
 
         // Input sources
         private MouseState _mouseState;
@@ -104,11 +106,11 @@ namespace YouveBeenAudited
         private KeyboardState _prevKbState;
 
         //Level Information
-        private int _tileLength; // Dimensions of a square tile
+        private int _tileLength;    // Dimensions of a square tile
 
-        private TileType[,] _map; // 2D array representing the tile types of the map
-        private int _mapWidth; // pixel width of the playable map
-        private int _marginWidth; // pixel width of the side margins
+        private TileType[,] _map;   // 2D array representing the tile types of the map
+        private int _mapWidth;      // pixel width of the playable map
+        private int _marginWidth;   // pixel width of the side margins
         private List<GameObject> _wallList; // list of walls in the map
 
         #endregion Game Fields
@@ -166,6 +168,7 @@ namespace YouveBeenAudited
             _woodFloorTexture = Content.Load<Texture2D>("tile_wood_floor");
             _wallFloralTexture = Content.Load<Texture2D>("tile_floral_wall");
             _grassFloorTexture = Content.Load<Texture2D>("tile_grass");
+            _nailTexture = Content.Load<Texture2D>("spikes");
             _player = new Player(0, 0, _playerTexture, 10, 12);
             _player.LoadContent(Content);
 
@@ -286,7 +289,7 @@ namespace YouveBeenAudited
                     // Deals with player and trap interactions
                     _player.Update(gameTime);
                     Trap trap;
-                    if ((trap = _player.PlaceTrap()) != null)
+                    if ((trap = PlaceTrap()) != null)
                     {
                         _traps.Add(trap);
                     }
@@ -573,6 +576,38 @@ namespace YouveBeenAudited
 
             // Check collisions with walls
             _player.ResolveCollisions(_wallList);
+        }
+
+        /// <summary>
+        /// Place a trap based on input
+        /// </summary>
+        private Trap PlaceTrap()
+        {
+            Trap trap = null;
+            if (SingleKeyPress(Keys.Space) && _player.Money >= 20)
+            {
+                _player.Money -= 20;
+                trap = new Trap(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _nailTexture, 20, 100);
+            }
+            else if (SingleKeyPress(Keys.D1))
+            {
+                _player.Money += 100;
+            }
+            else if (SingleKeyPress(Keys.D2))
+            {
+            }
+            _prevKbState = Keyboard.GetState();
+            return trap;
+        }
+
+        /// <summary>
+        /// Checks if a key has been pressed only this frame and not the previous
+        /// </summary>
+        /// <param name="key">key to check for a single press</param>
+        /// <returns>True if the key was pressed only this frame</returns>
+        private bool SingleKeyPress(Keys key)
+        {
+            return Keyboard.GetState().IsKeyDown(key) && _prevKbState.IsKeyUp(key);
         }
     }
 
