@@ -58,7 +58,6 @@ namespace YouveBeenAudited
 
         // Player
         private Player _player;
-        
 
         // Traps
         private List<Trap> _traps;
@@ -95,6 +94,7 @@ namespace YouveBeenAudited
 
         //Map Textures
         private Texture2D _woodFloorTexture;
+
         private Texture2D _wallFloralTexture;
         private Texture2D _grassFloorTexture;
 
@@ -501,8 +501,8 @@ namespace YouveBeenAudited
             enemyManager.WaveModifier = double.Parse(input.ReadLine());
 
             string[] spawn;
-            spawn = input.ReadLine().Split(','); 
-            _player.MoveToSpawn((int.Parse(spawn[0]) * _tileLength) + _marginWidth, int.Parse(spawn[1]) * _tileLength);
+            spawn = input.ReadLine().Split(',');
+            _player = new Player((int.Parse(spawn[0]) * _tileLength) + _marginWidth, int.Parse(spawn[1]) * _tileLength, _playerTexture, 100, 100);
         }
 
         /// <summary>
