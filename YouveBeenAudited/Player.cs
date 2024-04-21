@@ -148,12 +148,11 @@ namespace YouveBeenAudited
                 case CharacterStates.Left:
                     sb.Draw(
                 Texture,
-                new Vector2(_position.X, _position.Y),
+                _destinationRectangle,
                 new Rectangle(((_spriteSize.X + 25) * _currentFrame) + 560, 0, _spriteSize.X, _spriteSize.Y),
                 Color.White,
                 0.0f,
                 Vector2.Zero,
-                1.0f,
                 SpriteEffects.FlipHorizontally,
                 0.0f);
                     break;
@@ -161,12 +160,11 @@ namespace YouveBeenAudited
                 case CharacterStates.Right:
                     sb.Draw(
                 Texture,
-                new Vector2(_position.X, _position.Y),
+                _destinationRectangle,
                 new Rectangle(((_spriteSize.X + 25) * _currentFrame) + 560, 0, _spriteSize.X, _spriteSize.Y),
                 Color.White,
                 0.0f,
                 Vector2.Zero,
-                1.0f,
                 SpriteEffects.None,
                 0.0f);
                     break;
@@ -177,12 +175,15 @@ namespace YouveBeenAudited
             }
         }
 
+        /// <summary>
+        /// Draws the ShapeBatch elements for the player
+        /// </summary>
         public void DrawShapeBatch()
         {
-            //if (GameObject.debug)
-            //{
-            //    ShapeBatch.BoxOutline(new Rectangle(Position.X, Position.Y, SpriteSize.X, SpriteSize.Y), Color.Red);
-            //}
+            if (GameObject.debug)
+            {
+                ShapeBatch.BoxOutline(new Rectangle(Position.X, Position.Y, SpriteSize.X, SpriteSize.Y), Color.Red);
+            }
         }
 
         /// <summary>

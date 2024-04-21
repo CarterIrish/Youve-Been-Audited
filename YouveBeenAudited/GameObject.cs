@@ -38,8 +38,8 @@ namespace YouveBeenAudited
         /// </summary>
         public Texture2D Texture { get => _texture; }
 
-        #endregion Properties
-
+        #endregion Propertiesd
+         
         #region Methods
 
         /// <summary>
