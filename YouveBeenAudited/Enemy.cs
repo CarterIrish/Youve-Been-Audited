@@ -98,11 +98,11 @@ namespace YouveBeenAudited
             if (_currentPoint < Path.Count)
             {
                 Vector2 direction = _path[_currentPoint] - new Vector2(_position.X, _position.Y);
-                direction = Vector2.Normalize(direction) * Speed;
+                direction = Vector2.Normalize(direction) * _speed;
                 _position.X += (int)(direction.X);
                 _position.Y += (int)(direction.Y);
-                if ((_position.X < _path[CurrentPoint].X + Speed && _position.X > _path[CurrentPoint].X - Speed) &&
-                _position.Y < _path[CurrentPoint].Y + Speed && _position.Y > _path[CurrentPoint].Y - Speed)
+                if ((_position.X < _path[_currentPoint].X + _speed && _position.X > _path[_currentPoint].X - _speed) &&
+                _position.Y < _path[_currentPoint].Y + _speed && _position.Y > _path[_currentPoint].Y - _speed)
                 {
                     _currentPoint++;
                 }

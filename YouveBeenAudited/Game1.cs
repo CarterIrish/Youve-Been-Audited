@@ -304,7 +304,7 @@ namespace YouveBeenAudited
                     {
                         _player.Money += 100 * (currentEnemies - enemyManager.RemainingEnemies); // Player gets money with each kill
                     }
-                    if (enemyManager.enemyAtGoal)
+                    if (enemyManager.EnemyAtGoal)
                     {
                         _gameState = GameStates.GameOver;
                     }
@@ -504,7 +504,7 @@ namespace YouveBeenAudited
 
             //adds the vectors to the enemy path List
             string[] points;
-            enemyManager._Path.Clear();
+            enemyManager.Path.Clear();
             points = input.ReadLine().Split('|');
             foreach (string p in points)
             {
@@ -513,7 +513,7 @@ namespace YouveBeenAudited
                     string[] coordinates = p.Split(",");
                     int x = (int.Parse(coordinates[0]) * _tileLength) + _marginWidth + (_tileLength / 2);
                     int y = (int.Parse(coordinates[1]) * _tileLength) + (_tileLength / 2);
-                    enemyManager._Path.Add(new Vector2((float)x, (float)y));
+                    enemyManager.Path.Add(new Vector2((float)x, (float)y));
                 }
             }
 
@@ -563,7 +563,7 @@ namespace YouveBeenAudited
                 }
             }
 
-            foreach (Vector2 p in enemyManager._Path)
+            foreach (Vector2 p in enemyManager.Path)
             {
                 float x = p.X;
                 float y = p.Y;
