@@ -57,13 +57,13 @@ namespace YouveBeenAudited
         /// <param name="texture"></param>
         /// <param name="startingMoney"></param>
         /// <param name="health"></param>
-        public Player(int x, int y, Texture2D texture, int health, int startingMoney, int tileHeight) : base(x, y, texture, health, 10)
+        public Player(int x, int y, Texture2D texture, int health, int startingMoney, int tileHeight, int speed) : base(x, y, texture, health, speed)
         {
             _money = startingMoney;
             _spriteSize = new Point(55, 125);
             int scalar = (_spriteSize.X * (tileHeight)) / _spriteSize.Y;
             _destinationRectangle = new Rectangle(_position.X, _position.Y, scalar, tileHeight);
-            _speed = 6;
+            _position = _destinationRectangle;
             _currentFrame = 0;
         }
 
@@ -197,7 +197,7 @@ namespace YouveBeenAudited
         public void ResolveCollisions(List<GameObject> walls)
         {
             List<Rectangle> intersections = new List<Rectangle>();
-            Rectangle playerRect = new Rectangle(Position.X, Position.Y, SpriteSize.X, SpriteSize.Y);
+            Rectangle playerRect = new Rectangle(Position.X, Position.Y, Position.Width, Position.Height);
             Rectangle overlapRect;
 
             // Find the collisions

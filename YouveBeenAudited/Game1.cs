@@ -69,6 +69,7 @@ namespace YouveBeenAudited
 
         // Music
         private Song _moonlightSonata;
+
         private Song _appassionata;
 
         //Animation
@@ -184,16 +185,14 @@ namespace YouveBeenAudited
             _grassFloorTexture = Content.Load<Texture2D>("tile_grass_large");
             _nailTexture = Content.Load<Texture2D>("spikes");
             _glueTexture = Content.Load<Texture2D>("glue");
-            _player = new Player(999, 999, _playerTexture, 999, 999, 999);
+            _player = new Player(999, 999, _playerTexture, 999, 999, 999, 999);
             _player.LoadContent(Content);
             _appassionata = (Content.Load<Song>("Appassionata"));
             _moonlightSonata = (Content.Load<Song>("Moonlight Sonata"));
 
-
             MediaPlayer.Play(_appassionata);
             MediaPlayer.IsRepeating = true;
 
-            
             //Animation Setup
             _timeCount = 0;
 
@@ -563,7 +562,7 @@ namespace YouveBeenAudited
 
             string[] spawn;
             spawn = input.ReadLine().Split(',');
-            _player = new Player((int.Parse(spawn[0]) * _tileLength) + _marginWidth, int.Parse(spawn[1]) * _tileLength, _playerTexture, 100, 100, _tileLength);
+            _player = new Player((int.Parse(spawn[0]) * _tileLength) + _marginWidth, int.Parse(spawn[1]) * _tileLength, _playerTexture, 100, 100, _tileLength, 6);
         }
 
         /// <summary>
@@ -613,7 +612,7 @@ namespace YouveBeenAudited
         {
             if (_debug)
             {
-                ShapeBatch.BoxOutline(new Rectangle(_player.Position.X, _player.Position.Y, _player.SpriteSize.X, _player.SpriteSize.Y), Color.Red);
+                ShapeBatch.BoxOutline(_player.Position, Color.Red);
             }
         }
 
