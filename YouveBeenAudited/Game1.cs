@@ -174,7 +174,7 @@ namespace YouveBeenAudited
             _pauseTexture = Content.Load<Texture2D>("pause_screen");
             _woodFloorTexture = Content.Load<Texture2D>("tile_wood_floor");
             _wallFloralTexture = Content.Load<Texture2D>("tile_floral_wall");
-            _grassFloorTexture = Content.Load<Texture2D>("tile_grass");
+            _grassFloorTexture = Content.Load<Texture2D>("tile_grass_large");
             _nailTexture = Content.Load<Texture2D>("spikes");
             _player = new Player(999, 999, _playerTexture, 999, 999, 999);
             _player.LoadContent(Content);
@@ -362,6 +362,7 @@ namespace YouveBeenAudited
                     break;
                 // Active game
                 case GameStates.Game:
+                    _spriteBatch.Draw(_grassFloorTexture, new Rectangle(0,0, _grassFloorTexture.Width*3*(int)_UIscalar, _grassFloorTexture.Height*3*(int)_UIscalar), Color.White);
                     DrawLevel(_spriteBatch);
                     // Handles Text UI
                     _spriteBatch.DrawString(_arial25, $"${_player.Money}", new Vector2(50, 50), Color.DarkGreen, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
