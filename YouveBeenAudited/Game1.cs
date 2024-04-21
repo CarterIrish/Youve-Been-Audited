@@ -18,6 +18,7 @@ namespace YouveBeenAudited
     internal enum GameStates
     {
         Menu,
+        LevelSelect,
         Game,
         Options,
         GameOver
@@ -292,6 +293,12 @@ namespace YouveBeenAudited
                     }
                     break;
 
+                // Level Select (Between Menu And Game)
+                case GameStates.LevelSelect:
+
+                    break;
+
+
                 // Active game
                 case GameStates.Game:
                     // Switches Game States if conditions met
@@ -375,6 +382,13 @@ namespace YouveBeenAudited
                     }
                     _spriteBatch.End();
                     break;
+
+                //On Level Select
+                case GameStates.LevelSelect:
+
+                    break;
+
+
                 // Active game
                 case GameStates.Game:
                     _spriteBatch.Draw(_grassFloorTexture, new Rectangle(0, 0, _grassFloorTexture.Width * 3 * (int)_UIscalar, _grassFloorTexture.Height * 3 * (int)_UIscalar), Color.White);
@@ -456,8 +470,10 @@ namespace YouveBeenAudited
             {
                 // If its the start button
                 case "StartButton":
-                    System.Diagnostics.Debug.WriteLine("Change State ==> Game");
-                    _gameState = GameStates.Game;
+                    System.Diagnostics.Debug.WriteLine("Change State ==> Level Select");
+                    _gameState = GameStates.LevelSelect;
+
+                    _gameState = GameStates.Game; //Place this line and code below it somewhere else once you are ready to work on level select!
                     NextLevel("../../../../Level2.level");
                     MediaPlayer.Stop();
                     MediaPlayer.Play(_moonlightSonata);
