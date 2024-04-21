@@ -169,7 +169,6 @@ namespace YouveBeenAudited
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
             _playerTexture = Content.Load<Texture2D>("player_spritesheet");
             _arial25 = Content.Load<SpriteFont>("Arial25");
             _menuButtonTexture = Content.Load<Texture2D>("MenuButton");
@@ -187,8 +186,8 @@ namespace YouveBeenAudited
             _player = new Player(999, 999, _playerTexture, 999, 999, 999);
             _player.LoadContent(Content);
             _moonlightSonata = Content.Load<Song>("Moonlight Sonata");
-            MediaPlayer.Play(_moonlightSonata);
-            MediaPlayer.IsRepeating = true;
+            //MediaPlayer.Play(_moonlightSonata);
+            //MediaPlayer.IsRepeating = true;
 
             //Animation Setup
             _timeCount = 0;
@@ -310,6 +309,7 @@ namespace YouveBeenAudited
                         _traps.Add(trap);
                     }
                     ResolveCollisions();
+
                     _timeCount = _player.UpdateAnimation(_timeCount);
 
                     _enemyManager.UpdateEnemies(gameTime, this);
@@ -613,7 +613,7 @@ namespace YouveBeenAudited
             foreach (Enemy enemy in _enemyManager.Enemies)
             {
                 bool isSlowed = false;
-                for (int i = 0; i < _traps.Count;)
+                for (int i = 0; i < _traps.Count; i++)
                 {
                     if (_traps[i].CheckCollisions(enemy))
                     {
@@ -623,9 +623,8 @@ namespace YouveBeenAudited
                         isSlowed = enemy.IsSlowed;
                         break;
                     }
-                    else 
+                    else
                     {
-                        
                     }
                 }
                 enemy.IsSlowed = isSlowed;
@@ -648,7 +647,6 @@ namespace YouveBeenAudited
             }
             if (SingleKeyPress(Keys.D1) && _player.Money >= 20)
             {
-                
             }
 
             return trap;
