@@ -25,6 +25,7 @@ namespace YouveBeenAudited
         private double _waveModifier;
 
         private double _timer;
+        private bool _resetTimer;
 
         public bool enemyAtGoal;
 
@@ -120,6 +121,7 @@ namespace YouveBeenAudited
             _killedEnemies = 0;
             enemyAtGoal = false;
             _timer = 0;
+            _resetTimer = false;
         }
 
         /// <summary>
@@ -137,14 +139,18 @@ namespace YouveBeenAudited
         public void UpdateEnemies(GameTime gt, Game1 game)
         {
             _timer += gt.ElapsedGameTime.TotalSeconds;
-            if (_timer >= (3/_currentWave) && _enemies.Count + _killedEnemies < _numOfEnemies)
+            if (_timer >= ((double)3/_currentWave) && _enemies.Count + _killedEnemies < _numOfEnemies)
             {
                 _enemies.Add(new Enemy((int)_path[0].X, (int)_path[0].Y, _auditorTexture, 150, _path));
                 _timer = 0;
             }
             if (_killedEnemies == _numOfEnemies)
             {
-                
+                if(!_resetTimer)
+                {
+                    _timer = 0;
+                    _resetTimer = true;
+                }
                 if (TotalWaves == CurrentWave)
                 {
                     game.GameOver();
@@ -179,7 +185,8 @@ namespace YouveBeenAudited
         /// </summary>
         public void NextWave()
         {
-            CurrentWave++;
+            _resetTimer = false;
+            _currentWave++;
             _numOfEnemies = (int)(_numOfEnemies * _waveModifier);
             _killedEnemies = 0;
         }
