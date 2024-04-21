@@ -190,8 +190,8 @@ namespace YouveBeenAudited
             _appassionata = (Content.Load<Song>("Appassionata"));
             _moonlightSonata = (Content.Load<Song>("Moonlight Sonata"));
 
-            MediaPlayer.Play(_appassionata);
-            MediaPlayer.IsRepeating = true;
+            //MediaPlayer.Play(_appassionata);
+            //MediaPlayer.IsRepeating = true;
 
             //Animation Setup
             _timeCount = 0;
@@ -298,7 +298,6 @@ namespace YouveBeenAudited
 
                     break;
 
-
                 // Active game
                 case GameStates.Game:
                     // Switches Game States if conditions met
@@ -388,7 +387,6 @@ namespace YouveBeenAudited
 
                     break;
 
-
                 // Active game
                 case GameStates.Game:
                     _spriteBatch.Draw(_grassFloorTexture, new Rectangle(0, 0, _grassFloorTexture.Width * 3 * (int)_UIscalar, _grassFloorTexture.Height * 3 * (int)_UIscalar), Color.White);
@@ -424,9 +422,7 @@ namespace YouveBeenAudited
 
                     _spriteBatch.End();
 
-                    ShapeBatch.Begin(GraphicsDevice);
                     DrawDebug(_spriteBatch);
-                    ShapeBatch.End();
 
                     break;
                 // Options/pause menu
@@ -475,9 +471,9 @@ namespace YouveBeenAudited
 
                     _gameState = GameStates.Game; //Place this line and code below it somewhere else once you are ready to work on level select!
                     NextLevel("../../../../Level2.level");
-                    MediaPlayer.Stop();
-                    MediaPlayer.Play(_moonlightSonata);
-                    MediaPlayer.IsRepeating = true;
+                    //MediaPlayer.Stop();
+                    //MediaPlayer.Play(_moonlightSonata);
+                    //MediaPlayer.IsRepeating = true;
                     break;
                 // If its the exit game button
                 case "ExitGameButton":
@@ -492,9 +488,9 @@ namespace YouveBeenAudited
 
                 case "MenuButton":
                     _gameState = GameStates.Menu;
-                    MediaPlayer.Stop();
-                    MediaPlayer.Play(_appassionata);
-                    MediaPlayer.IsRepeating = true;
+                    //MediaPlayer.Stop();
+                    //MediaPlayer.Play(_appassionata);
+                    //MediaPlayer.IsRepeating = true;
                     break;
             }
         }
@@ -627,15 +623,19 @@ namespace YouveBeenAudited
         {
             if (_debug)
             {
+                ShapeBatch.Begin(GraphicsDevice);
                 ShapeBatch.BoxOutline(_player.Position, Color.Red);
+                ShapeBatch.End();
                 foreach (Enemy em in _enemyManager.Enemies)
                 {
+                    ShapeBatch.Begin(GraphicsDevice);
                     ShapeBatch.BoxOutline(new Rectangle(em.Position.X, em.Position.Y, em.SpriteSize.X, em.SpriteSize.Y), Color.Blue);
+                    ShapeBatch.End();
+                    sb.Begin();
+                    sb.DrawString(_arial25, $"X : {em.Position.X}, Y: {em.Position.Y}", new Vector2(em.Position.X + em.SpriteSize.X, em.Position.Y), Color.Blue);
+                    sb.DrawString(_arial25, $"Speed: {em.Speed}", new Vector2(em.Position.X + em.SpriteSize.X, em.Position.Y + 25), Color.Blue);
+                    sb.End();
                 }
-                //foreach (Trap t in _traps)
-                //{
-                //    ShapeBatch.BoxOutline(t.Position, Color.Green);
-                //}
             }
         }
 
@@ -647,12 +647,13 @@ namespace YouveBeenAudited
                 // For all the traps
                 for (int i = 0; i < _traps.Count; i++)
                 {
-                    // If that trap is colliding with an enemy
+                    // If that trap is colliding with the current enemy
                     if (_traps[i].CheckCollisions(enemy))
                     {
                         switch (_traps[i])
                         {
                             case Glue:
+                                System.Diagnostics.Debug.WriteLine("Glue collision");
                                 _traps[i].DoEffect(enemy);
                                 break;
 
@@ -668,7 +669,8 @@ namespace YouveBeenAudited
             }
 
             // Check collisions with walls
-            _player.ResolveCollisions(_wallList);
+            if (_debug == false)
+                _player.ResolveCollisions(_wallList);
         }
 
         /// <summary>

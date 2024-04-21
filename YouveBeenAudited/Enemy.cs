@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace YouveBeenAudited
 {
@@ -19,8 +20,8 @@ namespace YouveBeenAudited
         private int _currentPoint;
         private List<Vector2> _path;
         private Point _spriteSize;
-        double _timeCount;
-        bool isSlowed;
+        private double _timeCount;
+        private bool isSlowed;
 
         #endregion Fields
 
@@ -44,6 +45,7 @@ namespace YouveBeenAudited
                 return _atGoal;
             }
         }
+
         public bool IsSlowed
         {
             get { return isSlowed; }
@@ -109,6 +111,7 @@ namespace YouveBeenAudited
             _currentFrame = 0;
             _currentState = CharacterStates.Right;
             _spriteSize = new Point(55, 100);
+            isSlowed = false;
         }
 
         /// <summary>
@@ -130,9 +133,16 @@ namespace YouveBeenAudited
             if (_currentPoint < _path.Count)
             {
                 Vector2 direction = _path[_currentPoint] - new Vector2(_position.X, _position.Y);
+
                 direction = Vector2.Normalize(direction) * _speed;
-                _position.X += (int)(direction.X);
-                _position.Y += (int)(direction.Y);
+
+                System.Diagnostics.Debug.WriteLine($"Direction{Vector2.Normalize(direction) * Speed}");
+
+                _position.X += (int)(direction.X + 0.5f);
+                _position.Y += (int)(direction.Y + 0.5f);
+
+                System.Diagnostics.Debug.WriteLine($"   {(int)direction.X + 0.5}, {(int)direction.Y + 0.5}");
+
                 if ((_position.X < _path[_currentPoint].X + _speed && _position.X > _path[_currentPoint].X - _speed) &&
                 _position.Y < _path[_currentPoint].Y + _speed && _position.Y > _path[_currentPoint].Y - _speed)
                 {
