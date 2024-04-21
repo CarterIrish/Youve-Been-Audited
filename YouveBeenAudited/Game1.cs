@@ -154,7 +154,6 @@ namespace YouveBeenAudited
 
             // TODO: use this.Content to load your game content here
             _playerTexture = Content.Load<Texture2D>("player_spritesheet");
-            _player = new Player(50, 50, _playerTexture, 100, 100);
             _arial25 = Content.Load<SpriteFont>("Arial25");
             _menuButtonTexture = Content.Load<Texture2D>("MenuButton");
             _startButtonTexture = Content.Load<Texture2D>("StartButton");
