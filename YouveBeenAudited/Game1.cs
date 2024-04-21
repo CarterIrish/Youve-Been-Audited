@@ -311,6 +311,8 @@ namespace YouveBeenAudited
                         _gameState = GameStates.GameOver;
                     }
 
+                    DebugInputs();
+
                     break;
 
                 // Options screen / paused
@@ -330,7 +332,7 @@ namespace YouveBeenAudited
                     _traps.Clear();
                     break;
             }
-
+            _prevKbState = Keyboard.GetState();
             base.Update(gameTime);
         }
 
@@ -384,7 +386,11 @@ namespace YouveBeenAudited
                     //debug shit
                     if (_debug)
                     {
-                        _spriteBatch.DrawString(_arial25, "Debug : ON", new Vector2(50, 100), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
+                        _spriteBatch.DrawString(_arial25, "Debug : ON", new Vector2(50, 100), Color.Blue, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
+                    }
+                    if(!_debug)
+                    {
+                        _spriteBatch.DrawString(_arial25, "Debug : OFF", new Vector2(50, 100), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
                     }
 
                     _spriteBatch.End();
@@ -632,7 +638,7 @@ namespace YouveBeenAudited
             else if (SingleKeyPress(Keys.D2))
             {
             }
-            _prevKbState = Keyboard.GetState();
+            
             return trap;
         }
 
