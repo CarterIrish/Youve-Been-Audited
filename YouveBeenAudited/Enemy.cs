@@ -27,6 +27,14 @@ namespace YouveBeenAudited
         #region Properties
 
         /// <summary>
+        /// Gets the current frame of enemy animation.
+        /// </summary>
+        /// <value>
+        /// The current frame.
+        /// </value>
+        public int CurrentFrame { get => _currentFrame; }
+
+        /// <summary>
         /// Gets whether or not enemy is at goal.
         /// </summary>
         public bool AtGoal
@@ -60,17 +68,35 @@ namespace YouveBeenAudited
             }
         }
 
+        /// <summary>
+        /// Gets the time count of animation.
+        /// </summary>
+        /// <value>
+        /// The time count.
+        /// </value>
+        public double TimeCount { get => _timeCount; }
+
+        /// <summary>
+        /// Gets the size of the sprite.
+        /// </summary>
+        /// <value>
+        /// The size of the sprite.
+        /// </value>
+        public Point SpriteSize { get => _spriteSize; }
+
         #endregion Properties
 
         #region Methods
 
         /// <summary>
-        /// Creates a new enemy object.
+        /// Initializes a new instance of the <see cref="Enemy"/> class.
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="texture"></param>
-        /// <param name="health"></param>
+        /// <param name="x">The x coord.</param>
+        /// <param name="y">The y coord.</param>
+        /// <param name="health">The health of enemy.</param>
+        /// <param name="speed">The speed of enemy. </param>
+        /// <param name="texture">The texture of enemy.</param>
+        /// <param name="path">The path of enemy.</param>
         public Enemy(int x, int y, int health, int speed, Texture2D texture, List<Vector2> path) : base(x, y, texture, health, speed)
         {
             Path = path;
@@ -101,7 +127,7 @@ namespace YouveBeenAudited
         {
             _timeCount += gt.ElapsedGameTime.TotalSeconds;
             _timeCount = UpdateAnimation(_timeCount);
-            if (_currentPoint < Path.Count)
+            if (_currentPoint < _path.Count)
             {
                 Vector2 direction = _path[_currentPoint] - new Vector2(_position.X, _position.Y);
                 direction = Vector2.Normalize(direction) * _speed;
@@ -151,7 +177,7 @@ namespace YouveBeenAudited
         /// <summary>
         /// Draws enemy according to current state.
         /// </summary>
-        /// <param name="sb"></param>
+        /// <param name="sb">SpriteBatch</param>
         public override void Draw(SpriteBatch sb)
         {
             switch (_currentState)
