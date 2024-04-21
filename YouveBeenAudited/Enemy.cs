@@ -134,12 +134,12 @@ namespace YouveBeenAudited
             {
                 Vector2 direction = _path[_currentPoint] - new Vector2(_position.X, _position.Y);
 
-                direction = Vector2.Normalize(direction) * _speed;
+                direction = Vector2.Normalize(direction);
 
                 System.Diagnostics.Debug.WriteLine($"Direction{Vector2.Normalize(direction) * Speed}");
 
-                _position.X += (int)(direction.X + 0.5f);
-                _position.Y += (int)(direction.Y + 0.5f);
+                _position.X += (int)((direction.X+.5) * _speed*.5);
+                _position.Y += (int)((direction.Y-.5) * _speed*.5);
 
                 System.Diagnostics.Debug.WriteLine($"   {(int)direction.X + 0.5}, {(int)direction.Y + 0.5}");
 
