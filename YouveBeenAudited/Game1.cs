@@ -115,7 +115,7 @@ namespace YouveBeenAudited
         private List<GameObject> _wallList; // list of walls in the map
 
         //Debugger
-        bool _debug;
+        private bool _debug;
 
         #endregion Game Fields
 
@@ -365,7 +365,7 @@ namespace YouveBeenAudited
                     break;
                 // Active game
                 case GameStates.Game:
-                    _spriteBatch.Draw(_grassFloorTexture, new Rectangle(0,0, _grassFloorTexture.Width*3*(int)_UIscalar, _grassFloorTexture.Height*3*(int)_UIscalar), Color.White);
+                    _spriteBatch.Draw(_grassFloorTexture, new Rectangle(0, 0, _grassFloorTexture.Width * 3 * (int)_UIscalar, _grassFloorTexture.Height * 3 * (int)_UIscalar), Color.White);
                     DrawLevel(_spriteBatch);
                     // Handles Text UI
                     _spriteBatch.DrawString(_arial25, $"${_player.Money}", new Vector2(50, 50), Color.DarkGreen, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
@@ -590,7 +590,7 @@ namespace YouveBeenAudited
             }
         }
 
-        public void Collisions()
+        public void ResolveCollisions()
         {
             // Checks trap collisions against
             foreach (Enemy enemy in enemyManager.Enemies)
