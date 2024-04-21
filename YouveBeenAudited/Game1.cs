@@ -135,7 +135,7 @@ namespace YouveBeenAudited
             _windowSize = new Point(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
 
             // Sets debug mode to on or off
-            GameObject.Debug = true;
+            //GameObject.Debug = true;
         }
 
         protected override void Initialize()

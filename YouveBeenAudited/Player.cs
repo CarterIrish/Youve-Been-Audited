@@ -40,7 +40,8 @@ namespace YouveBeenAudited
         /// Gets/Sets the current amount of money
         /// posessed.
         /// </summary>
-        public int Money { get => _money; set { _money = value; } }
+        public int Money
+        { get => _money; set { _money = value; } }
 
         public Point SpriteSize { get => _spriteSize; }
 
@@ -211,10 +212,10 @@ namespace YouveBeenAudited
 
         public void DrawShapeBatch()
         {
-            if (GameObject.debug)
-            {
-                ShapeBatch.BoxOutline(new Rectangle(Position.X, Position.Y, SpriteSize.X, SpriteSize.Y), Color.Red);
-            }
+            //if (GameObject.debug)
+            //{
+            //    ShapeBatch.BoxOutline(new Rectangle(Position.X, Position.Y, SpriteSize.X, SpriteSize.Y), Color.Red);
+            //}
         }
 
         /// <summary>
