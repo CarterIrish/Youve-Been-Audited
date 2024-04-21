@@ -122,6 +122,12 @@
 /processorParam:TextureFormat=Color
 /build:MenuButton.png
 
+#begin Moonlight Sonata.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Moonlight Sonata.mp3
+
 #begin OptionsButton.png
 /importer:TextureImporter
 /processor:TextureProcessor
