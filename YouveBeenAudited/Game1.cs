@@ -114,6 +114,9 @@ namespace YouveBeenAudited
         private int _marginWidth;   // pixel width of the side margins
         private List<GameObject> _wallList; // list of walls in the map
 
+        //Debugger
+        bool _debug;
+
         #endregion Game Fields
 
         #region Pre GameLoop
@@ -138,7 +141,8 @@ namespace YouveBeenAudited
             _windowCenter = new Point(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
             _windowSize = new Point(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
 
-            GameObject.Debug = true;
+            // turns debugger on/off
+            _debug = true;
         }
 
         protected override void Initialize()
@@ -341,7 +345,7 @@ namespace YouveBeenAudited
             GraphicsDevice.Clear(Color.Bisque);
 
             // Start the sprite batch for drawing all elements to screen
-            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null);
 
             // Draw according to game state
             switch (_gameState)
@@ -380,7 +384,7 @@ namespace YouveBeenAudited
                     _spriteBatch.End();
 
                     ShapeBatch.Begin(GraphicsDevice);
-                    _player.DrawShapeBatch();
+                    DrawDebug(_spriteBatch);
                     ShapeBatch.End();
 
                     break;
@@ -569,6 +573,14 @@ namespace YouveBeenAudited
                 float y = p.Y;
                 Rectangle pointRect = new Rectangle((int)(x - 5), (int)(y - 5), 10, 10);
                 sb.Draw(_woodFloorTexture, pointRect, Color.Blue);
+            }
+        }
+
+        private void DrawDebug(SpriteBatch sb)
+        {
+            if (_debug)
+            {
+                ShapeBatch.BoxOutline(new Rectangle(_player.Position.X, _player.Position.Y, _player.SpriteSize.X, _player.SpriteSize.Y), Color.Red);
             }
         }
 
