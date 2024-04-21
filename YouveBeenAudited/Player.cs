@@ -57,11 +57,12 @@ namespace YouveBeenAudited
         /// <param name="texture"></param>
         /// <param name="startingMoney"></param>
         /// <param name="health"></param>
-        public Player(int x, int y, Texture2D texture, int health, int startingMoney) : base(x, y, texture, health, 10)
+        public Player(int x, int y, Texture2D texture, int health, int startingMoney, int tileHeight) : base(x, y, texture, health, 10)
         {
             _money = startingMoney;
             _spriteSize = new Point(55, 125);
-            _destinationRectangle = new Rectangle(_position.X, _position.Y, _spriteSize.X, _spriteSize.Y);
+            //_destinationRectangle = new Rectangle(_position.X, _position.Y, _spriteSize.X, _spriteSize.Y);
+            _destinationRectangle = ScaledRectangle(tileHeight);
             _speed = 6;
             _currentFrame = 0;
         }
@@ -254,6 +255,12 @@ namespace YouveBeenAudited
         {
             _position.X = x;
             _position.Y = y;
+        }
+
+        private Rectangle ScaledRectangle(int tileHeight)
+        {
+            int scaler = _texture.Width / tileHeight;
+            return new Rectangle(_position.X, _position.Y, _spriteSize.X * scaler, _spriteSize.Y * scaler);
         }
 
         #endregion Methods
