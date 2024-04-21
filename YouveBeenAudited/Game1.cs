@@ -341,7 +341,7 @@ namespace YouveBeenAudited
             GraphicsDevice.Clear(Color.Bisque);
 
             // Start the sprite batch for drawing all elements to screen
-            _spriteBatch.Begin();
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null);
 
             // Draw according to game state
             switch (_gameState)

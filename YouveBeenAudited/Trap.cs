@@ -11,10 +11,10 @@ namespace YouveBeenAudited
     {
         #region Fields
 
-        private int _damageAmnt;
+        protected int _damageAmnt;
 
-        private int _cost;
-        private bool _isActive;
+        protected int _cost;
+        protected bool _isActive;
 
         #endregion Fields
 
