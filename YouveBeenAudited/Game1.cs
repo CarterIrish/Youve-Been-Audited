@@ -460,7 +460,7 @@ namespace YouveBeenAudited
                 case "StartButton":
                     System.Diagnostics.Debug.WriteLine("Change State ==> Game");
                     _gameState = GameStates.Game;
-                    NextLevel("../../../../finalTestingFile.level");
+                    NextLevel("../../../../Level2.level");
                     MediaPlayer.Stop();
                     MediaPlayer.Play(_moonlightSonata);
                     MediaPlayer.IsRepeating = true;
