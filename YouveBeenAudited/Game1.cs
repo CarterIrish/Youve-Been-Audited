@@ -286,10 +286,7 @@ namespace YouveBeenAudited
                     {
                         _gameState = GameStates.Options;
                     }
-                    if (Keyboard.GetState().IsKeyDown(Keys.F1) == true)
-                    {
-                        _gameState = GameStates.GameOver;
-                    }
+                    
                     int currentEnemies = enemyManager.RemainingEnemies;
                     _timeCount += gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -300,7 +297,7 @@ namespace YouveBeenAudited
                     {
                         _traps.Add(trap);
                     }
-                    Collisions();
+                    ResolveCollisions();
                     _timeCount = _player.UpdateAnimation(_timeCount);
 
                     enemyManager.UpdateEnemies(gameTime, this);
@@ -657,6 +654,10 @@ namespace YouveBeenAudited
                 if(SingleKeyPress(Keys.F2))
                 {
                     _player.Money += 100;
+                }
+                if (Keyboard.GetState().IsKeyDown(Keys.F3) == true)
+                {
+                    _gameState = GameStates.GameOver;
                 }
             }
         }
