@@ -6,6 +6,7 @@ using ShapeUtils;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
 
@@ -42,7 +43,7 @@ namespace YouveBeenAudited
         #region Game Fields
 
         //Managers
-        private EnemyManager enemyManager;
+        private EnemyManager _enemyManager;
 
         // Monogame fields
         private GraphicsDeviceManager _graphics;
@@ -106,6 +107,7 @@ namespace YouveBeenAudited
         private Texture2D _wallFloralTexture;
         private Texture2D _grassFloorTexture;
         private Texture2D _nailTexture;
+        private Texture2D _glueTexture;
 
         // Input sources
         private MouseState _mouseState;
@@ -182,6 +184,7 @@ namespace YouveBeenAudited
             _wallFloralTexture = Content.Load<Texture2D>("tile_floral_wall");
             _grassFloorTexture = Content.Load<Texture2D>("tile_grass_large");
             _nailTexture = Content.Load<Texture2D>("spikes");
+            _glueTexture = Content.Load<Texture2D>("glue");
             _player = new Player(999, 999, _playerTexture, 999, 999, 999);
             _player.LoadContent(Content);
             _appassionata = (Content.Load<Song>("Appassionata"));
@@ -299,7 +302,7 @@ namespace YouveBeenAudited
                     {
                         _gameState = GameStates.Options;
                     }
-                    int currentEnemies = enemyManager.RemainingEnemies;
+                    int currentEnemies = _enemyManager.RemainingEnemies;
                     _timeCount += gameTime.ElapsedGameTime.TotalSeconds;
 
                     // Deals with player and trap interactions
@@ -312,12 +315,12 @@ namespace YouveBeenAudited
                     ResolveCollisions();
                     _timeCount = _player.UpdateAnimation(_timeCount);
 
-                    enemyManager.UpdateEnemies(gameTime, this);
-                    if (currentEnemies > enemyManager.RemainingEnemies)
+                    _enemyManager.UpdateEnemies(gameTime, this);
+                    if (currentEnemies > _enemyManager.RemainingEnemies)
                     {
-                        _player.Money += 100 * (currentEnemies - enemyManager.RemainingEnemies); // Player gets money with each kill
+                        _player.Money += 100 * (currentEnemies - _enemyManager.RemainingEnemies); // Player gets money with each kill
                     }
-                    if (enemyManager.EnemyAtGoal)
+                    if (_enemyManager.EnemyAtGoal)
                     {
                         _gameState = GameStates.GameOver;
                     }
@@ -380,16 +383,16 @@ namespace YouveBeenAudited
                     DrawLevel(_spriteBatch);
                     // Handles Text UI
                     _spriteBatch.DrawString(_arial25, $"${_player.Money}", new Vector2(50, 50), Color.DarkGreen, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
-                    _spriteBatch.DrawString(_arial25, $"Wave {enemyManager.CurrentWave}/{enemyManager.TotalWaves}", new Vector2(_windowCenter.X - 150, 50), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
-                    if (enemyManager.RemainingEnemies == 0)
+                    _spriteBatch.DrawString(_arial25, $"Wave {_enemyManager.CurrentWave}/{_enemyManager.TotalWaves}", new Vector2(_windowCenter.X - 150, 50), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
+                    if (_enemyManager.RemainingEnemies == 0)
                     {
-                        _spriteBatch.DrawString(_arial25, $"Time Till Next Wave:" + string.Format("{0:0.00}",  15 - enemyManager.Timer), new Vector2(_windowCenter.X - 350, 150), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
+                        _spriteBatch.DrawString(_arial25, $"Time Till Next Wave:" + string.Format("{0:0.00}", 15 - _enemyManager.Timer), new Vector2(_windowCenter.X - 350, 150), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
                     }
                     else
                     {
-                        _spriteBatch.DrawString(_arial25, $"Enemies Left in Wave: {enemyManager.RemainingEnemies}", new Vector2(_windowCenter.X - 350, 150), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
+                        _spriteBatch.DrawString(_arial25, $"Enemies Left in Wave: {_enemyManager.RemainingEnemies}", new Vector2(_windowCenter.X - 350, 150), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
                     }
-                    enemyManager.DrawEnemies(_spriteBatch);
+                    _enemyManager.DrawEnemies(_spriteBatch);
 
                     foreach (Trap trap in _traps)
                     {
@@ -402,7 +405,7 @@ namespace YouveBeenAudited
                     {
                         _spriteBatch.DrawString(_arial25, "Debug : ON", new Vector2(50, 100), Color.Blue, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
                     }
-                    if(!_debug)
+                    if (!_debug)
                     {
                         _spriteBatch.DrawString(_arial25, "Debug : OFF", new Vector2(50, 100), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
                     }
@@ -488,8 +491,8 @@ namespace YouveBeenAudited
         /// <param name="fileName">Name of the file.</param>
         private void NextLevel(string fileName)
         {
-            enemyManager = new EnemyManager(3, 3, 1);
-            enemyManager.LoadContent(Content);
+            _enemyManager = new EnemyManager(3, 3, 1);
+            _enemyManager.LoadContent(Content);
             ReadFile(fileName);
         }
 
@@ -540,8 +543,8 @@ namespace YouveBeenAudited
             }
 
             //adds the vectors to the enemy path List
-            string[] points;    
-            enemyManager.Path.Clear();
+            string[] points;
+            _enemyManager.Path.Clear();
             points = input.ReadLine().Split('|');
             foreach (string p in points)
             {
@@ -550,13 +553,13 @@ namespace YouveBeenAudited
                     string[] coordinates = p.Split(",");
                     int x = (int.Parse(coordinates[0]) * _tileLength) + _marginWidth + (_tileLength / 2);
                     int y = (int.Parse(coordinates[1]) * _tileLength) + (_tileLength / 2);
-                    enemyManager.Path.Add(new Vector2((float)x, (float)y));
+                    _enemyManager.Path.Add(new Vector2((float)x, (float)y));
                 }
             }
 
-            enemyManager.NumOfEnemies = int.Parse(input.ReadLine());
-            enemyManager.TotalWaves = int.Parse(input.ReadLine());
-            enemyManager.WaveModifier = double.Parse(input.ReadLine());
+            _enemyManager.NumOfEnemies = int.Parse(input.ReadLine());
+            _enemyManager.TotalWaves = int.Parse(input.ReadLine());
+            _enemyManager.WaveModifier = double.Parse(input.ReadLine());
 
             string[] spawn;
             spawn = input.ReadLine().Split(',');
@@ -569,13 +572,10 @@ namespace YouveBeenAudited
         /// <param name="sb"></param>
         private void DrawLevel(SpriteBatch sb)
         {
-            int height = _graphics.PreferredBackBufferHeight;
-            int width = _graphics.PreferredBackBufferWidth;
-
-            _tileLength = height / _map.GetLength(0);
+            _tileLength = _windowSize.Y / _map.GetLength(0);
 
             int mapWidth = _tileLength * _map.GetLength(1);
-            int MarginWidth = (width - mapWidth) / 2;
+            int MarginWidth = (_windowSize.X - mapWidth) / 2;
 
             //Drawing the  map
             for (int i = 0; i < _map.GetLength(0); i++)
@@ -600,7 +600,7 @@ namespace YouveBeenAudited
                 }
             }
 
-            foreach (Vector2 p in enemyManager.Path)
+            foreach (Vector2 p in _enemyManager.Path)
             {
                 float x = p.X;
                 float y = p.Y;
@@ -620,21 +620,25 @@ namespace YouveBeenAudited
         public void ResolveCollisions()
         {
             // Checks trap collisions against
-            foreach (Enemy enemy in enemyManager.Enemies)
+            foreach (Enemy enemy in _enemyManager.Enemies)
             {
+                bool isSlowed = false;
                 for (int i = 0; i < _traps.Count;)
                 {
                     if (_traps[i].CheckCollisions(enemy))
                     {
+                        _traps[i].DoEffect(enemy);
                         enemy.TakeDamage(_traps[i].DamageAmnt);
                         _traps.RemoveAt(i);
+                        isSlowed = enemy.IsSlowed;
                         break;
                     }
-                    else
+                    else 
                     {
-                        i++;
+                        
                     }
                 }
+                enemy.IsSlowed = isSlowed;
             }
 
             // Check collisions with walls
@@ -647,27 +651,24 @@ namespace YouveBeenAudited
         private Trap PlaceTrap()
         {
             Trap trap = null;
-            if (SingleKeyPress(Keys.Space) && _player.Money >= 20)
+            if (SingleKeyPress(Keys.D2) && _player.Money >= 20)
             {
                 _player.Money -= 20;
-                trap = new Trap(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _nailTexture, 20, 100);
+                trap = new Glue(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _glueTexture, 20, 100);
             }
-            else if (SingleKeyPress(Keys.D1))
+            if (SingleKeyPress(Keys.D1) && _player.Money >= 20)
             {
-                _player.Money += 100;
+                
             }
-            else if (SingleKeyPress(Keys.D2))
-            {
-            }
-            
+
             return trap;
         }
 
         private void DebugInputs()
         {
-            if(SingleKeyPress(Keys.F1))
+            if (SingleKeyPress(Keys.F1))
             {
-                if(_debug)
+                if (_debug)
                 {
                     _debug = false;
                 }
@@ -677,9 +678,9 @@ namespace YouveBeenAudited
                 }
             }
 
-            if(_debug)
+            if (_debug)
             {
-                if(SingleKeyPress(Keys.F2))
+                if (SingleKeyPress(Keys.F2))
                 {
                     _player.Money += 100;
                 }

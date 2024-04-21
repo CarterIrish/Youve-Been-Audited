@@ -11,6 +11,9 @@ namespace YouveBeenAudited
     {
         #region Fields
 
+        // Button clicked event
+        public event BtnClickedDelegate BtnClicked;
+
         private string _buttonName;
 
         private bool _isActive;
@@ -19,9 +22,6 @@ namespace YouveBeenAudited
 
         private Rectangle _boundingBox;
         private Texture2D _texture;
-
-        // Button clicked event
-        public event BtnClickedDelegate BtnClicked;
 
         #endregion Fields
 
@@ -33,6 +33,7 @@ namespace YouveBeenAudited
 
         public Color Color { get => _color; }
         public Rectangle Position { get => _boundingBox; }
+        public Texture2D Texture { get => _texture; }
 
         #endregion Properties
 
@@ -60,10 +61,10 @@ namespace YouveBeenAudited
         /// <returns>True if mouse is within the bounds of the button</returns>
         public bool ButtonHover(MouseState mouse)
         {
-            if (mouse.Position.X < Position.X + _boundingBox.Width &&
-               mouse.Position.X > Position.X &&
-               mouse.Position.Y < Position.Y + _boundingBox.Height &&
-               mouse.Position.Y > Position.Y
+            if (mouse.Position.X < _boundingBox.X + _boundingBox.Width &&
+               mouse.Position.X > _boundingBox.X &&
+               mouse.Position.Y < _boundingBox.Y + _boundingBox.Height &&
+               mouse.Position.Y > _boundingBox.Y
                )
             {
                 return true;

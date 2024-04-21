@@ -58,11 +58,25 @@ namespace YouveBeenAudited
             }
         }
 
+        /// <summary>
+        /// Gets or sets the speed of Character.
+        /// </summary>
+        /// <value>
+        /// The speed.
+        /// </value>
         public int Speed
         {
             set => _speed = value;
             get => _speed;
         }
+
+        /// <summary>
+        /// Gets the current state of character.
+        /// </summary>
+        /// <value>
+        /// The state of the player.
+        /// </value>
+        public CharacterStates CurrentState { get => _currentState; }
 
         #endregion Properties
 
@@ -82,7 +96,5 @@ namespace YouveBeenAudited
         }
 
         #endregion Methods
-
-        // TODO: Make any methods necessary for characters as a whole.
     }
 }

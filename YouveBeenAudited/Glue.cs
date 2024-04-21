@@ -23,7 +23,11 @@ namespace YouveBeenAudited
 
         public override void DoEffect(Enemy e)
         {
-            e.Speed = (int)(e.Speed * _speedScalar);
+            if (!e.IsSlowed)
+            {
+                e.Speed = (int)(e.Speed * _speedScalar);
+                e.IsSlowed = true;
+            }
         }
     }
 }
