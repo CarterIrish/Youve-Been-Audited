@@ -138,8 +138,23 @@ namespace YouveBeenAudited
 
                 System.Diagnostics.Debug.WriteLine($"Direction{Vector2.Normalize(direction) * Speed}");
 
-                _position.X += (int)((direction.X+.5) * _speed*.5);
-                _position.Y += (int)((direction.Y-.5) * _speed*.5);
+                if(direction.X < 0)
+                {
+                    _position.X += (int)((direction.X - .5) * _speed);
+                }
+                else
+                {
+                    _position.X += (int)((direction.X + .5) * _speed);
+                }
+                if(direction.Y < 0)
+                {
+                    _position.Y += (int)((direction.Y - .5) * _speed);
+                }
+                else
+                {
+                    _position.Y += (int)((direction.Y + .5) * _speed);
+                }
+
 
                 System.Diagnostics.Debug.WriteLine($"   {(int)direction.X + 0.5}, {(int)direction.Y + 0.5}");
 
