@@ -36,6 +36,7 @@ namespace YouveBeenAudited
 
         //Enemy Textures
         private Texture2D _auditorTexture;
+        private int _tileHeight;
 
         #endregion Fields
 
@@ -108,6 +109,7 @@ namespace YouveBeenAudited
         /// </summary>
         public double Timer { get => _timer; }
 
+        public int TileHeight { get => _tileHeight; set { _tileHeight = value; } }
         #endregion Properties
 
         #region Methods
@@ -167,7 +169,7 @@ namespace YouveBeenAudited
             // Spawns enemies delayed depending on the current wave
             if (_timer >= ((double)3 / _currentWave) && _enemies.Count + _killedEnemies < _numOfEnemies)
             {
-                _enemies.Add(new Enemy((int)_path[0].X, (int)_path[0].Y, 150, (int)(2 * (_currentWave)), _auditorTexture, _path));
+                _enemies.Add(new Enemy((int)_path[0].X, (int)_path[0].Y, 150, (int)(2 * (_currentWave)), _tileHeight, _auditorTexture, _path));
                 _timer = 0;
             }
 

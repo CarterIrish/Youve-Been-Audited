@@ -503,7 +503,9 @@ namespace YouveBeenAudited
         {
             _enemyManager = new EnemyManager(3, 3, 1);
             _enemyManager.LoadContent(Content);
+
             ReadFile(fileName);
+            _enemyManager.TileHeight = _tileLength;
         }
 
         /// <summary>
