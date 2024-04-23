@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace YouveBeenAudited
@@ -97,6 +98,19 @@ namespace YouveBeenAudited
         {
             if (!_isExploding)
             {
+                if(_fuseTime < 1)
+                {
+                    sb.Draw(_texture, _position, Color.Red);
+                }
+                else if(_fuseTime < 2)
+                {
+                    sb.Draw(_texture, _position, Color.Orange);
+                }
+                else if(_fuseTime < 3)
+                {
+                    sb.Draw(_texture, _position, Color.Yellow);
+                }
+                else
                 base.Draw(sb);
             }
         }
