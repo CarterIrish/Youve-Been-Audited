@@ -110,6 +110,7 @@ namespace YouveBeenAudited
         private Texture2D _grassFloorTexture;
         private Texture2D _nailTexture;
         private Texture2D _glueTexture;
+        private Texture2D _bombTexture;
 
         // Input sources
         private MouseState _mouseState;
@@ -185,13 +186,14 @@ namespace YouveBeenAudited
             _grassFloorTexture = Content.Load<Texture2D>("tile_grass_large");
             _nailTexture = Content.Load<Texture2D>("spikes");
             _glueTexture = Content.Load<Texture2D>("glue");
+            _bombTexture = Content.Load<Texture2D>("bomb");
             _player = new Player(999, 999, _playerTexture, 999, 999, 999, 999);
             _player.LoadContent(Content);
             _appassionata = (Content.Load<Song>("Appassionata"));
             _moonlightSonata = (Content.Load<Song>("Moonlight Sonata"));
 
-            //MediaPlayer.Play(_appassionata);
-            //MediaPlayer.IsRepeating = true;
+            MediaPlayer.Play(_appassionata);
+            MediaPlayer.IsRepeating = true;
 
             //Animation Setup
             _timeCount = 0;
@@ -317,6 +319,22 @@ namespace YouveBeenAudited
                     }
                     ResolveCollisions();
 
+                    //bomb fuse timer updates
+                    for (int i = 0; i < _traps.Count; i++)
+                    {
+                        if(_traps[i] is Bomb)
+                        {
+                            Bomb b = (Bomb) _traps[i];
+                            b.UpdateTime(gameTime);
+
+                            if (b.ExplosionTime <= 0)
+                            {
+                                _traps.RemoveAt(i);
+                                i--;
+                            }
+                        }
+                    }
+
                     _timeCount = _player.UpdateAnimation(_timeCount);
 
                     _enemyManager.UpdateEnemies(gameTime, this);
@@ -402,10 +420,21 @@ namespace YouveBeenAudited
                     {
                         _spriteBatch.DrawString(_arial25, $"Enemies Left in Wave: {_enemyManager.RemainingEnemies}", new Vector2(_windowCenter.X - 350, 150), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
                     }
-                    
 
                     foreach (Trap trap in _traps)
                     {
+                        _spriteBatch.End();
+                        if (trap is Bomb)
+                        {
+                            Bomb b = (Bomb)trap;
+                            if(b.IsExploding)
+                            {
+                                ShapeBatch.Begin(GraphicsDevice);
+                                ShapeBatch.Circle(b.Position.Center.ToVector2(), 100, Color.OrangeRed);
+                                ShapeBatch.End();
+                            }
+                        }
+                        _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null);
                         trap.Draw(_spriteBatch);
                     }
                     _player.Draw(_spriteBatch);
@@ -655,16 +684,17 @@ namespace YouveBeenAudited
                     {
                         if (!enemy.SteppedOn.Contains(_traps[i]))
                         {
-                            enemy.SteppedOn.Add(_traps[i]);
                             switch (_traps[i])
                             {
                                 case Glue:
                                     _traps[i].DoEffect(enemy);
+                                    enemy.SteppedOn.Add(_traps[i]);
                                     break;
 
                                 case Spike:
                                     _traps[i].DoEffect(enemy);
                                     Spike s = (Spike)_traps[i];
+                                    enemy.SteppedOn.Add(_traps[i]);
                                     if (s.Health <= 0)
                                     {
                                         _traps.RemoveAt(i);
@@ -672,8 +702,18 @@ namespace YouveBeenAudited
                                     }
                                     break;
 
+                                case Bomb:
+                                    Bomb b = (Bomb)_traps[i];
+                                    if (b.IsExploding)
+                                    {
+                                        enemy.SteppedOn.Add(_traps[i]);
+                                    }
+                                    _traps[i].DoEffect(enemy);
+                                    break;
+
                                 default:
                                     enemy.TakeDamage(_traps[i].DamageAmnt);
+                                    enemy.SteppedOn.Add(_traps[i]);
                                     _traps.RemoveAt(i);
                                     break;
                             }
@@ -713,6 +753,11 @@ namespace YouveBeenAudited
             {
                 _player.Money -= 20;
                 trap = new Spike(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _nailTexture, 20, 100);
+            }
+            if (SingleKeyPress(Keys.D3) && _player.Money >= 20)
+            {
+                trap = new Bomb(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _bombTexture, 20, 200);
+                Bomb bomb = (Bomb)trap;
             }
 
             return trap;
