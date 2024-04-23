@@ -21,11 +21,17 @@ namespace YouveBeenAudited
         private List<Vector2> _path;
         private Point _spriteSize;
         private double _timeCount;
-        private bool isSlowed;
+        private bool _isSlowed;
+        private List<Trap> _steppedOn;
 
         #endregion Fields
 
         #region Properties
+
+        public List<Trap> SteppedOn
+        {
+            get { return _steppedOn; }
+        }
 
         /// <summary>
         /// Gets the current frame of enemy animation.
@@ -46,10 +52,28 @@ namespace YouveBeenAudited
             }
         }
 
+        /// <summary>
+        /// Determines if the enemy is currently standing on glue
+        /// </summary>
+        public bool OnGlue
+        {
+            get
+            {
+                foreach (Trap t in SteppedOn)
+                {
+                    if (t is Glue)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+
         public bool IsSlowed
         {
-            get { return isSlowed; }
-            set { isSlowed = value; }
+            get { return _isSlowed; }
+            set { _isSlowed = value; }
         }
 
         /// <summary>
@@ -111,7 +135,8 @@ namespace YouveBeenAudited
             _currentFrame = 0;
             _currentState = CharacterStates.Right;
             _spriteSize = new Point(55, 100);
-            isSlowed = false;
+            _isSlowed = false;
+            _steppedOn = new List<Trap>();
         }
 
         /// <summary>
@@ -136,7 +161,6 @@ namespace YouveBeenAudited
 
                 direction = Vector2.Normalize(direction);
 
-                System.Diagnostics.Debug.WriteLine($"Direction{Vector2.Normalize(direction) * Speed}");
 
                 if(direction.X < 0)
                 {
@@ -155,8 +179,6 @@ namespace YouveBeenAudited
                     _position.Y += (int)((direction.Y + .5) * _speed);
                 }
 
-
-                System.Diagnostics.Debug.WriteLine($"   {(int)direction.X + 0.5}, {(int)direction.Y + 0.5}");
 
                 if ((_position.X < _path[_currentPoint].X + _speed && _position.X > _path[_currentPoint].X - _speed) &&
                 _position.Y < _path[_currentPoint].Y + _speed && _position.Y > _path[_currentPoint].Y - _speed)

@@ -402,13 +402,14 @@ namespace YouveBeenAudited
                     {
                         _spriteBatch.DrawString(_arial25, $"Enemies Left in Wave: {_enemyManager.RemainingEnemies}", new Vector2(_windowCenter.X - 350, 150), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
                     }
-                    _enemyManager.DrawEnemies(_spriteBatch);
+                    
 
                     foreach (Trap trap in _traps)
                     {
                         trap.Draw(_spriteBatch);
                     }
                     _player.Draw(_spriteBatch);
+                    _enemyManager.DrawEnemies(_spriteBatch);
 
                     //debug shit
                     if (_debug)
@@ -650,21 +651,43 @@ namespace YouveBeenAudited
                     // If that trap is colliding with the current enemy
                     if (_traps[i].CheckCollisions(enemy))
                     {
-                        switch (_traps[i])
+                        if (!enemy.SteppedOn.Contains(_traps[i]))
                         {
-                            case Glue:
-                                System.Diagnostics.Debug.WriteLine("Glue collision");
-                                _traps[i].DoEffect(enemy);
-                                break;
+                            enemy.SteppedOn.Add(_traps[i]);
+                            switch (_traps[i])
+                            {
+                                case Glue:
+                                    _traps[i].DoEffect(enemy);
+                                    break;
 
-                            default:
-                                enemy.TakeDamage(_traps[i].DamageAmnt);
-                                _traps.RemoveAt(i);
-                                break;
+                                case Spike:
+                                    _traps[i].DoEffect(enemy);
+                                    Spike s = (Spike)_traps[i];
+                                    if (s.Health <= 0)
+                                    {
+                                        _traps.RemoveAt(i);
+                                        i--;
+                                    }
+                                    break;
+
+                                default:
+                                    enemy.TakeDamage(_traps[i].DamageAmnt);
+                                    _traps.RemoveAt(i);
+                                    break;
+                            }
                         }
-
-                        break;
+                        //break;
                     }
+                    else
+                    {
+                        enemy.SteppedOn.Remove(_traps[i]);
+                    }
+                }
+
+                if (enemy.IsSlowed && !enemy.OnGlue)
+                {
+                    enemy.Speed *= 2;
+                    enemy.IsSlowed = false;
                 }
             }
 
@@ -682,10 +705,12 @@ namespace YouveBeenAudited
             if (SingleKeyPress(Keys.D2) && _player.Money >= 20)
             {
                 _player.Money -= 20;
-                trap = new Glue(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _glueTexture, 20, 100);
+                trap = new Glue(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _glueTexture, 20, 0);
             }
             if (SingleKeyPress(Keys.D1) && _player.Money >= 20)
             {
+                _player.Money -= 20;
+                trap = new Spike(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _nailTexture, 20, 100);
             }
 
             return trap;

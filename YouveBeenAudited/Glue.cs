@@ -6,6 +6,14 @@ namespace YouveBeenAudited
     {
         private double _speedScalar;
 
+        /// <summary>
+        /// Creates a new instance of a glue trap
+        /// </summary>
+        /// <param name="x">x position</param>
+        /// <param name="y">y position</param>
+        /// <param name="texture">glue texture</param>
+        /// <param name="cost">cost of trap</param>
+        /// <param name="damageAmnt"></param>
         public Glue(int x, int y, Texture2D texture, int cost, int damageAmnt)
             : base(x, y, texture, cost, damageAmnt)
         {
@@ -16,9 +24,9 @@ namespace YouveBeenAudited
         {
             if (e.IsSlowed == false)
             {
-                System.Diagnostics.Debug.WriteLine("Slowing enemy");
                 e.Speed = (int)(e.Speed * _speedScalar);
                 e.IsSlowed = true;
+                e.TakeDamage(DamageAmnt);
             }
         }
     }
