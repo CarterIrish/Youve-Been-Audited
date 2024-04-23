@@ -192,8 +192,8 @@ namespace YouveBeenAudited
             _appassionata = (Content.Load<Song>("Appassionata"));
             _moonlightSonata = (Content.Load<Song>("Moonlight Sonata"));
 
-            MediaPlayer.Play(_appassionata);
-            MediaPlayer.IsRepeating = true;
+            //MediaPlayer.Play(_appassionata);
+            //MediaPlayer.IsRepeating = true;
 
             //Animation Setup
             _timeCount = 0;
