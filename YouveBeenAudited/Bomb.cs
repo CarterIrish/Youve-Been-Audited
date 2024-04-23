@@ -43,10 +43,10 @@ namespace YouveBeenAudited
 
         public Bomb(int x, int y, Texture2D texture, int cost, int damageAmnt) : base(x, y, texture, cost, damageAmnt)
         {
-            _isLit = false;
             _isExploding = false;
             _fuseTime = 3;
             _explosionTime = .1;
+            _isLit = true;
         }
 
         public override void DoEffect(Enemy e)

@@ -135,6 +135,8 @@ namespace LevelEditor
                     map[r, c].Capture = false;
                     map[r, c].MouseDown += CaptureOff;
                     map[r, c].MouseEnter += PaintFloor;
+                    map[r, c].MouseClick += PaintFloor;
+                    map[r, c].MouseDown += PaintFloor;
                     map[r, c].Click += AddPoint;
                     map[r, c].DoubleClick += DeletePoint;
                     map[r, c].BackColor = Color.White;
