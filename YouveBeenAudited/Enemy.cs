@@ -24,7 +24,6 @@ namespace YouveBeenAudited
         private double _timeCount;
         private bool _isSlowed;
         private List<Trap> _steppedOn;
-        private bool isSlowed;
         private int _tileHeight;
 
         #endregion Fields
@@ -141,7 +140,6 @@ namespace YouveBeenAudited
             int scalar = (_spriteSize.X * (tileHeight)) / _spriteSize.Y; ;
             _destinationRectangle = new Rectangle(_position.X, _position.Y, scalar, tileHeight);
             _position = _destinationRectangle;
-            isSlowed = false;
             _isSlowed = false;
             _steppedOn = new List<Trap>();
         }
