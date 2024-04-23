@@ -19,10 +19,13 @@ namespace YouveBeenAudited
         private bool _atGoal;
         private int _currentPoint;
         private List<Vector2> _path;
+        private Rectangle _destinationRectangle;
         private Point _spriteSize;
         private double _timeCount;
         private bool _isSlowed;
         private List<Trap> _steppedOn;
+        private bool isSlowed;
+        private int _tileHeight;
 
         #endregion Fields
 
@@ -123,7 +126,7 @@ namespace YouveBeenAudited
         /// <param name="speed">The speed of enemy. </param>
         /// <param name="texture">The texture of enemy.</param>
         /// <param name="path">The path of enemy.</param>
-        public Enemy(int x, int y, int health, int speed, Texture2D texture, List<Vector2> path) : base(x, y, texture, health, speed)
+        public Enemy(int x, int y, int health, int speed, int tileHeight, Texture2D texture, List<Vector2> path) : base(x, y, texture, health, speed)
         {
             _path = path;
             base._position.X = x;
@@ -135,6 +138,10 @@ namespace YouveBeenAudited
             _currentFrame = 0;
             _currentState = CharacterStates.Right;
             _spriteSize = new Point(55, 100);
+            int scalar = (_spriteSize.X * (tileHeight)) / _spriteSize.Y; ;
+            _destinationRectangle = new Rectangle(_position.X, _position.Y, scalar, tileHeight);
+            _position = _destinationRectangle;
+            isSlowed = false;
             _isSlowed = false;
             _steppedOn = new List<Trap>();
         }
@@ -178,6 +185,8 @@ namespace YouveBeenAudited
                 {
                     _position.Y += (int)((direction.Y + .5) * _speed);
                 }
+                _destinationRectangle.X = _position.X;
+                _destinationRectangle.Y = _position.Y;
 
 
                 if ((_position.X < _path[_currentPoint].X + _speed && _position.X > _path[_currentPoint].X - _speed) &&
@@ -232,12 +241,11 @@ namespace YouveBeenAudited
                 case CharacterStates.Left:
                     sb.Draw(
                 Texture,
-                new Vector2(_position.X, _position.Y),
+                _destinationRectangle,
                 new Rectangle(((_spriteSize.X + 25) * _currentFrame) + 560, 0, _spriteSize.X, _spriteSize.Y),
                 Color.White,
                 0.0f,
                 Vector2.Zero,
-                1.0f,
                 SpriteEffects.FlipHorizontally,
                 0.0f);
                     break;
@@ -245,18 +253,17 @@ namespace YouveBeenAudited
                 case CharacterStates.Right:
                     sb.Draw(
                 Texture,
-                new Vector2(_position.X, _position.Y),
+                _destinationRectangle,
                 new Rectangle(((_spriteSize.X + 25) * _currentFrame) + 560, 0, _spriteSize.X, _spriteSize.Y),
                 Color.White,
                 0.0f,
                 Vector2.Zero,
-                1.0f,
                 SpriteEffects.None,
                 0.0f);
                     break;
 
                 default:
-                    sb.Draw(Texture, new Rectangle(_position.X, _position.Y, 55, 100), new Rectangle(400, 0, _spriteSize.X, _spriteSize.Y), Color.White);
+                    sb.Draw(Texture, _destinationRectangle, new Rectangle(400, 0, _spriteSize.X, _spriteSize.Y), Color.White);
                     break;
             }
         }
