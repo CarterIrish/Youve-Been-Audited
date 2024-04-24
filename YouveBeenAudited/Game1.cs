@@ -112,9 +112,9 @@ namespace YouveBeenAudited
 
         //Map Textures
         private Texture2D _woodFloorTexture;
-
         private Texture2D _wallFloralTexture;
         private Texture2D _grassFloorTexture;
+        private Texture2D _safeTexture;
         private Texture2D _nailTexture;
         private Texture2D _glueTexture;
         private Texture2D _bombTexture;
@@ -214,6 +214,7 @@ namespace YouveBeenAudited
             _woodFloorTexture = Content.Load<Texture2D>("tile_wood_floor");
             _wallFloralTexture = Content.Load<Texture2D>("tile_floral_wall");
             _grassFloorTexture = Content.Load<Texture2D>("tile_grass_large");
+            _safeTexture = Content.Load<Texture2D>("safe_new");
             _nailTexture = Content.Load<Texture2D>("spikes");
             _glueTexture = Content.Load<Texture2D>("glue");
             _bombTexture = Content.Load<Texture2D>("bomb");
@@ -538,6 +539,11 @@ namespace YouveBeenAudited
                         _spriteBatch.DrawString(_arial25, $"Enemies Left in Wave: {_enemyManager.RemainingEnemies}", new Vector2(_windowCenter.X - 350, 150), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
                     }
 
+                    // Draws safe
+                    Vector2 safePos = _enemyManager.Path[_enemyManager.Path.Count-1];
+                    _spriteBatch.Draw(_safeTexture, new Rectangle((int)safePos.X - _tileLength/2, (int)safePos.Y - _tileLength/2, _tileLength, _tileLength), Color.White);
+
+                    // Draws traps
                     foreach (Trap trap in _traps)
                     {
                         _spriteBatch.End();
@@ -563,14 +569,6 @@ namespace YouveBeenAudited
                     _spriteBatch.Draw(_healthBarTexture, _safeHealthBar, Color.Green);
 
                     _spriteBatch.End();
-                    // Draws the box on left side of screen containing game info
-
-                    ShapeBatch.Begin(GraphicsDevice);
-
-                    ShapeBatch.Box(new Rectangle((int)(0 + _marginWidth / 4), (int)(0 + _windowSize.Y * .10), _marginWidth / 2, _windowSize.Y / 10), Color.Bisque);
-
-                    ShapeBatch.End();
-
                     DrawDebug(_spriteBatch);
 
                     break;
@@ -683,6 +681,9 @@ namespace YouveBeenAudited
             }
         }
 
+        /// <summary>
+        /// Takes away safe health and adjusts health bar
+        /// </summary>
         public void TakeSafeDamage()
         {
             _safeHealth -= 100;
@@ -848,6 +849,7 @@ namespace YouveBeenAudited
         {
             for (int i = 0; i < _traps.Count; i++)
             {
+                _traps[i].ResolveCollisions(_wallList);
                 if (_traps[i].CheckCollisions(_player))
                 {
                     if (!_player.SteppedOn.Contains(_traps[i]))
@@ -976,9 +978,9 @@ namespace YouveBeenAudited
         private Trap PlaceTrap()
         {
             bool onTrap = false;
-            foreach(Trap t in  _traps)
+            foreach (Trap t in _traps)
             {
-                if(new Rectangle(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _nailTexture.Width, _nailTexture.Height).Intersects(t.Position))
+                if (new Rectangle(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _nailTexture.Width, _nailTexture.Height).Intersects(t.Position))
                 {
                     onTrap = true;
                 }
@@ -989,17 +991,17 @@ namespace YouveBeenAudited
                 if (SingleKeyPress(Keys.K) && _player.Money >= 20)
                 {
                     _player.Money -= 20;
-                    trap = new Glue(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _glueTexture, 20, 0);
+                    trap = new Glue(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _glueTexture, 20, 0, _tileLength);
                 }
                 if (SingleKeyPress(Keys.J) && _player.Money >= 20)
                 {
                     _player.Money -= 20;
-                    trap = new Spike(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _nailTexture, 20, 100);
+                    trap = new Spike(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _nailTexture, 20, 100, _tileLength);
                     trap.IsActive = false;
                 }
                 if (SingleKeyPress(Keys.L) && _player.Money >= 20)
                 {
-                    trap = new Bomb(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _bombTexture, 20, 100);
+                    trap = new Bomb(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _bombTexture, 20, 100, _tileLength);
                     Bomb bomb = (Bomb)trap;
                 }
 
