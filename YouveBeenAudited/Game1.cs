@@ -59,6 +59,8 @@ namespace YouveBeenAudited
         private readonly Point _ReferenceWindow;
         public readonly double _UIscalar;
 
+        private readonly string[] _filePaths;
+
         // Game States
         private GameStates _gameState;
 
@@ -89,6 +91,7 @@ namespace YouveBeenAudited
         private List<Button> _gameButtons;
         private List<Button> _optionButtons;
         private List<Button> _gameOverButtons;
+        private List<Button> _levelSelectButtons;
 
         // Button textures
         private Texture2D _optionsButtonTexture;
@@ -159,6 +162,16 @@ namespace YouveBeenAudited
 
             // turns debugger on/off
             _debug = true;
+
+            // File paths
+            _filePaths = new string[]
+            {
+                "../../../../Level1.level",
+                "../../../../Level2.level",
+                "../../../../Level3.level",
+                "../../../../Level4.level",
+                "../../../../Level5.level"
+            };
         }
 
         protected override void Initialize()
@@ -168,6 +181,7 @@ namespace YouveBeenAudited
             _gameButtons = new List<Button>();
             _optionButtons = new List<Button>();
             _gameOverButtons = new List<Button>();
+            _levelSelectButtons = new List<Button>();
             _gameState = GameStates.Menu;
             _traps = new List<Trap>();
             _wallList = new List<GameObject>();
@@ -199,9 +213,15 @@ namespace YouveBeenAudited
             _player.LoadContent(Content);
             _appassionata = (Content.Load<Song>("Appassionata"));
             _moonlightSonata = (Content.Load<Song>("Moonlight Sonata"));
+            MediaPlayer.Play(_appassionata);
+            MediaPlayer.IsRepeating = true;
 
-            //MediaPlayer.Play(_appassionata);
-            //MediaPlayer.IsRepeating = true;
+            // Level select icons
+            Texture2D levelOneSelect = Content.Load<Texture2D>("select_level_1");
+            Texture2D levelTwoSelect = Content.Load<Texture2D>("select_level_2");
+            Texture2D levelThreeSelect = Content.Load<Texture2D>("select_level_3");
+            Texture2D levelFourSelect = Content.Load<Texture2D>("select_level_4");
+            Texture2D levelFiveSelect = Content.Load<Texture2D>("select_level_5");
 
             //Animation Setup
             _timeCount = 0;
@@ -274,6 +294,60 @@ namespace YouveBeenAudited
             _gameOverButtons.Add(gameOverMenu);
             gameOverMenu.BtnClicked += ButtonCheck;
 
+            Button levelSelectOne = new Button(
+                _windowCenter.X - (int)(levelOneSelect.Width * _UIscalar * 3.5),
+                _windowCenter.Y - (int)(levelOneSelect.Height * _UIscalar) / 2,
+                levelOneSelect,
+                "LevelOneSelect",
+                Color.White,
+                _UIscalar
+                );
+            _levelSelectButtons.Add(levelSelectOne);
+            levelSelectOne.BtnClicked += ButtonCheck;
+
+            Button levelSelectTwo = new Button(
+                _windowCenter.X - (int)(levelTwoSelect.Width * _UIscalar * 2),
+                _windowCenter.Y - (int)(levelTwoSelect.Height * _UIscalar) / 2,
+                levelTwoSelect,
+                "LevelTwoSelect",
+                Color.White,
+                _UIscalar
+                );
+            _levelSelectButtons.Add(levelSelectTwo);
+            levelSelectTwo.BtnClicked += ButtonCheck;
+
+            Button levelSelectThree = new Button(
+                _windowCenter.X - (int)(levelThreeSelect.Width * _UIscalar) / 2,
+                _windowCenter.Y - (int)(levelThreeSelect.Height * _UIscalar) / 2,
+                levelThreeSelect,
+                "LevelSelectThree",
+                Color.White,
+                _UIscalar);
+            _levelSelectButtons.Add(levelSelectThree);
+            levelSelectThree.BtnClicked += ButtonCheck;
+
+            Button levelSelectFour = new Button(
+                _windowCenter.X + (int)(levelFourSelect.Width * _UIscalar),
+                _windowCenter.Y - (int)(levelFourSelect.Height * _UIscalar) / 2,
+                levelFourSelect,
+                "LevelSelectFour",
+                Color.White,
+                _UIscalar
+                );
+            _levelSelectButtons.Add(levelSelectFour);
+            levelSelectFour.BtnClicked += ButtonCheck;
+
+            Button levelSelectFive = new Button(
+                _windowCenter.X + (int)(levelFiveSelect.Width * _UIscalar * 2.5),
+                _windowCenter.Y - (int)(levelFiveSelect.Height * _UIscalar) / 2,
+                levelFiveSelect,
+                "LevelSelectFive",
+                Color.White,
+                _UIscalar
+                );
+            _levelSelectButtons.Add(levelSelectFive);
+            levelSelectFive.BtnClicked += ButtonCheck;
+
             #endregion Button creation
         }
 
@@ -303,9 +377,12 @@ namespace YouveBeenAudited
                     }
                     break;
 
-                // Level Select (Between Menu And Game)
+                // Level Select
                 case GameStates.LevelSelect:
-
+                    foreach (Button b in _levelSelectButtons)
+                    {
+                        b.CheckClick(_mouseState);
+                    }
                     break;
 
                 // Active game
@@ -412,7 +489,11 @@ namespace YouveBeenAudited
 
                 //On Level Select
                 case GameStates.LevelSelect:
-
+                    foreach (Button b in _levelSelectButtons)
+                    {
+                        b.Draw(_spriteBatch, b.Color);
+                    }
+                    _spriteBatch.End();
                     break;
 
                 // Active game
@@ -514,11 +595,6 @@ namespace YouveBeenAudited
                     System.Diagnostics.Debug.WriteLine("Change State ==> Level Select");
                     _gameState = GameStates.LevelSelect;
 
-                    _gameState = GameStates.Game; //Place this line and code below it somewhere else once you are ready to work on level select!
-                    NextLevel("../../../../Level2.level");
-                    //MediaPlayer.Stop();
-                    //MediaPlayer.Play(_moonlightSonata);
-                    //MediaPlayer.IsRepeating = true;
                     break;
                 // If its the exit game button
                 case "ExitGameButton":
@@ -533,9 +609,49 @@ namespace YouveBeenAudited
 
                 case "MenuButton":
                     _gameState = GameStates.Menu;
-                    //MediaPlayer.Stop();
-                    //MediaPlayer.Play(_appassionata);
-                    //MediaPlayer.IsRepeating = true;
+                    MediaPlayer.Stop();
+                    MediaPlayer.Play(_appassionata);
+                    MediaPlayer.IsRepeating = true;
+                    break;
+
+                case "LevelSelectOne":
+                    NextLevel(_filePaths[0]);
+                    _gameState = GameStates.Game;
+                    MediaPlayer.Stop();
+                    MediaPlayer.Play(_moonlightSonata);
+                    MediaPlayer.IsRepeating = true;
+                    break;
+
+                case "LevelSelectTwo":
+                    NextLevel(_filePaths[1]);
+                    _gameState = GameStates.Game;
+                    MediaPlayer.Stop();
+                    MediaPlayer.Play(_moonlightSonata);
+                    MediaPlayer.IsRepeating = true;
+                    break;
+
+                case "LevelSelectThree":
+                    NextLevel(_filePaths[2]);
+                    _gameState = GameStates.Game;
+                    MediaPlayer.Stop();
+                    MediaPlayer.Play(_moonlightSonata);
+                    MediaPlayer.IsRepeating = true;
+                    break;
+
+                case "LevelSelectFour":
+                    NextLevel(_filePaths[3]);
+                    _gameState = GameStates.Game;
+                    MediaPlayer.Stop();
+                    MediaPlayer.Play(_moonlightSonata);
+                    MediaPlayer.IsRepeating = true;
+                    break;
+
+                case "LevelSelectFive":
+                    NextLevel(_filePaths[4]);
+                    _gameState = GameStates.Game;
+                    MediaPlayer.Stop();
+                    MediaPlayer.Play(_moonlightSonata);
+                    MediaPlayer.IsRepeating = true;
                     break;
             }
         }
