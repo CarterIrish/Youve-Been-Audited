@@ -108,9 +108,9 @@ namespace YouveBeenAudited
 
         //Map Textures
         private Texture2D _woodFloorTexture;
-
         private Texture2D _wallFloralTexture;
         private Texture2D _grassFloorTexture;
+        private Texture2D _safeTexture;
         private Texture2D _nailTexture;
         private Texture2D _glueTexture;
         private Texture2D _bombTexture;
@@ -206,6 +206,7 @@ namespace YouveBeenAudited
             _woodFloorTexture = Content.Load<Texture2D>("tile_wood_floor");
             _wallFloralTexture = Content.Load<Texture2D>("tile_floral_wall");
             _grassFloorTexture = Content.Load<Texture2D>("tile_grass_large");
+            _safeTexture = Content.Load<Texture2D>("safe_new");
             _nailTexture = Content.Load<Texture2D>("spikes");
             _glueTexture = Content.Load<Texture2D>("glue");
             _bombTexture = Content.Load<Texture2D>("bomb");
@@ -519,6 +520,11 @@ namespace YouveBeenAudited
                         _spriteBatch.DrawString(_arial25, $"Enemies Left in Wave: {_enemyManager.RemainingEnemies}", new Vector2(_windowCenter.X - 350, 150), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
                     }
 
+                    // Draws safe
+                    Vector2 safePos = _enemyManager.Path[_enemyManager.Path.Count-1];
+                    _spriteBatch.Draw(_safeTexture, new Rectangle((int)safePos.X - _tileLength/2, (int)safePos.Y - _tileLength/2, _tileLength, _tileLength), Color.White);
+
+                    // Draws traps
                     foreach (Trap trap in _traps)
                     {
                         _spriteBatch.End();
@@ -660,6 +666,9 @@ namespace YouveBeenAudited
             }
         }
 
+        /// <summary>
+        /// Takes away safe health and adjusts health bar
+        /// </summary>
         public void TakeSafeDamage()
         {
             _safeHealth -= 100;
