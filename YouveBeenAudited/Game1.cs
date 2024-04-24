@@ -136,7 +136,7 @@ namespace YouveBeenAudited
 
         // Safe stuff
         private int _safeHealth;
-       
+
         private int _healthSubtractionAmt;
         private Texture2D _healthBarTexture;
         private Rectangle _safeHealthBar;
@@ -240,6 +240,8 @@ namespace YouveBeenAudited
 
             #region Button creation
 
+            #region Menu buttons
+
             // Menu start button
             Button StartButton = new Button(
                 _windowCenter.X - (int)(_startButtonTexture.Width * _UIscalar) / 2,
@@ -263,10 +265,14 @@ namespace YouveBeenAudited
             _menuButtons.Add(ExitGameButton);
             ExitGameButton.BtnClicked += ButtonCheck;
 
+            #endregion Menu buttons
+
+            #region Options menu buttons
+
             // resume game button
             Button ResumeGame = new Button(
                 _windowCenter.X - (int)(_resumeButtonTexture.Width * _UIscalar) / 2,
-                _windowCenter.Y - (int)(_resumeButtonTexture.Height * _UIscalar * 1.5),
+                _windowCenter.Y + (int)(_resumeButtonTexture.Height * _UIscalar * .5),
                 _resumeButtonTexture,
                 "ResumeGameButton",
                 Color.White,
@@ -276,8 +282,8 @@ namespace YouveBeenAudited
 
             // Options exit game button
             Button optionsExit = new Button(
-                _windowCenter.X - (int)(_exitButtonTexture.Width * _UIscalar) / 2,
-                _windowCenter.Y + (int)(_exitButtonTexture.Height * _UIscalar * 1.5),
+                _windowCenter.X + (int)(_exitButtonTexture.Width * _UIscalar),
+                _windowCenter.Y + (int)(_resumeButtonTexture.Height * _UIscalar * .5),
                 _exitButtonTexture,
                 "ExitGameButton",
                 Color.White,
@@ -288,8 +294,8 @@ namespace YouveBeenAudited
             // Pause menu button
             Button optionsMenu = new Button
                 (
-                    _windowCenter.X - (int)(_menuButtonTexture.Width * _UIscalar) / 2,
-                    _windowCenter.Y,
+                    _windowCenter.X - (int)(_menuButtonTexture.Width * _UIscalar * 2),
+                    _windowCenter.Y + (int)(_resumeButtonTexture.Height * _UIscalar * .5),
                     _menuButtonTexture,
                     "MenuButton",
                     Color.White,
@@ -297,6 +303,10 @@ namespace YouveBeenAudited
                 );
             _optionButtons.Add(optionsMenu);
             optionsMenu.BtnClicked += ButtonCheck;
+
+            #endregion Options menu buttons
+
+            #region Game over buttons
 
             // game over exit game
             Button gameOverExit = new Button(
@@ -318,6 +328,10 @@ namespace YouveBeenAudited
                 _UIscalar);
             _gameOverButtons.Add(gameOverMenu);
             gameOverMenu.BtnClicked += ButtonCheck;
+
+            #endregion Game over buttons
+
+            #region Level select screen
 
             // level select buttons
             Button levelSelectOne = new Button(
@@ -373,6 +387,8 @@ namespace YouveBeenAudited
                 );
             _levelSelectButtons.Add(levelSelectFive);
             levelSelectFive.BtnClicked += ButtonCheck;
+
+            #endregion Level select screen
 
             #endregion Button creation
         }
@@ -539,7 +555,6 @@ namespace YouveBeenAudited
                     _spriteBatch.DrawString(_arial25, "J", new Vector2((int)(_windowCenter.X + (_windowSize.X * .455) - _inventoryTexture.Width / 2 * _UIscalar), (int)((_windowSize.Y / 100 * 2) + (_inventoryTexture.Height * .01))), Color.Yellow);
                     _spriteBatch.DrawString(_arial25, "K", new Vector2((int)(_windowCenter.X + (_windowSize.X * .455) - _inventoryTexture.Width / 2 * _UIscalar), (int)((_windowSize.Y / 100 * 2) + (_inventoryTexture.Height * .45))), Color.Yellow);
                     _spriteBatch.DrawString(_arial25, "L", new Vector2((int)(_windowCenter.X + (_windowSize.X * .455) - _inventoryTexture.Width / 2 * _UIscalar), (int)((_windowSize.Y / 100 * 2) + (_inventoryTexture.Height * .9))), Color.Yellow);
-
 
                     // Handles Text UI
                     _spriteBatch.DrawString(_arial25, $"${_player.Money}", new Vector2(50, 50), Color.DarkGreen, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
@@ -722,7 +737,6 @@ namespace YouveBeenAudited
             _safeHealthBar = new Rectangle(_windowCenter.X - 500, _windowSize.Y - 75, 1000, 50);
             _safeHealth = 100 + ((_enemyManager.NumOfEnemies * _enemyManager.TotalWaves) / 5) * 100;
             _healthSubtractionAmt = 1000 / (1 + ((_enemyManager.NumOfEnemies * _enemyManager.TotalWaves) / 5));
-
         }
 
         /// <summary>
