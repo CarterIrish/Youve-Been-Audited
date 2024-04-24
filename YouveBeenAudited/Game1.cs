@@ -162,7 +162,7 @@ namespace YouveBeenAudited
             _windowSize = new Point(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
 
             // turns debugger on/off
-            _debug = true;
+            _debug = false;
 
             // File paths
             _filePaths = new string[]
@@ -501,6 +501,7 @@ namespace YouveBeenAudited
                 case GameStates.Game:
                     _spriteBatch.Draw(_grassFloorTexture, new Rectangle(0, 0, _grassFloorTexture.Width * 3 * (int)_UIscalar, _grassFloorTexture.Height * 3 * (int)_UIscalar), Color.White);
                     DrawLevel(_spriteBatch);
+
                     // Handles Text UI
                     _spriteBatch.DrawString(_arial25, $"${_player.Money}", new Vector2(50, 50), Color.DarkGreen, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
                     _spriteBatch.DrawString(_arial25, $"Wave {_enemyManager.CurrentWave}/{_enemyManager.TotalWaves}", new Vector2(_windowCenter.X - 150, 50), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
@@ -531,16 +532,6 @@ namespace YouveBeenAudited
                     }
                     _player.Draw(_spriteBatch);
                     _enemyManager.DrawEnemies(_spriteBatch);
-
-                    //debug shit
-                    if (_debug)
-                    {
-                        _spriteBatch.DrawString(_arial25, "Debug : ON", new Vector2(50, 100), Color.Blue, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
-                    }
-                    if (!_debug)
-                    {
-                        _spriteBatch.DrawString(_arial25, "Debug : OFF", new Vector2(50, 100), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
-                    }
 
                     // Draws Safe Health Bar
                     _spriteBatch.Draw(_healthBarTexture, new Rectangle(_windowCenter.X - 510, _windowSize.Y - 85, 1020, 70), Color.Black);
