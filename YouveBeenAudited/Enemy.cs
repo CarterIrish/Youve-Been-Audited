@@ -122,14 +122,15 @@ namespace YouveBeenAudited
         {
             _timeCount += gt.ElapsedGameTime.TotalSeconds;
             _timeCount = UpdateAnimation(_timeCount);
+   
             if (_currentPoint < _path.Count)
             {
-                Vector2 direction = _path[_currentPoint] - new Vector2(_position.X, _position.Y);
-
+                Vector2 alteredPoint = new Vector2(_path[_currentPoint].X - _position.Width/2, _path[_currentPoint].Y - _position.Height/2);
+                Vector2 direction = alteredPoint - new Vector2(_position.X, _position.Y);
                 direction = Vector2.Normalize(direction);
 
 
-                if(direction.X < 0)
+                if (direction.X < 0)
                 {
                     _position.X += (int)((direction.X - .5) * _speed);
                 }
@@ -137,7 +138,7 @@ namespace YouveBeenAudited
                 {
                     _position.X += (int)((direction.X + .5) * _speed);
                 }
-                if(direction.Y < 0)
+                if (direction.Y < 0)
                 {
                     _position.Y += (int)((direction.Y - .5) * _speed);
                 }
@@ -149,18 +150,18 @@ namespace YouveBeenAudited
                 _destinationRectangle.Y = _position.Y;
 
 
-                if ((_position.X < _path[_currentPoint].X + _speed && _position.X > _path[_currentPoint].X - _speed) &&
-                _position.Y < _path[_currentPoint].Y + _speed && _position.Y > _path[_currentPoint].Y - _speed)
+                if ((_position.X < _path[_currentPoint].X - (_position.Width / 2) + _speed && _position.X > _path[_currentPoint].X - (_position.Width / 2) - _speed) &&
+                _position.Y < _path[_currentPoint].Y - (_position.Height / 2) + _speed && _position.Y > _path[_currentPoint].Y - (_position.Height / 2) - _speed)
                 {
                     _currentPoint++;
                 }
 
                 //Animation Movement Update
-                if (direction.X > 0)
+                if ((int)(direction.X + .5) > 0)
                 {
                     _currentState = CharacterStates.Right;
                 }
-                else if (direction.X < 0)
+                else if ((int)(direction.X - .5) <= 0)
                 {
                     _currentState = CharacterStates.Left;
                 }
