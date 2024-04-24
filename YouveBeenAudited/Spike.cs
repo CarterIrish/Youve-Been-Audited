@@ -19,7 +19,7 @@ namespace YouveBeenAudited
             get { return _health; }
         }
 
-        public Spike(int x, int y, Texture2D texture, int cost, int damageAmnt) : base(x, y, texture, cost, damageAmnt)
+        public Spike(int x, int y, Texture2D texture, int cost, int damageAmnt, int tileHeight) : base(x, y, texture, cost, damageAmnt, tileHeight)
         {
             _health = 2;
         }

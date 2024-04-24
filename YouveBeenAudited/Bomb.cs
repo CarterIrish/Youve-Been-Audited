@@ -41,7 +41,7 @@ namespace YouveBeenAudited
             get { return _explosionTime; }
         }
 
-        public Bomb(int x, int y, Texture2D texture, int cost, int damageAmnt) : base(x, y, texture, cost, damageAmnt)
+        public Bomb(int x, int y, Texture2D texture, int cost, int damageAmnt, int tileHeight) : base(x, y, texture, cost, damageAmnt, tileHeight)
         {
             _isExploding = false;
             _fuseTime = 3;
