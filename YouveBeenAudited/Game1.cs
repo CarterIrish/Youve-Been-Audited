@@ -108,6 +108,7 @@ namespace YouveBeenAudited
 
         //Map Textures
         private Texture2D _woodFloorTexture;
+
         private Texture2D _wallFloralTexture;
         private Texture2D _grassFloorTexture;
         private Texture2D _safeTexture;
@@ -256,7 +257,7 @@ namespace YouveBeenAudited
             // resume game button
             Button ResumeGame = new Button(
                 _windowCenter.X - (int)(_resumeButtonTexture.Width * _UIscalar) / 2,
-                _windowCenter.Y - (int)(_resumeButtonTexture.Height * _UIscalar),
+                _windowCenter.Y - (int)(_resumeButtonTexture.Height * _UIscalar * 1.5),
                 _resumeButtonTexture,
                 "ResumeGameButton",
                 Color.White,
@@ -267,13 +268,26 @@ namespace YouveBeenAudited
             // Options exit game button
             Button optionsExit = new Button(
                 _windowCenter.X - (int)(_exitButtonTexture.Width * _UIscalar) / 2,
-                _windowCenter.Y + (int)(_exitButtonTexture.Height * _UIscalar),
+                _windowCenter.Y + (int)(_exitButtonTexture.Height * _UIscalar * 1.5),
                 _exitButtonTexture,
                 "ExitGameButton",
                 Color.White,
                 _UIscalar);
             _optionButtons.Add(optionsExit);
             optionsExit.BtnClicked += ButtonCheck;
+
+            // Pause menu button
+            Button optionsMenu = new Button
+                (
+                    _windowCenter.X - (int)(_menuButtonTexture.Width * _UIscalar) / 2,
+                    _windowCenter.Y,
+                    _menuButtonTexture,
+                    "MenuButton",
+                    Color.White,
+                    _UIscalar
+                );
+            _optionButtons.Add(optionsMenu);
+            optionsMenu.BtnClicked += ButtonCheck;
 
             // game over exit game
             Button gameOverExit = new Button(
@@ -521,8 +535,8 @@ namespace YouveBeenAudited
                     }
 
                     // Draws safe
-                    Vector2 safePos = _enemyManager.Path[_enemyManager.Path.Count-1];
-                    _spriteBatch.Draw(_safeTexture, new Rectangle((int)safePos.X - _tileLength/2, (int)safePos.Y - _tileLength/2, _tileLength, _tileLength), Color.White);
+                    Vector2 safePos = _enemyManager.Path[_enemyManager.Path.Count - 1];
+                    _spriteBatch.Draw(_safeTexture, new Rectangle((int)safePos.X - _tileLength / 2, (int)safePos.Y - _tileLength / 2, _tileLength, _tileLength), Color.White);
 
                     // Draws traps
                     foreach (Trap trap in _traps)
