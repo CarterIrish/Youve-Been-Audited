@@ -1,19 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
-using System.Threading;
 
 namespace YouveBeenAudited
 {
     /// <summary>
-    /// Purpose: Manage the enemies on players screen.
+    /// Contains high level information about enemies & interfaces with another class to perform core
+    /// updates of an enemy.
     /// </summary>
     internal class EnemyManager
     {
         #region Fields
 
+        // List of points on an enemies path
         private List<Vector2> _path;
 
         // Enemy Stuff
@@ -36,6 +36,7 @@ namespace YouveBeenAudited
 
         //Enemy Textures
         private Texture2D _auditorTexture;
+
         private int _tileHeight;
 
         #endregion Fields
@@ -43,73 +44,88 @@ namespace YouveBeenAudited
         #region Properties
 
         /// <summary>
-        /// Gets and sets path
+        /// Gets or sets the path.
         /// </summary>
-        public List<Vector2> Path
-        {
-            get { return _path; }
-            set { _path = value; }
-        }
+        /// <value>
+        /// The path.
+        /// </value>
+        public List<Vector2> Path { get => _path; set => _path = value; }
 
         /// <summary>
-        /// Gets the enemy list
+        /// Gets the enemies.
         /// </summary>
-        public List<Enemy> Enemies
-        {
-            get => _enemies;
-        }
+        /// <value>
+        /// The enemies.
+        /// </value>
+        public List<Enemy> Enemies { get => _enemies; }
 
         /// <summary>
-        /// Gets and sets the number of enemies per wave
+        /// Gets or sets the number of enemies.
         /// </summary>
-        public int NumOfEnemies
-        {
-            get => _numOfEnemies; set { _numOfEnemies = value; }
-        }
+        /// <value>
+        /// The number of enemies.
+        /// </value>
+        public int NumOfEnemies { get => _numOfEnemies; set => _numOfEnemies = value; }
 
         /// <summary>
-        /// Gets the number of enemies left in a wave
+        /// Gets the remaining enemies.
         /// </summary>
-        public int RemainingEnemies
-        {
-            get { return _numOfEnemies - _killedEnemies; }
-        }
+        /// <value>
+        /// The remaining enemies.
+        /// </value>
+        public int RemainingEnemies { get => _numOfEnemies - _killedEnemies; }
 
         /// <summary>
-        /// Gets whether an enemy has reached the goal
+        /// Gets a value indicating whether [enemy at goal].
         /// </summary>
-        public bool EnemyAtGoal
-        {
-            get => _enemyAtGoal;
-        }
+        /// <value>
+        ///   <c>true</c> if [enemy at goal]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnemyAtGoal { get => _enemyAtGoal; }
 
         /// <summary>
-        /// Gets and sets the wave modifier
+        /// Gets or sets the wave modifier.
         /// </summary>
-        public double WaveModifier
-        {
-            get => _waveModifier;
-            set { _waveModifier = value; }
-        }
+        /// <value>
+        /// The wave modifier.
+        /// </value>
+        public double WaveModifier { get => _waveModifier; set => _waveModifier = value; }
 
         /// <summary>
-        /// Gets and sets the current wave number
+        /// Gets or sets the current wave.
         /// </summary>
+        /// <value>
+        /// The current wave.
+        /// </value>
         public int CurrentWave
         { get => _currentWave; set { _currentWave = value; } }
 
         /// <summary>
-        /// Gets and sets the total wave number
+        /// Gets or sets the total waves.
         /// </summary>
+        /// <value>
+        /// The total waves.
+        /// </value>
         public int TotalWaves
         { get => _totalWaves; set { _totalWaves = value; } }
 
         /// <summary>
-        /// Gets the timer
+        /// Gets the timer.
         /// </summary>
+        /// <value>
+        /// The timer.
+        /// </value>
         public double Timer { get => _timer; }
 
-        public int TileHeight { get => _tileHeight; set { _tileHeight = value; } }
+        /// <summary>
+        /// Gets or sets the height of the tile.
+        /// </summary>
+        /// <value>
+        /// The height of the tile.
+        /// </value>
+        public int TileHeight
+        { get => _tileHeight; set { _tileHeight = value; } }
+
         #endregion Properties
 
         #region Methods
@@ -122,7 +138,6 @@ namespace YouveBeenAudited
         public EnemyManager(int numOfEnemies, List<Vector2> path)
         {
             _numOfEnemies = numOfEnemies;
-
             _path = path;
             _enemies = new List<Enemy>();
             _killedEnemies = 0;
@@ -151,17 +166,19 @@ namespace YouveBeenAudited
         }
 
         /// <summary>
-        /// Loads Enemy Textures
+        /// Loads the content.
         /// </summary>
-        /// <param name="content"></param>
+        /// <param name="content">The ContentManager.</param>
         public void LoadContent(ContentManager content)
         {
             _auditorTexture = content.Load<Texture2D>("auditor_spritesheet");
         }
 
         /// <summary>
-        /// Updates all enemies on the field.
+        /// Updates the enemies.
         /// </summary>
+        /// <param name="gt">The GameTime.</param>
+        /// <param name="game">The game.</param>
         public void UpdateEnemies(GameTime gt, Game1 game)
         {
             _timer += gt.ElapsedGameTime.TotalSeconds;
@@ -216,7 +233,7 @@ namespace YouveBeenAudited
         }
 
         /// <summary>
-        /// Starts the next wave
+        /// Sets up next wave.
         /// </summary>
         public void NextWave()
         {
@@ -227,9 +244,9 @@ namespace YouveBeenAudited
         }
 
         /// <summary>
-        /// Draws all of the enemies.
+        /// Draws the enemies.
         /// </summary>
-        /// <param name="sb">SpriteBatch</param>
+        /// <param name="sb">The sb.</param>
         public void DrawEnemies(SpriteBatch sb)
         {
             foreach (Enemy enemy in _enemies)
@@ -237,8 +254,6 @@ namespace YouveBeenAudited
                 enemy.Draw(sb);
             }
         }
-
-        
 
         #endregion Methods
     }

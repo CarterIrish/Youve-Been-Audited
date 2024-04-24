@@ -1,12 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System;
-using System.Runtime.CompilerServices;
 
 namespace YouveBeenAudited
 {
+    /// <summary>
+    /// Type of traps
+    /// </summary>
     public enum TrapType
     {
         Spikes,
@@ -15,8 +16,9 @@ namespace YouveBeenAudited
     }
 
     /// <summary>
-    /// Purpose: To hold generic information that all traps have.
+    /// Contains information all traps require.
     /// </summary>
+    /// <seealso cref="YouveBeenAudited.GameObject" />
     internal class Trap : GameObject
     {
         #region Fields
@@ -32,24 +34,32 @@ namespace YouveBeenAudited
 
         #region Properties
 
-
         /// <summary>
-        /// Gets the damage amount of trap.
+        /// Gets the damage amnt.
         /// </summary>
+        /// <value>
+        /// The damage amnt.
+        /// </value>
         public int DamageAmnt { get => _damageAmnt; }
 
         /// <summary>
         /// Gets the cost of trap.
         /// </summary>
+        /// <value>
+        /// The cost.
+        /// </value>
         public int Cost { get => _cost; }
 
         /// <summary>
-        /// Gets or sets the active state of trap.
+        /// Gets or sets a value indicating whether this instance is active.
         /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is active; otherwise, <c>false</c>.
+        /// </value>
         public bool IsActive { get => _isActive; set => _isActive = value; }
 
         /// <summary>
-        /// Gets the type of trap.
+        /// Gets the trap type.
         /// </summary>
         /// <value>
         /// The type.
@@ -65,9 +75,10 @@ namespace YouveBeenAudited
         /// </summary>
         /// <param name="x">The x coord.</param>
         /// <param name="y">The y coord.</param>
-        /// <param name="texture">The texture of trap.</param>
-        /// <param name="cost">The cost of trap.</param>
-        /// <param name="damageAmnt">The damage amnt of trap.</param>
+        /// <param name="texture">The texture.</param>
+        /// <param name="cost">The cost.</param>
+        /// <param name="damageAmnt">The damage amnt.</param>
+        /// <param name="tileHeight">Height of the tile.</param>
         public Trap(int x, int y, Texture2D texture, int cost, int damageAmnt, int tileHeight) : base(x, y, texture)
         {
             _damageAmnt = damageAmnt;
@@ -77,10 +88,10 @@ namespace YouveBeenAudited
         }
 
         /// <summary>
-        /// Checks the collision with another game object
+        /// Checks the collision between provided object and this instance.
         /// </summary>
-        /// <param name="obj">Object to check collisions with</param>
-        /// <returns>True if collision detected</returns>
+        /// <param name="obj">The object.</param>
+        /// <returns>True if collides with an object</returns>
         public bool CheckCollisions(GameObject obj)
         {
             if (obj is IDamageable && Position.Intersects(new Rectangle(obj.Position.X, obj.Position.Y, 55, 100)))
@@ -91,12 +102,16 @@ namespace YouveBeenAudited
         }
 
         /// <summary>
-        /// Does the effect of a trap on another object.
+        /// Does the effect of this trap onto character.
         /// </summary>
-        /// <param name="e">The object to perform effect on.</param>
+        /// <param name="e">The character.</param>
         public virtual void DoEffect(Character e)
         { }
 
+        /// <summary>
+        /// Resolves the collisions between trap and walls to keep trap in bounds.
+        /// </summary>
+        /// <param name="walls">The walls.</param>
         public void ResolveCollisions(List<GameObject> walls)
         {
             List<Rectangle> intersections = new List<Rectangle>();

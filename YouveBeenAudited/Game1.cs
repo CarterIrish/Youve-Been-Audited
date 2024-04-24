@@ -3,12 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using ShapeUtils;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
-using System.Reflection.Metadata;
-using System.Reflection.PortableExecutable;
 
 namespace YouveBeenAudited
 {
@@ -24,20 +20,27 @@ namespace YouveBeenAudited
         GameOver
     }
 
+    /// <summary>
+    /// Types of map tiles.
+    /// </summary>
     internal enum TileType
     {
         Wall,
         Wood
     }
 
+    /// <summary>
+    /// Delegate for checking if a button has been clicked.
+    /// </summary>
+    /// <param name="b">The button that was clicked.</param>
     internal delegate void BtnClickedDelegate(Button b);
 
     /// <summary>
     /// Authors: Carter I, Chase C, Jesse M & Jack M.
     /// Class: IGME 106.
-    /// Date: 2/25/2024.
+    /// Date: 4/23/2024.
     /// Purpose: Group game project.
-    /// Name: You've Been Audited.
+    /// Name of game: You've Been Audited.
     /// </summary>
     public class Game1 : Game
     {
@@ -46,7 +49,7 @@ namespace YouveBeenAudited
         //Managers
         private EnemyManager _enemyManager;
 
-        // Monogame fields
+        // MonoGame fields
         private GraphicsDeviceManager _graphics;
 
         private SpriteBatch _spriteBatch;
@@ -57,7 +60,7 @@ namespace YouveBeenAudited
         private Point _windowSize;
 
         private readonly Point _ReferenceWindow;
-        public readonly double _UIscalar;
+        public readonly double _UIscaler;
 
         private readonly string[] _filePaths;
 
@@ -75,9 +78,7 @@ namespace YouveBeenAudited
 
         private Song _appassionata;
 
-        //Animation
-        //public const double _secondsPerFrame = 6.5f / 60; //This is here for reference.
-
+        // Animation
         private double _timeCount;
 
         private Texture2D _playerTexture;
@@ -88,7 +89,6 @@ namespace YouveBeenAudited
         // Element lists
         private List<Button> _menuButtons;
 
-        private List<Button> _gameButtons;
         private List<Button> _optionButtons;
         private List<Button> _gameOverButtons;
         private List<Button> _levelSelectButtons;
@@ -108,8 +108,6 @@ namespace YouveBeenAudited
 
         private Texture2D _gameOverTexture;
 
-        private Texture2D _winTexture;
-
         //Map Textures
         private Texture2D _woodFloorTexture;
 
@@ -119,7 +117,6 @@ namespace YouveBeenAudited
         private Texture2D _nailTexture;
         private Texture2D _glueTexture;
         private Texture2D _bombTexture;
-
         private Texture2D _inventoryTexture;
 
         // Input sources
@@ -128,11 +125,18 @@ namespace YouveBeenAudited
         private KeyboardState _prevKbState;
 
         // Level Information
-        private int _tileLength;    // Dimensions of a square tile
 
-        private TileType[,] _map;   // 2D array representing the tile types of the map
-        private int _marginWidth;   // pixel width of the side margins
-        private List<GameObject> _wallList; // list of walls in the map
+        // Dimensions of a square tile
+        private int _tileLength;
+
+        // 2D array representing the tile types of the map
+        private TileType[,] _map;
+
+        // pixel width of the side margins
+        private int _marginWidth;
+
+        // list of walls in the map
+        private List<GameObject> _wallList;
 
         // Safe stuff
         private int _safeHealth;
@@ -148,6 +152,9 @@ namespace YouveBeenAudited
 
         #region Pre GameLoop
 
+        /// <summary>
+        /// Creates a new game1 object
+        /// </summary>
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -162,7 +169,7 @@ namespace YouveBeenAudited
 
             // set up ui scaler
             _ReferenceWindow = new Point(2560, 1440);
-            _UIscalar = _graphics.PreferredBackBufferWidth / (double)_ReferenceWindow.Y;
+            _UIscaler = _graphics.PreferredBackBufferWidth / (double)_ReferenceWindow.Y;
 
             // initialize useful window measurements
             _windowCenter = new Point(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
@@ -182,11 +189,13 @@ namespace YouveBeenAudited
             };
         }
 
+        /// <summary>
+        /// Initializes all important pre game loop fields.
+        /// </summary>
         protected override void Initialize()
         {
             // Initialize key game fields.
             _menuButtons = new List<Button>();
-            _gameButtons = new List<Button>();
             _optionButtons = new List<Button>();
             _gameOverButtons = new List<Button>();
             _levelSelectButtons = new List<Button>();
@@ -197,12 +206,23 @@ namespace YouveBeenAudited
             base.Initialize();
         }
 
+        /// <summary>
+        /// Loads all content for the game.
+        /// </summary>
         protected override void LoadContent()
         {
+            // Animation Setup.
+            _timeCount = 0;
+            // Create the sprite batch.
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            _playerTexture = Content.Load<Texture2D>("player_spritesheet");
+            // Sprite font.
             _arial25 = Content.Load<SpriteFont>("Arial25");
+
+            // All asset textures.
+            _playerTexture = Content.Load<Texture2D>("player_spritesheet");
+            _player = new Player(999, 999, _playerTexture, 999, 999, 999, 999);
+            _player.LoadContent(Content);
             _menuButtonTexture = Content.Load<Texture2D>("MenuButton");
             _startButtonTexture = Content.Load<Texture2D>("StartButton");
             _exitButtonTexture = Content.Load<Texture2D>("ExitButton");
@@ -211,7 +231,6 @@ namespace YouveBeenAudited
             _titleTexture = Content.Load<Texture2D>("Title");
             _pauseTexture = Content.Load<Texture2D>("pause_screen");
             _gameOverTexture = Content.Load<Texture2D>("game_over_screen");
-            _winTexture = Content.Load<Texture2D>("win_screen");
             _woodFloorTexture = Content.Load<Texture2D>("tile_wood_floor");
             _wallFloralTexture = Content.Load<Texture2D>("tile_floral_wall");
             _grassFloorTexture = Content.Load<Texture2D>("tile_grass_large");
@@ -221,22 +240,21 @@ namespace YouveBeenAudited
             _bombTexture = Content.Load<Texture2D>("bomb");
             _healthBarTexture = Content.Load<Texture2D>("healthBar");
             _inventoryTexture = Content.Load<Texture2D>("inventory");
-            _player = new Player(999, 999, _playerTexture, 999, 999, 999, 999);
-            _player.LoadContent(Content);
+
+            // Game music.
             _appassionata = (Content.Load<Song>("Appassionata"));
             _moonlightSonata = (Content.Load<Song>("Moonlight Sonata"));
-            MediaPlayer.Play(_appassionata);
-            MediaPlayer.IsRepeating = true;
 
-            // Level select icons
+            // Level select icons.
             Texture2D levelOneSelect = Content.Load<Texture2D>("select_level_1");
             Texture2D levelTwoSelect = Content.Load<Texture2D>("select_level_2");
             Texture2D levelThreeSelect = Content.Load<Texture2D>("select_level_3");
             Texture2D levelFourSelect = Content.Load<Texture2D>("select_level_4");
             Texture2D levelFiveSelect = Content.Load<Texture2D>("select_level_5");
 
-            //Animation Setup
-            _timeCount = 0;
+            // Player the loaded music.
+            MediaPlayer.Play(_appassionata);
+            MediaPlayer.IsRepeating = true;
 
             #region Button creation
 
@@ -244,24 +262,24 @@ namespace YouveBeenAudited
 
             // Menu start button
             Button StartButton = new Button(
-                _windowCenter.X - (int)(_startButtonTexture.Width * _UIscalar) / 2,
-                _windowCenter.Y + (int)(40 * _UIscalar),
+                _windowCenter.X - (int)(_startButtonTexture.Width * _UIscaler) / 2,
+                _windowCenter.Y + (int)(40 * _UIscaler),
                 _startButtonTexture,
                 "StartButton",
                 Color.White,
-                _UIscalar);
+                _UIscaler);
 
             _menuButtons.Add(StartButton);
             StartButton.BtnClicked += ButtonCheck;
 
             // MenuExit game button
             Button ExitGameButton = new Button(
-                _windowCenter.X - (int)(_exitButtonTexture.Width * _UIscalar) / 2,
-                StartButton.Position.Y + (int)(_exitButtonTexture.Height * _UIscalar + 40),
+                _windowCenter.X - (int)(_exitButtonTexture.Width * _UIscaler) / 2,
+                StartButton.Position.Y + (int)(_exitButtonTexture.Height * _UIscaler + 40),
                 _exitButtonTexture,
                 "ExitGameButton",
                 Color.White,
-                _UIscalar);
+                _UIscaler);
             _menuButtons.Add(ExitGameButton);
             ExitGameButton.BtnClicked += ButtonCheck;
 
@@ -271,35 +289,35 @@ namespace YouveBeenAudited
 
             // resume game button
             Button ResumeGame = new Button(
-                _windowCenter.X - (int)(_resumeButtonTexture.Width * _UIscalar) / 2,
-                _windowCenter.Y + (int)(_resumeButtonTexture.Height * _UIscalar * .5),
+                _windowCenter.X - (int)(_resumeButtonTexture.Width * _UIscaler) / 2,
+                _windowCenter.Y + (int)(_resumeButtonTexture.Height * _UIscaler * .5),
                 _resumeButtonTexture,
                 "ResumeGameButton",
                 Color.White,
-                _UIscalar);
+                _UIscaler);
             _optionButtons.Add(ResumeGame);
             ResumeGame.BtnClicked += ButtonCheck;
 
             // Options exit game button
             Button optionsExit = new Button(
-                _windowCenter.X + (int)(_exitButtonTexture.Width * _UIscalar),
-                _windowCenter.Y + (int)(_resumeButtonTexture.Height * _UIscalar * .5),
+                _windowCenter.X + (int)(_exitButtonTexture.Width * _UIscaler),
+                _windowCenter.Y + (int)(_resumeButtonTexture.Height * _UIscaler * .5),
                 _exitButtonTexture,
                 "ExitGameButton",
                 Color.White,
-                _UIscalar);
+                _UIscaler);
             _optionButtons.Add(optionsExit);
             optionsExit.BtnClicked += ButtonCheck;
 
             // Pause menu button
             Button optionsMenu = new Button
                 (
-                    _windowCenter.X - (int)(_menuButtonTexture.Width * _UIscalar * 2),
-                    _windowCenter.Y + (int)(_resumeButtonTexture.Height * _UIscalar * .5),
+                    _windowCenter.X - (int)(_menuButtonTexture.Width * _UIscaler * 2),
+                    _windowCenter.Y + (int)(_resumeButtonTexture.Height * _UIscaler * .5),
                     _menuButtonTexture,
                     "MenuButton",
                     Color.White,
-                    _UIscalar
+                    _UIscaler
                 );
             _optionButtons.Add(optionsMenu);
             optionsMenu.BtnClicked += ButtonCheck;
@@ -308,24 +326,25 @@ namespace YouveBeenAudited
 
             #region Game over buttons
 
-            // game over exit game
+            // game over exit game.
             Button gameOverExit = new Button(
-                _windowCenter.X - (int)(_exitButtonTexture.Width * _UIscalar) / 2,
-                _windowCenter.Y + (int)(_exitButtonTexture.Height * _UIscalar + 150),
+                _windowCenter.X - (int)(_exitButtonTexture.Width * _UIscaler) / 2,
+                _windowCenter.Y + (int)(_exitButtonTexture.Height * _UIscaler + 150),
                 _exitButtonTexture,
                 "ExitGameButton",
                 Color.White,
-                _UIscalar);
+                _UIscaler);
             _gameOverButtons.Add(gameOverExit);
             gameOverExit.BtnClicked += ButtonCheck;
 
+            // Menu button on game over state.
             Button gameOverMenu = new Button(
-                _windowCenter.X - (int)(_menuButtonTexture.Width * _UIscalar) / 2,
-                _windowCenter.Y + 200 - (int)(_menuButtonTexture.Height * _UIscalar),
+                _windowCenter.X - (int)(_menuButtonTexture.Width * _UIscaler) / 2,
+                _windowCenter.Y + 200 - (int)(_menuButtonTexture.Height * _UIscaler),
                 _menuButtonTexture,
                 "MenuButton",
                 Color.White,
-                _UIscalar);
+                _UIscaler);
             _gameOverButtons.Add(gameOverMenu);
             gameOverMenu.BtnClicked += ButtonCheck;
 
@@ -335,55 +354,55 @@ namespace YouveBeenAudited
 
             // level select buttons
             Button levelSelectOne = new Button(
-                _windowCenter.X - (int)(levelOneSelect.Width * _UIscalar * 3.5),
-                _windowCenter.Y - (int)(levelOneSelect.Height * _UIscalar) / 2,
+                _windowCenter.X - (int)(levelOneSelect.Width * _UIscaler * 3.5),
+                _windowCenter.Y - (int)(levelOneSelect.Height * _UIscaler) / 2,
                 levelOneSelect,
                 "LevelSelectOne",
                 Color.White,
-                _UIscalar
+                _UIscaler
                 );
             _levelSelectButtons.Add(levelSelectOne);
             levelSelectOne.BtnClicked += ButtonCheck;
 
             Button levelSelectTwo = new Button(
-                _windowCenter.X - (int)(levelTwoSelect.Width * _UIscalar * 2),
-                _windowCenter.Y - (int)(levelTwoSelect.Height * _UIscalar) / 2,
+                _windowCenter.X - (int)(levelTwoSelect.Width * _UIscaler * 2),
+                _windowCenter.Y - (int)(levelTwoSelect.Height * _UIscaler) / 2,
                 levelTwoSelect,
                 "LevelSelectTwo",
                 Color.White,
-                _UIscalar
+                _UIscaler
                 );
             _levelSelectButtons.Add(levelSelectTwo);
             levelSelectTwo.BtnClicked += ButtonCheck;
 
             Button levelSelectThree = new Button(
-                _windowCenter.X - (int)(levelThreeSelect.Width * _UIscalar) / 2,
-                _windowCenter.Y - (int)(levelThreeSelect.Height * _UIscalar) / 2,
+                _windowCenter.X - (int)(levelThreeSelect.Width * _UIscaler) / 2,
+                _windowCenter.Y - (int)(levelThreeSelect.Height * _UIscaler) / 2,
                 levelThreeSelect,
                 "LevelSelectThree",
                 Color.White,
-                _UIscalar);
+                _UIscaler);
             _levelSelectButtons.Add(levelSelectThree);
             levelSelectThree.BtnClicked += ButtonCheck;
 
             Button levelSelectFour = new Button(
-                _windowCenter.X + (int)(levelFourSelect.Width * _UIscalar),
-                _windowCenter.Y - (int)(levelFourSelect.Height * _UIscalar) / 2,
+                _windowCenter.X + (int)(levelFourSelect.Width * _UIscaler),
+                _windowCenter.Y - (int)(levelFourSelect.Height * _UIscaler) / 2,
                 levelFourSelect,
                 "LevelSelectFour",
                 Color.White,
-                _UIscalar
+                _UIscaler
                 );
             _levelSelectButtons.Add(levelSelectFour);
             levelSelectFour.BtnClicked += ButtonCheck;
 
             Button levelSelectFive = new Button(
-                _windowCenter.X + (int)(levelFiveSelect.Width * _UIscalar * 2.5),
-                _windowCenter.Y - (int)(levelFiveSelect.Height * _UIscalar) / 2,
+                _windowCenter.X + (int)(levelFiveSelect.Width * _UIscaler * 2.5),
+                _windowCenter.Y - (int)(levelFiveSelect.Height * _UIscaler) / 2,
                 levelFiveSelect,
                 "LevelSelectFive",
                 Color.White,
-                _UIscalar
+                _UIscaler
                 );
             _levelSelectButtons.Add(levelSelectFive);
             levelSelectFive.BtnClicked += ButtonCheck;
@@ -398,12 +417,11 @@ namespace YouveBeenAudited
         #region GameLoop
 
         /// <summary>
-        /// Updates the game elements.
+        /// Updates game logic.
         /// </summary>
+        /// <param name="gameTime">Gametime</param>
         protected override void Update(GameTime gameTime)
         {
-            // TODO: remove this statement after menu UI functional
-
             // Get current input states
             _mouseState = Mouse.GetState();
 
@@ -503,8 +521,10 @@ namespace YouveBeenAudited
             base.Update(gameTime);
         }
 
-        /// <summary>Draws the game elements to screen.</summary>
-        /// <param name="gameTime">The game time.</param>
+        /// <summary>
+        /// Draws all UI/X elements to the screen & Graphics
+        /// </summary>
+        /// <param name="gameTime">GameTime object</param>
         protected override void Draw(GameTime gameTime)
         {
             // Designed for a 2560x1440p monitor - ref size
@@ -521,10 +541,10 @@ namespace YouveBeenAudited
                 case GameStates.Menu:
                     _spriteBatch.Draw(_titleTexture,
                         new Rectangle(
-                            (int)(_windowCenter.X - _titleTexture.Width / 2 * _UIscalar),
+                            (int)(_windowCenter.X - _titleTexture.Width / 2 * _UIscaler),
                             (int)(_windowSize.Y / 100 * 2),
-                            (int)(_titleTexture.Width * _UIscalar),
-                            (int)(_titleTexture.Height * _UIscalar)),
+                            (int)(_titleTexture.Width * _UIscaler),
+                            (int)(_titleTexture.Height * _UIscaler)),
                             Color.White);
                     foreach (Button b in _menuButtons)
                     {
@@ -546,13 +566,12 @@ namespace YouveBeenAudited
                 case GameStates.Game:
 
                     //Draw Grass
-                    _spriteBatch.Draw(_grassFloorTexture, new Rectangle(0, 0, _grassFloorTexture.Width * 3 * (int)_UIscalar, _grassFloorTexture.Height * 3 * (int)_UIscalar), Color.White);
+                    _spriteBatch.Draw(_grassFloorTexture, new Rectangle(0, 0, _grassFloorTexture.Width * 3 * (int)_UIscaler, _grassFloorTexture.Height * 3 * (int)_UIscaler), Color.White);
                     DrawLevel(_spriteBatch);
 
                     //Draw Inventory
-                    _spriteBatch.Draw(_inventoryTexture, new Rectangle((int)(_windowCenter.X + (_windowSize.X * .45) - _inventoryTexture.Width / 2 * _UIscalar), (int)(_windowSize.Y / 100 * 2),
-                        (int)((_inventoryTexture.Width) * _UIscalar), (int)((_inventoryTexture.Height) * _UIscalar)), Color.White);
-                    
+                    _spriteBatch.Draw(_inventoryTexture, new Rectangle((int)(_windowCenter.X + (_windowSize.X * .45) - _inventoryTexture.Width / 2 * _UIscaler), (int)(_windowSize.Y / 100 * 2),
+                        (int)((_inventoryTexture.Width) * _UIscaler), (int)((_inventoryTexture.Height) * _UIscaler)), Color.White);
 
                     // Handles Text UI
                     _spriteBatch.DrawString(_arial25, $"${_player.Money}", new Vector2(50, 50), Color.Black, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
@@ -581,7 +600,7 @@ namespace YouveBeenAudited
                             if (b.IsExploding)
                             {
                                 ShapeBatch.Begin(GraphicsDevice);
-                                ShapeBatch.Circle(b.Position.Center.ToVector2(), trap.Position.Height/2, Color.OrangeRed);
+                                ShapeBatch.Circle(b.Position.Center.ToVector2(), trap.Position.Height / 2, Color.OrangeRed);
                                 ShapeBatch.End();
                             }
                         }
@@ -602,8 +621,8 @@ namespace YouveBeenAudited
                     break;
                 // Options/pause menu
                 case GameStates.Options:
-                    _spriteBatch.Draw(_pauseTexture, new Rectangle((int)(_windowCenter.X - _pauseTexture.Width / 2 * _UIscalar), (int)(_windowSize.Y / 100 * 2),
-                        (int)((_pauseTexture.Width) * _UIscalar), (int)((_pauseTexture.Height) * _UIscalar)), Color.White);
+                    _spriteBatch.Draw(_pauseTexture, new Rectangle((int)(_windowCenter.X - _pauseTexture.Width / 2 * _UIscaler), (int)(_windowSize.Y / 100 * 2),
+                        (int)((_pauseTexture.Width) * _UIscaler), (int)((_pauseTexture.Height) * _UIscaler)), Color.White);
                     foreach (Button b in _optionButtons)
                     {
                         b.Draw(_spriteBatch, b.Color);
@@ -612,8 +631,8 @@ namespace YouveBeenAudited
                     break;
                 // Game over
                 case GameStates.GameOver:
-                    _spriteBatch.Draw(_gameOverTexture, new Rectangle((int)(_windowCenter.X - _gameOverTexture.Width / 2 * _UIscalar), (int)(_windowSize.Y / 100 * 2),
-                        (int)((_gameOverTexture.Width) * _UIscalar), (int)((_gameOverTexture.Height) * _UIscalar)), Color.White);
+                    _spriteBatch.Draw(_gameOverTexture, new Rectangle((int)(_windowCenter.X - _gameOverTexture.Width / 2 * _UIscaler), (int)(_windowSize.Y / 100 * 2),
+                        (int)((_gameOverTexture.Width) * _UIscaler), (int)((_gameOverTexture.Height) * _UIscaler)), Color.White);
                     foreach (Button b in _gameOverButtons)
                     {
                         b.Draw(_spriteBatch, b.Color);
@@ -637,8 +656,10 @@ namespace YouveBeenAudited
             _gameState = GameStates.GameOver;
         }
 
-        /// <summary>Checks all buttons in provided list for click state, and performs actions based off that information.</summary>
-        /// <param name="b">The button to be checked</param>
+        /// <summary>
+        /// Checks button states & performs actions according to the button.
+        /// </summary>
+        /// <param name="b">The button to check.</param>
         private void ButtonCheck(Button b)
         {
             switch (b.Name)
@@ -710,7 +731,7 @@ namespace YouveBeenAudited
         }
 
         /// <summary>
-        /// Takes away safe health and adjusts health bar
+        /// Makes the safe lose health
         /// </summary>
         public void TakeSafeDamage()
         {
@@ -723,12 +744,13 @@ namespace YouveBeenAudited
         }
 
         /// <summary>
-        /// Creates the next level.
+        /// Creates/Loads next level.
         /// </summary>
-        /// <param name="fileName">Name of the file.</param>
+        /// <param name="fileName">The file path of .Level file</param>
         private void NextLevel(string fileName)
         {
             _wallList.Clear();
+            _traps.Clear();
             _enemyManager = new EnemyManager(3, 3, 1);
             _enemyManager.LoadContent(Content);
             ReadFile(fileName);
@@ -739,9 +761,9 @@ namespace YouveBeenAudited
         }
 
         /// <summary>
-        /// Reads a file into the game
+        /// Reads .Level file info into the game.
         /// </summary>
-        /// <param name="fileName"></param>
+        /// <param name="fileName">File path for .Level file</param>
         private void ReadFile(string fileName)
         {
             StreamReader input = new StreamReader(fileName);
@@ -809,9 +831,9 @@ namespace YouveBeenAudited
         }
 
         /// <summary>
-        /// Draws the level
+        /// Draws level to screen.
         /// </summary>
-        /// <param name="sb"></param>
+        /// <param name="sb">SpriteBatch object.</param>
         private void DrawLevel(SpriteBatch sb)
         {
             _tileLength = _windowSize.Y / _map.GetLength(0);
@@ -843,6 +865,10 @@ namespace YouveBeenAudited
             }
         }
 
+        /// <summary>
+        /// Draws debug overlay to screen.
+        /// </summary>
+        /// <param name="sb">SpriteBatch object.</param>
         private void DrawDebug(SpriteBatch sb)
         {
             if (_debug)
@@ -875,11 +901,13 @@ namespace YouveBeenAudited
             }
         }
 
+        /// <summary>
+        /// Resolves all collisions in the game.
+        /// </summary>
         public void ResolveCollisions()
         {
             for (int i = 0; i < _traps.Count; i++)
             {
-                
                 if (_traps[i].CheckCollisions(_player))
                 {
                     if (!_player.SteppedOn.Contains(_traps[i]))
@@ -1003,8 +1031,9 @@ namespace YouveBeenAudited
         }
 
         /// <summary>
-        /// Place a trap based on input
+        /// Places a trap based off of user input.
         /// </summary>
+        /// <returns>The trap placed.</returns>
         private Trap PlaceTrap()
         {
             bool onTrap = false;
@@ -1046,6 +1075,9 @@ namespace YouveBeenAudited
             return null;
         }
 
+        /// <summary>
+        /// Checks which user inputs are used when in debug mode.
+        /// </summary>
         private void DebugInputs()
         {
             if (SingleKeyPress(Keys.F1))
@@ -1074,10 +1106,10 @@ namespace YouveBeenAudited
         }
 
         /// <summary>
-        /// Checks if a key has been pressed only this frame and not the previous
+        /// Checks if the key pressed was a single input or repeated one.
         /// </summary>
-        /// <param name="key">key to check for a single press</param>
-        /// <returns>True if the key was pressed only this frame</returns>
+        /// <param name="key">The key input.</param>
+        /// <returns>True if single key press, false otherwise.</returns>
         private bool SingleKeyPress(Keys key)
         {
             return Keyboard.GetState().IsKeyDown(key) && _prevKbState.IsKeyUp(key);
