@@ -80,6 +80,18 @@
 #begin finalTestingFile.level
 /copy:finalTestingFile.level
 
+#begin game_over_screen.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:game_over_screen.png
+
 #begin glue.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -364,4 +376,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Title.png
+
+#begin win_screen.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:win_screen.png
 
