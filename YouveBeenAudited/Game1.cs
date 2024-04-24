@@ -126,6 +126,7 @@ namespace YouveBeenAudited
 
         // Safe stuff
         private int _safeHealth;
+        private int _healthSubtractionAmt;
         private Texture2D _healthBarTexture;
         private Rectangle _safeHealthBar;
 
@@ -541,7 +542,7 @@ namespace YouveBeenAudited
             {
                 GameOver();
             }
-            _safeHealthBar.Width -= 1000/(1+((_enemyManager.NumOfEnemies * _enemyManager.TotalWaves) / 5));
+            _safeHealthBar.Width -= _healthSubtractionAmt;
         }
 
         /// <summary>
@@ -555,6 +556,7 @@ namespace YouveBeenAudited
             ReadFile(fileName);
             _enemyManager.TileHeight = _tileLength;
             _safeHealth = 100 + ((_enemyManager.NumOfEnemies*_enemyManager.TotalWaves)/5)*100;
+            _healthSubtractionAmt = 1000 / (1 + ((_enemyManager.NumOfEnemies * _enemyManager.TotalWaves) / 5));
         }
 
         /// <summary>
