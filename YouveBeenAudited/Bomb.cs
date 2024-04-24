@@ -15,6 +15,7 @@ namespace YouveBeenAudited
         private double _explosionTime;
         private bool _isLit;
         private bool _isExploding;
+        private int _tileHeight;
 
         #endregion Fields
 
@@ -63,6 +64,7 @@ namespace YouveBeenAudited
             _fuseTime = 3;
             _explosionTime = .1;
             _isLit = true;
+            _tileHeight = tileHeight;
         }
 
         /// <summary>
@@ -109,7 +111,7 @@ namespace YouveBeenAudited
         /// </summary>
         public void Explode()
         {
-            this._position.Inflate(100, 100);
+            this._position.Inflate(_tileHeight * 2, _tileHeight * 2);
             _isExploding = true;
         }
 

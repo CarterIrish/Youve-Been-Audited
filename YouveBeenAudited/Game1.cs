@@ -490,7 +490,7 @@ namespace YouveBeenAudited
                     _enemyManager.UpdateEnemies(gameTime, this);
                     if (currentEnemies > _enemyManager.RemainingEnemies)
                     {
-                        _player.Money += 100 * (currentEnemies - _enemyManager.RemainingEnemies); // Player gets money with each kill
+                        _player.Money += 80 * (currentEnemies - _enemyManager.RemainingEnemies); // Player gets money with each kill
                     }
 
                     DebugInputs();
@@ -570,11 +570,9 @@ namespace YouveBeenAudited
                     DrawLevel(_spriteBatch);
 
                     //Draw Inventory
-                    _spriteBatch.Draw(_inventoryTexture, new Rectangle((int)(_windowCenter.X + (_windowSize.X * .45) - _inventoryTexture.Width / 2 * _UIscaler), (int)(_windowSize.Y / 100 * 2),
-                        (int)((_inventoryTexture.Width) * _UIscaler), (int)((_inventoryTexture.Height) * _UIscaler)), Color.White);
-                    _spriteBatch.DrawString(_arial25, "J", new Vector2((int)(_windowCenter.X + (_windowSize.X * .455) - _inventoryTexture.Width / 2 * _UIscaler), (int)((_windowSize.Y / 100 * 2) + (_inventoryTexture.Height * .01))), Color.Yellow);
-                    _spriteBatch.DrawString(_arial25, "K", new Vector2((int)(_windowCenter.X + (_windowSize.X * .455) - _inventoryTexture.Width / 2 * _UIscaler), (int)((_windowSize.Y / 100 * 2) + (_inventoryTexture.Height * .45))), Color.Yellow);
-                    _spriteBatch.DrawString(_arial25, "L", new Vector2((int)(_windowCenter.X + (_windowSize.X * .455) - _inventoryTexture.Width / 2 * _UIscaler), (int)((_windowSize.Y / 100 * 2) + (_inventoryTexture.Height * .9))), Color.Yellow);
+                    _spriteBatch.Draw(_inventoryTexture, new Rectangle((int)(_windowCenter.X + (_windowSize.X * .45) - _inventoryTexture.Width / 2 * _UIscalar), (int)(_windowSize.Y / 100 * 2),
+                        (int)((_inventoryTexture.Width) * _UIscalar), (int)((_inventoryTexture.Height) * _UIscalar)), Color.White);
+                    
 
                     // Handles Text UI
                     _spriteBatch.DrawString(_arial25, $"${_player.Money}", new Vector2(50, 50), Color.DarkGreen, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
@@ -602,7 +600,7 @@ namespace YouveBeenAudited
                             if (b.IsExploding)
                             {
                                 ShapeBatch.Begin(GraphicsDevice);
-                                ShapeBatch.Circle(b.Position.Center.ToVector2(), 100, Color.OrangeRed);
+                                ShapeBatch.Circle(b.Position.Center.ToVector2(), trap.Position.Height/2, Color.OrangeRed);
                                 ShapeBatch.End();
                             }
                         }
@@ -752,6 +750,7 @@ namespace YouveBeenAudited
         private void NextLevel(string fileName)
         {
             _wallList.Clear();
+            _traps.Clear();
             _enemyManager = new EnemyManager(3, 3, 1);
             _enemyManager.LoadContent(Content);
             ReadFile(fileName);
@@ -1048,20 +1047,21 @@ namespace YouveBeenAudited
             if (!onTrap)
             {
                 Trap trap = null;
-                if (SingleKeyPress(Keys.K) && _player.Money >= 20)
+                if (SingleKeyPress(Keys.K) && _player.Money >= 30)
                 {
                     _player.Money -= 20;
-                    trap = new Glue(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _glueTexture, 20, 0, _tileLength);
+                    trap = new Glue(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _glueTexture, 30, 0, _tileLength);
                 }
-                else if (SingleKeyPress(Keys.J) && _player.Money >= 20)
+                else if (SingleKeyPress(Keys.J) && _player.Money >= 50)
                 {
-                    _player.Money -= 20;
-                    trap = new Spike(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _nailTexture, 20, 100, _tileLength);
+                    _player.Money -= 50;
+                    trap = new Spike(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _nailTexture, 50, 100, _tileLength);
                     trap.IsActive = false;
                 }
-                else if (SingleKeyPress(Keys.L) && _player.Money >= 20)
+                else if (SingleKeyPress(Keys.L) && _player.Money >= 75)
                 {
-                    trap = new Bomb(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _bombTexture, 20, 100, _tileLength);
+                    _player.Money -= 100;
+                    trap = new Bomb(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _bombTexture, 75, 200, _tileLength);
                     Bomb bomb = (Bomb)trap;
                 }
 
