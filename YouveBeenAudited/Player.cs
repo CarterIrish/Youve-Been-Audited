@@ -12,7 +12,7 @@ namespace YouveBeenAudited
     /// <summary>
     /// Purpose: Store information specific to the player.
     /// </summary>
-    internal class Player : Character
+    internal class Player : Character, IDamageable
     {
         #region Fields
 
@@ -30,9 +30,17 @@ namespace YouveBeenAudited
 
         private CharacterStates _prevState;
 
+        private bool _steppedOffSpikes;
+
         #endregion Fields
 
         #region Properties
+
+        public bool SteppedOffSpikes
+        {
+            set { _steppedOffSpikes = value;}
+            get { return _steppedOffSpikes; }
+        }
 
         /// <summary>
         /// Gets/Sets the current amount of money
@@ -232,6 +240,7 @@ namespace YouveBeenAudited
             _position.X = playerRect.X;
             _position.Y = playerRect.Y;
         }
+
 
         /// <summary>
         /// Moves the player to a specified position

@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace YouveBeenAudited
 {
-    delegate void BombDelegate();
     internal class Bomb : Trap
     {
         double _fuseTime;
@@ -49,7 +48,7 @@ namespace YouveBeenAudited
             _isLit = true;
         }
 
-        public override void DoEffect(Enemy e)
+        public override void DoEffect(Character e)
         {
             if (!_isLit)
             {

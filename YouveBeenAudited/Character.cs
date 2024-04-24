@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace YouveBeenAudited
 {
@@ -17,7 +18,7 @@ namespace YouveBeenAudited
     /// <summary>
     /// Purpose: Holds character specific information.
     /// </summary>
-    internal class Character : GameObject
+    internal class Character : GameObject, IDamageable
     {
         #region Fields
 
@@ -25,10 +26,39 @@ namespace YouveBeenAudited
         protected int _speed;
         protected bool _isDead;
         protected CharacterStates _currentState;
+        protected List<Trap> _steppedOn;
+        protected bool _isSlowed;
 
         #endregion Fields
 
         #region Properties
+
+        /// <summary>
+        /// Determines of a character is slowed by glue
+        /// </summary>
+        public bool IsSlowed
+        {
+            get { return _isSlowed; }
+            set { _isSlowed = value; }
+        }
+
+        /// <summary>
+        /// Determines if the enemy is currently standing on glue
+        /// </summary>
+        public bool OnGlue
+        {
+            get
+            {
+                foreach (Trap t in SteppedOn)
+                {
+                    if (t is Glue)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
 
         /// <summary>
         /// Gets whether or not the character is dead.
@@ -40,6 +70,13 @@ namespace YouveBeenAudited
                 return _isDead;
             }
         }
+
+        public List<Trap> SteppedOn
+        {
+            set { _steppedOn = value; }
+            get { return _steppedOn; }
+        }
+
 
         /// <summary>
         /// Gets or sets the health of a player. If health is below or at 0, set to dead.
@@ -93,6 +130,16 @@ namespace YouveBeenAudited
             _health = health;
             _speed = speed;
             _currentState = CharacterStates.Idle;
+            _steppedOn = new List<Trap>();
+        }
+
+        /// <summary>
+        /// Makes the enemy object take damage.
+        /// </summary>
+        /// <param name="amount">amount of damage to take.</param>
+        public void TakeDamage(int amount)
+        {
+            this.Health -= amount;
         }
 
         #endregion Methods

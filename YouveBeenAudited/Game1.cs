@@ -322,9 +322,9 @@ namespace YouveBeenAudited
                     //bomb fuse timer updates
                     for (int i = 0; i < _traps.Count; i++)
                     {
-                        if(_traps[i] is Bomb)
+                        if (_traps[i] is Bomb)
                         {
-                            Bomb b = (Bomb) _traps[i];
+                            Bomb b = (Bomb)_traps[i];
                             b.UpdateTime(gameTime);
 
                             if (b.ExplosionTime <= 0)
@@ -333,6 +333,11 @@ namespace YouveBeenAudited
                                 i--;
                             }
                         }
+                    }
+
+                    if (_player.Health <= 0)
+                    {
+                        _gameState = GameStates.GameOver;
                     }
 
                     _timeCount = _player.UpdateAnimation(_timeCount);
@@ -427,7 +432,7 @@ namespace YouveBeenAudited
                         if (trap is Bomb)
                         {
                             Bomb b = (Bomb)trap;
-                            if(b.IsExploding)
+                            if (b.IsExploding)
                             {
                                 ShapeBatch.Begin(GraphicsDevice);
                                 ShapeBatch.Circle(b.Position.Center.ToVector2(), 100, Color.OrangeRed);
@@ -605,7 +610,7 @@ namespace YouveBeenAudited
 
             string[] spawn;
             spawn = input.ReadLine().Split(',');
-            _player = new Player((int.Parse(spawn[0]) * _tileLength) + _marginWidth, int.Parse(spawn[1]) * _tileLength, _playerTexture, 100, 100, _tileLength, 6);
+            _player = new Player((int.Parse(spawn[0]) * _tileLength) + _marginWidth, int.Parse(spawn[1]) * _tileLength, _playerTexture, 300, 100, _tileLength, 6);
         }
 
         /// <summary>
@@ -668,11 +673,80 @@ namespace YouveBeenAudited
                     sb.DrawString(_arial25, $"Speed: {em.Speed}", new Vector2(em.Position.X + em.SpriteSize.X, em.Position.Y + 25), Color.Blue);
                     sb.End();
                 }
+
+                sb.Begin();
+                sb.DrawString(_arial25, $"Health: {_player.Health}", new Vector2(_player.Position.X + _player.SpriteSize.X, _player.Position.Y), Color.Red);
+                sb.DrawString(_arial25, $"Speed: {_player.Speed}", new Vector2(_player.Position.X + _player.SpriteSize.X, _player.Position.Y + 25), Color.Red);
+                sb.End();
             }
         }
 
         public void ResolveCollisions()
         {
+            for (int i = 0; i < _traps.Count; i++)
+            {
+                if (_traps[i].CheckCollisions(_player))
+                {
+                    if (!_player.SteppedOn.Contains(_traps[i]))
+                    {
+                        switch (_traps[i])
+                        {
+                            case Glue:
+                                _traps[i].DoEffect(_player);
+                                _player.SteppedOn.Add(_traps[i]);
+                                break;
+
+                            case Spike:
+                                if (_traps[i].IsActive)
+                                {
+                                    _traps[i].DoEffect(_player);
+                                    Spike s = (Spike)_traps[i];
+                                    _player.SteppedOn.Add(_traps[i]);
+                                    if (s.Health <= 0)
+                                    {
+                                        _traps.RemoveAt(i);
+                                        i--;
+                                    }
+                                }
+                                break;
+
+                            case Bomb:
+                                Bomb b = (Bomb)_traps[i];
+                                if (b.IsExploding)
+                                {
+                                    _player.SteppedOn.Add(_traps[i]);
+                                }
+                                _traps[i].DoEffect(_player);
+                                break;
+
+                            default:
+                                _player.TakeDamage(_traps[i].DamageAmnt);
+                                _player.SteppedOn.Add(_traps[i]);
+                                _traps.RemoveAt(i);
+                                break;
+                        }
+                    }
+
+                }
+                else if (_traps[i] is Spike && !_traps[i].IsActive)
+                {
+                    _traps[i].IsActive = true;
+                    _player.SteppedOn.Remove(_traps[i]);
+                }
+                else
+                {
+                    _player.SteppedOn.Remove(_traps[i]);
+                }
+            }
+            if (_player.IsSlowed && !_player.OnGlue)
+            {
+                _player.Speed *= 2;
+                _player.IsSlowed = false;
+            }
+
+
+
+
             // For all the enemies
             foreach (Enemy enemy in _enemyManager.Enemies)
             {
@@ -718,7 +792,6 @@ namespace YouveBeenAudited
                                     break;
                             }
                         }
-                        //break;
                     }
                     else
                     {
@@ -753,10 +826,11 @@ namespace YouveBeenAudited
             {
                 _player.Money -= 20;
                 trap = new Spike(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _nailTexture, 20, 100);
+                trap.IsActive = false;
             }
             if (SingleKeyPress(Keys.D3) && _player.Money >= 20)
             {
-                trap = new Bomb(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _bombTexture, 20, 200);
+                trap = new Bomb(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _bombTexture, 20, 100);
                 Bomb bomb = (Bomb)trap;
             }
 

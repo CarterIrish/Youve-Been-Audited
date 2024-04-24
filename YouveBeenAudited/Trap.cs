@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Runtime.CompilerServices;
 
 namespace YouveBeenAudited
 {
@@ -28,6 +29,7 @@ namespace YouveBeenAudited
         #endregion Fields
 
         #region Properties
+
 
         /// <summary>
         /// Gets the damage amount of trap.
@@ -88,7 +90,7 @@ namespace YouveBeenAudited
         /// Does the effect of a trap on another object.
         /// </summary>
         /// <param name="e">The object to perform effect on.</param>
-        public virtual void DoEffect(Enemy e)
+        public virtual void DoEffect(Character e)
         { }
 
         #endregion Methods

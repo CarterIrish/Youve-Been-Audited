@@ -22,19 +22,14 @@ namespace YouveBeenAudited
         private Rectangle _destinationRectangle;
         private Point _spriteSize;
         private double _timeCount;
-        private bool _isSlowed;
-        private List<Trap> _steppedOn;
+        
         private int _tileHeight;
 
         #endregion Fields
 
         #region Properties
 
-        public List<Trap> SteppedOn
-        {
-            get { return _steppedOn; }
-        }
-
+        
         /// <summary>
         /// Gets the current frame of enemy animation.
         /// </summary>
@@ -52,30 +47,6 @@ namespace YouveBeenAudited
             {
                 return _atGoal;
             }
-        }
-
-        /// <summary>
-        /// Determines if the enemy is currently standing on glue
-        /// </summary>
-        public bool OnGlue
-        {
-            get
-            {
-                foreach (Trap t in SteppedOn)
-                {
-                    if (t is Glue)
-                    {
-                        return true;
-                    }
-                }
-                return false;
-            }
-        }
-
-        public bool IsSlowed
-        {
-            get { return _isSlowed; }
-            set { _isSlowed = value; }
         }
 
         /// <summary>
@@ -141,17 +112,8 @@ namespace YouveBeenAudited
             _destinationRectangle = new Rectangle(_position.X, _position.Y, scalar, tileHeight);
             _position = _destinationRectangle;
             _isSlowed = false;
-            _steppedOn = new List<Trap>();
         }
-
-        /// <summary>
-        /// Makes the enemy object take damage.
-        /// </summary>
-        /// <param name="amount">amount of damage to take.</param>
-        public void TakeDamage(int amount)
-        {
-            this.Health -= amount;
-        }
+        
 
         /// <summary>
         /// Moves the enemy to next point in path. If the end is reached, do nothing.
