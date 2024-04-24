@@ -544,14 +544,6 @@ namespace YouveBeenAudited
                     _spriteBatch.Draw(_healthBarTexture, _safeHealthBar, Color.Green);
 
                     _spriteBatch.End();
-                    // Draws the box on left side of screen containing game info
-
-                    ShapeBatch.Begin(GraphicsDevice);
-
-                    ShapeBatch.Box(new Rectangle((int)(0 + _marginWidth / 4), (int)(0 + _windowSize.Y * .10), _marginWidth / 2, _windowSize.Y / 10), Color.Bisque);
-
-                    ShapeBatch.End();
-
                     DrawDebug(_spriteBatch);
 
                     break;
@@ -953,9 +945,9 @@ namespace YouveBeenAudited
         private Trap PlaceTrap()
         {
             bool onTrap = false;
-            foreach(Trap t in  _traps)
+            foreach (Trap t in _traps)
             {
-                if(new Rectangle(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _nailTexture.Width, _nailTexture.Height).Intersects(t.Position))
+                if (new Rectangle(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _nailTexture.Width, _nailTexture.Height).Intersects(t.Position))
                 {
                     onTrap = true;
                 }
