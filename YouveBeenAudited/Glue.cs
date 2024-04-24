@@ -14,8 +14,8 @@ namespace YouveBeenAudited
         /// <param name="texture">glue texture</param>
         /// <param name="cost">cost of trap</param>
         /// <param name="damageAmnt"></param>
-        public Glue(int x, int y, Texture2D texture, int cost, int damageAmnt)
-            : base(x, y, texture, cost, damageAmnt)
+        public Glue(int x, int y, Texture2D texture, int cost, int damageAmnt, int tileHeight)
+            : base(x, y, texture, cost, damageAmnt, tileHeight)
         {
             _speedScalar = .5;
         }
