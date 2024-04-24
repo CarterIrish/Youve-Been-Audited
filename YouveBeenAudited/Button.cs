@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Input;
 namespace YouveBeenAudited
 {
     /// <summary>
-    /// Purpose: To represent a UI/X button on the screen.
+    /// Contains all information for a button.
     /// </summary>
     internal class Button
     {
@@ -27,12 +27,44 @@ namespace YouveBeenAudited
 
         #region Properties
 
+        /// <summary>
+        /// Gets the name of Button.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
         public string Name { get => _buttonName; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is active.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is active; otherwise, <c>false</c>.
+        /// </value>
         public bool IsActive { get => _isActive; set => _isActive = value; }
 
+        /// <summary>
+        /// Gets the color.
+        /// </summary>
+        /// <value>
+        /// The color.
+        /// </value>
         public Color Color { get => _color; }
+
+        /// <summary>
+        /// Gets the position.
+        /// </summary>
+        /// <value>
+        /// The position.
+        /// </value>
         public Rectangle Position { get => _boundingBox; }
+
+        /// <summary>
+        /// Gets the texture.
+        /// </summary>
+        /// <value>
+        /// The texture.
+        /// </value>
         public Texture2D Texture { get => _texture; }
 
         #endregion Properties
@@ -40,11 +72,14 @@ namespace YouveBeenAudited
         #region Methods
 
         /// <summary>
-        /// Creates a new button object.
+        /// Initializes a new instance of the <see cref="Button"/> class.
         /// </summary>
-        /// <param name="x">X coord of button.</param>
-        /// <param name="y">Y coord of button.</param>
-        /// <param name="texture">The buttons texture.</param>
+        /// <param name="x">The x coord.</param>
+        /// <param name="y">The y coord.</param>
+        /// <param name="texture">The texture.</param>
+        /// <param name="buttonName">Name of the button.</param>
+        /// <param name="color">The color.</param>
+        /// <param name="scalar">The scalar.</param>
         public Button(int x, int y, Texture2D texture, string buttonName, Color color, double scalar)
         {
             // TODO: Create button constructor.

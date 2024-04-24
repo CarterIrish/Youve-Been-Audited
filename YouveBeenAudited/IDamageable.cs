@@ -1,12 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-
-namespace YouveBeenAudited
+﻿namespace YouveBeenAudited
 {
     /// <summary>
-    /// Purpose: To ensure that any damageable object in the game
-    /// has required methods to take damage.
+    /// Enforces that any damageable object has a method to take damage
     /// </summary>
     internal interface IDamageable
     {
