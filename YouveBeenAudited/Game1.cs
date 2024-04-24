@@ -129,6 +129,7 @@ namespace YouveBeenAudited
 
         // Safe stuff
         private int _safeHealth;
+
         private int _healthSubtractionAmt;
         private Texture2D _healthBarTexture;
         private Rectangle _safeHealthBar;
@@ -185,7 +186,7 @@ namespace YouveBeenAudited
             _gameState = GameStates.Menu;
             _traps = new List<Trap>();
             _wallList = new List<GameObject>();
-            _safeHealthBar = new Rectangle(_windowCenter.X-500, _windowSize.Y - 75, 1000, 50);
+            _safeHealthBar = new Rectangle(_windowCenter.X - 500, _windowSize.Y - 75, 1000, 50);
             base.Initialize();
         }
 
@@ -294,11 +295,12 @@ namespace YouveBeenAudited
             _gameOverButtons.Add(gameOverMenu);
             gameOverMenu.BtnClicked += ButtonCheck;
 
+            // level select buttons
             Button levelSelectOne = new Button(
                 _windowCenter.X - (int)(levelOneSelect.Width * _UIscalar * 3.5),
                 _windowCenter.Y - (int)(levelOneSelect.Height * _UIscalar) / 2,
                 levelOneSelect,
-                "LevelOneSelect",
+                "LevelSelectOne",
                 Color.White,
                 _UIscalar
                 );
@@ -309,7 +311,7 @@ namespace YouveBeenAudited
                 _windowCenter.X - (int)(levelTwoSelect.Width * _UIscalar * 2),
                 _windowCenter.Y - (int)(levelTwoSelect.Height * _UIscalar) / 2,
                 levelTwoSelect,
-                "LevelTwoSelect",
+                "LevelSelectTwo",
                 Color.White,
                 _UIscalar
                 );
@@ -432,7 +434,6 @@ namespace YouveBeenAudited
                     {
                         _player.Money += 100 * (currentEnemies - _enemyManager.RemainingEnemies); // Player gets money with each kill
                     }
-
 
                     DebugInputs();
 
@@ -659,7 +660,7 @@ namespace YouveBeenAudited
         public void TakeSafeDamage()
         {
             _safeHealth -= 100;
-            if(_safeHealth <= 0)
+            if (_safeHealth <= 0)
             {
                 GameOver();
             }
@@ -676,7 +677,7 @@ namespace YouveBeenAudited
             _enemyManager.LoadContent(Content);
             ReadFile(fileName);
             _enemyManager.TileHeight = _tileLength;
-            _safeHealth = 100 + ((_enemyManager.NumOfEnemies*_enemyManager.TotalWaves)/5)*100;
+            _safeHealth = 100 + ((_enemyManager.NumOfEnemies * _enemyManager.TotalWaves) / 5) * 100;
             _healthSubtractionAmt = 1000 / (1 + ((_enemyManager.NumOfEnemies * _enemyManager.TotalWaves) / 5));
         }
 
@@ -863,7 +864,6 @@ namespace YouveBeenAudited
                                 break;
                         }
                     }
-
                 }
                 else if (_traps[i] is Spike && !_traps[i].IsActive)
                 {
@@ -880,9 +880,6 @@ namespace YouveBeenAudited
                 _player.Speed *= 2;
                 _player.IsSlowed = false;
             }
-
-
-
 
             // For all the enemies
             foreach (Enemy enemy in _enemyManager.Enemies)
