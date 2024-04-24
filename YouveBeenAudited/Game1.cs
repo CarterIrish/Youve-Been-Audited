@@ -570,9 +570,8 @@ namespace YouveBeenAudited
                     DrawLevel(_spriteBatch);
 
                     //Draw Inventory
-                    _spriteBatch.Draw(_inventoryTexture, new Rectangle((int)(_windowCenter.X + (_windowSize.X * .45) - _inventoryTexture.Width / 2 * _UIscalar), (int)(_windowSize.Y / 100 * 2),
-                        (int)((_inventoryTexture.Width) * _UIscalar), (int)((_inventoryTexture.Height) * _UIscalar)), Color.White);
-                    
+                    _spriteBatch.Draw(_inventoryTexture, new Rectangle((int)(_windowCenter.X + (_windowSize.X * .45) - _inventoryTexture.Width / 2 * _UIscaler), (int)(_windowSize.Y / 100 * 2),
+                        (int)((_inventoryTexture.Width) * _UIscaler), (int)((_inventoryTexture.Height) * _UIscaler)), Color.White);
 
                     // Handles Text UI
                     _spriteBatch.DrawString(_arial25, $"${_player.Money}", new Vector2(50, 50), Color.DarkGreen, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
@@ -600,7 +599,7 @@ namespace YouveBeenAudited
                             if (b.IsExploding)
                             {
                                 ShapeBatch.Begin(GraphicsDevice);
-                                ShapeBatch.Circle(b.Position.Center.ToVector2(), trap.Position.Height/2, Color.OrangeRed);
+                                ShapeBatch.Circle(b.Position.Center.ToVector2(), trap.Position.Height / 2, Color.OrangeRed);
                                 ShapeBatch.End();
                             }
                         }
