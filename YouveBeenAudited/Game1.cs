@@ -129,6 +129,7 @@ namespace YouveBeenAudited
 
         // Safe stuff
         private int _safeHealth;
+
         private int _healthSubtractionAmt;
         private Texture2D _healthBarTexture;
         private Rectangle _safeHealthBar;
@@ -161,7 +162,7 @@ namespace YouveBeenAudited
             _windowSize = new Point(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
 
             // turns debugger on/off
-            _debug = true;
+            _debug = false;
 
             // File paths
             _filePaths = new string[]
@@ -185,7 +186,7 @@ namespace YouveBeenAudited
             _gameState = GameStates.Menu;
             _traps = new List<Trap>();
             _wallList = new List<GameObject>();
-            _safeHealthBar = new Rectangle(_windowCenter.X-500, _windowSize.Y - 75, 1000, 50);
+            _safeHealthBar = new Rectangle(_windowCenter.X - 500, _windowSize.Y - 75, 1000, 50);
             base.Initialize();
         }
 
@@ -294,11 +295,12 @@ namespace YouveBeenAudited
             _gameOverButtons.Add(gameOverMenu);
             gameOverMenu.BtnClicked += ButtonCheck;
 
+            // level select buttons
             Button levelSelectOne = new Button(
                 _windowCenter.X - (int)(levelOneSelect.Width * _UIscalar * 3.5),
                 _windowCenter.Y - (int)(levelOneSelect.Height * _UIscalar) / 2,
                 levelOneSelect,
-                "LevelOneSelect",
+                "LevelSelectOne",
                 Color.White,
                 _UIscalar
                 );
@@ -309,7 +311,7 @@ namespace YouveBeenAudited
                 _windowCenter.X - (int)(levelTwoSelect.Width * _UIscalar * 2),
                 _windowCenter.Y - (int)(levelTwoSelect.Height * _UIscalar) / 2,
                 levelTwoSelect,
-                "LevelTwoSelect",
+                "LevelSelectTwo",
                 Color.White,
                 _UIscalar
                 );
@@ -433,7 +435,6 @@ namespace YouveBeenAudited
                         _player.Money += 100 * (currentEnemies - _enemyManager.RemainingEnemies); // Player gets money with each kill
                     }
 
-
                     DebugInputs();
 
                     break;
@@ -500,6 +501,7 @@ namespace YouveBeenAudited
                 case GameStates.Game:
                     _spriteBatch.Draw(_grassFloorTexture, new Rectangle(0, 0, _grassFloorTexture.Width * 3 * (int)_UIscalar, _grassFloorTexture.Height * 3 * (int)_UIscalar), Color.White);
                     DrawLevel(_spriteBatch);
+
                     // Handles Text UI
                     _spriteBatch.DrawString(_arial25, $"${_player.Money}", new Vector2(50, 50), Color.DarkGreen, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
                     _spriteBatch.DrawString(_arial25, $"Wave {_enemyManager.CurrentWave}/{_enemyManager.TotalWaves}", new Vector2(_windowCenter.X - 150, 50), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
@@ -530,16 +532,6 @@ namespace YouveBeenAudited
                     }
                     _player.Draw(_spriteBatch);
                     _enemyManager.DrawEnemies(_spriteBatch);
-
-                    //debug shit
-                    if (_debug)
-                    {
-                        _spriteBatch.DrawString(_arial25, "Debug : ON", new Vector2(50, 100), Color.Blue, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
-                    }
-                    if (!_debug)
-                    {
-                        _spriteBatch.DrawString(_arial25, "Debug : OFF", new Vector2(50, 100), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
-                    }
 
                     // Draws Safe Health Bar
                     _spriteBatch.Draw(_healthBarTexture, new Rectangle(_windowCenter.X - 510, _windowSize.Y - 85, 1020, 70), Color.Black);
@@ -659,7 +651,7 @@ namespace YouveBeenAudited
         public void TakeSafeDamage()
         {
             _safeHealth -= 100;
-            if(_safeHealth <= 0)
+            if (_safeHealth <= 0)
             {
                 GameOver();
             }
@@ -676,7 +668,7 @@ namespace YouveBeenAudited
             _enemyManager.LoadContent(Content);
             ReadFile(fileName);
             _enemyManager.TileHeight = _tileLength;
-            _safeHealth = 100 + ((_enemyManager.NumOfEnemies*_enemyManager.TotalWaves)/5)*100;
+            _safeHealth = 100 + ((_enemyManager.NumOfEnemies * _enemyManager.TotalWaves) / 5) * 100;
             _healthSubtractionAmt = 1000 / (1 + ((_enemyManager.NumOfEnemies * _enemyManager.TotalWaves) / 5));
         }
 
@@ -783,14 +775,6 @@ namespace YouveBeenAudited
                     }
                 }
             }
-
-            foreach (Vector2 p in _enemyManager.Path)
-            {
-                float x = p.X;
-                float y = p.Y;
-                Rectangle pointRect = new Rectangle((int)(x - 5), (int)(y - 5), 10, 10);
-                sb.Draw(_woodFloorTexture, pointRect, Color.Blue);
-            }
         }
 
         private void DrawDebug(SpriteBatch sb)
@@ -814,6 +798,13 @@ namespace YouveBeenAudited
                 sb.Begin();
                 sb.DrawString(_arial25, $"Health: {_player.Health}", new Vector2(_player.Position.X + _player.SpriteSize.X, _player.Position.Y), Color.Red);
                 sb.DrawString(_arial25, $"Speed: {_player.Speed}", new Vector2(_player.Position.X + _player.SpriteSize.X, _player.Position.Y + 25), Color.Red);
+                foreach (Vector2 p in _enemyManager.Path)
+                {
+                    float x = p.X;
+                    float y = p.Y;
+                    Rectangle pointRect = new Rectangle((int)(x - 5), (int)(y - 5), 10, 10);
+                    sb.Draw(_woodFloorTexture, pointRect, Color.Blue);
+                }
                 sb.End();
             }
         }
@@ -863,7 +854,6 @@ namespace YouveBeenAudited
                                 break;
                         }
                     }
-
                 }
                 else if (_traps[i] is Spike && !_traps[i].IsActive)
                 {
@@ -880,9 +870,6 @@ namespace YouveBeenAudited
                 _player.Speed *= 2;
                 _player.IsSlowed = false;
             }
-
-
-
 
             // For all the enemies
             foreach (Enemy enemy in _enemyManager.Enemies)
