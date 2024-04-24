@@ -64,7 +64,7 @@ namespace YouveBeenAudited
         /// </summary>
         public int NumOfEnemies
         {
-            set { _numOfEnemies = value; }
+            get => _numOfEnemies; set { _numOfEnemies = value; }
         }
 
         /// <summary>
@@ -196,12 +196,14 @@ namespace YouveBeenAudited
             // enemies reached the goal
             for (int i = 0; i < _enemies.Count;)
             {
+                _enemies[i].Update(gt);
                 if (_enemies[i].AtGoal == true)
                 {
-                    game.GameOver();
+                    _enemies.RemoveAt(i);
+                    _killedEnemies++;
+                    game.TakeSafeDamage();
                 }
-                _enemies[i].Update(gt);
-                if (_enemies[i].Health <= 0)
+                else if (_enemies[i].Health <= 0)
                 {
                     _enemies.RemoveAt(i);
                     _killedEnemies++;

@@ -24,7 +24,7 @@ namespace YouveBeenAudited
             _health = 2;
         }
 
-        public override void DoEffect(Enemy e)
+        public override void DoEffect(Character e)
         {
             e.TakeDamage(_damageAmnt);
             _health--;

@@ -20,7 +20,7 @@ namespace YouveBeenAudited
             _speedScalar = .5;
         }
 
-        public override void DoEffect(Enemy e)
+        public override void DoEffect(Character e)
         {
             if (e.IsSlowed == false)
             {
