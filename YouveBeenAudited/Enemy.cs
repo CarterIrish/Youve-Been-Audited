@@ -156,20 +156,23 @@ namespace YouveBeenAudited
                     _currentPoint++;
                 }
 
-                //Animation Movement Update
-                if ((int)(direction.X + .5) > 0)
-                {
-                    _currentState = CharacterStates.Right;
-                }
-                else if ((int)(direction.X - .5) <= 0)
-                {
-                    _currentState = CharacterStates.Left;
-                }
 
                 if (_currentPoint == _path.Count)
                 {
                     _atGoal = true;
+                    return;
                 }
+
+                //Animation Movement Update
+                if (_path[_currentPoint].X > _position.X)
+                {
+                    _currentState = CharacterStates.Right;
+                }
+                else
+                {
+                    _currentState = CharacterStates.Left;
+                }
+
             }
         }
 

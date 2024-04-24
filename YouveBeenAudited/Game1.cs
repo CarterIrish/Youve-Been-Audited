@@ -975,25 +975,37 @@ namespace YouveBeenAudited
         /// </summary>
         private Trap PlaceTrap()
         {
-            Trap trap = null;
-            if (SingleKeyPress(Keys.D2) && _player.Money >= 20)
+            bool onTrap = false;
+            foreach(Trap t in  _traps)
             {
-                _player.Money -= 20;
-                trap = new Glue(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _glueTexture, 20, 0);
+                if(new Rectangle(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _nailTexture.Width, _nailTexture.Height).Intersects(t.Position))
+                {
+                    onTrap = true;
+                }
             }
-            if (SingleKeyPress(Keys.D1) && _player.Money >= 20)
+            if (!onTrap)
             {
-                _player.Money -= 20;
-                trap = new Spike(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _nailTexture, 20, 100);
-                trap.IsActive = false;
-            }
-            if (SingleKeyPress(Keys.D3) && _player.Money >= 20)
-            {
-                trap = new Bomb(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _bombTexture, 20, 100);
-                Bomb bomb = (Bomb)trap;
-            }
+                Trap trap = null;
+                if (SingleKeyPress(Keys.K) && _player.Money >= 20)
+                {
+                    _player.Money -= 20;
+                    trap = new Glue(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _glueTexture, 20, 0);
+                }
+                if (SingleKeyPress(Keys.J) && _player.Money >= 20)
+                {
+                    _player.Money -= 20;
+                    trap = new Spike(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _nailTexture, 20, 100);
+                    trap.IsActive = false;
+                }
+                if (SingleKeyPress(Keys.L) && _player.Money >= 20)
+                {
+                    trap = new Bomb(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _bombTexture, 20, 100);
+                    Bomb bomb = (Bomb)trap;
+                }
 
-            return trap;
+                return trap;
+            }
+            return null;
         }
 
         private void DebugInputs()
