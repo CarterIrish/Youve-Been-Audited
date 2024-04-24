@@ -555,7 +555,8 @@ namespace YouveBeenAudited
                     
 
                     // Handles Text UI
-                    _spriteBatch.DrawString(_arial25, $"${_player.Money}", new Vector2(50, 50), Color.DarkGreen, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
+                    _spriteBatch.DrawString(_arial25, $"${_player.Money}", new Vector2(50, 50), Color.Black, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
+                    _spriteBatch.DrawString(_arial25, $"{_player.Health}", new Vector2((float)(_player.Position.X - (_player.SpriteSize.X * .07)), (float)(_player.Position.Y - (_player.SpriteSize.Y * .25))), Color.Green);
                     _spriteBatch.DrawString(_arial25, $"Wave {_enemyManager.CurrentWave}/{_enemyManager.TotalWaves}", new Vector2(50, 125), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
                     if (_enemyManager.RemainingEnemies == 0)
                     {

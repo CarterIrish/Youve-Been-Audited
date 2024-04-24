@@ -20,7 +20,7 @@ namespace YouveBeenAudited
     internal class Trap : GameObject
     {
         #region Fields
-
+        
         protected TrapType _type;
 
         protected int _damageAmnt;
