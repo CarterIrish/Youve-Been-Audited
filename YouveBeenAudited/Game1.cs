@@ -529,14 +529,14 @@ namespace YouveBeenAudited
 
                     // Handles Text UI
                     _spriteBatch.DrawString(_arial25, $"${_player.Money}", new Vector2(50, 50), Color.DarkGreen, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
-                    _spriteBatch.DrawString(_arial25, $"Wave {_enemyManager.CurrentWave}/{_enemyManager.TotalWaves}", new Vector2(_windowCenter.X - 150, 50), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
+                    _spriteBatch.DrawString(_arial25, $"Wave {_enemyManager.CurrentWave}/{_enemyManager.TotalWaves}", new Vector2(50, 125), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
                     if (_enemyManager.RemainingEnemies == 0)
                     {
-                        _spriteBatch.DrawString(_arial25, $"Time Till Next Wave:" + string.Format("{0:0.00}", 15 - _enemyManager.Timer), new Vector2(_windowCenter.X - 350, 150), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
+                        _spriteBatch.DrawString(_arial25, $"Next Wave:" + string.Format("{0:0.00}", 15 - _enemyManager.Timer), new Vector2(50, 180), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
                     }
                     else
                     {
-                        _spriteBatch.DrawString(_arial25, $"Enemies Left in Wave: {_enemyManager.RemainingEnemies}", new Vector2(_windowCenter.X - 350, 150), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
+                        _spriteBatch.DrawString(_arial25, $"Enemies Left: {_enemyManager.RemainingEnemies}", new Vector2(50, 175), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
                     }
 
                     // Draws safe
@@ -852,7 +852,7 @@ namespace YouveBeenAudited
         {
             for (int i = 0; i < _traps.Count; i++)
             {
-                _traps[i].ResolveCollisions(_wallList);
+                
                 if (_traps[i].CheckCollisions(_player))
                 {
                     if (!_player.SteppedOn.Contains(_traps[i]))
@@ -996,16 +996,21 @@ namespace YouveBeenAudited
                     _player.Money -= 20;
                     trap = new Glue(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _glueTexture, 20, 0, _tileLength);
                 }
-                if (SingleKeyPress(Keys.J) && _player.Money >= 20)
+                else if (SingleKeyPress(Keys.J) && _player.Money >= 20)
                 {
                     _player.Money -= 20;
                     trap = new Spike(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _nailTexture, 20, 100, _tileLength);
                     trap.IsActive = false;
                 }
-                if (SingleKeyPress(Keys.L) && _player.Money >= 20)
+                else if (SingleKeyPress(Keys.L) && _player.Money >= 20)
                 {
                     trap = new Bomb(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _bombTexture, 20, 100, _tileLength);
                     Bomb bomb = (Bomb)trap;
+                }
+
+                if (trap != null)
+                {
+                    trap.ResolveCollisions(_wallList);
                 }
 
                 return trap;
