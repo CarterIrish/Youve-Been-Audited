@@ -784,14 +784,6 @@ namespace YouveBeenAudited
                     }
                 }
             }
-
-            foreach (Vector2 p in _enemyManager.Path)
-            {
-                float x = p.X;
-                float y = p.Y;
-                Rectangle pointRect = new Rectangle((int)(x - 5), (int)(y - 5), 10, 10);
-                sb.Draw(_woodFloorTexture, pointRect, Color.Blue);
-            }
         }
 
         private void DrawDebug(SpriteBatch sb)
@@ -815,6 +807,13 @@ namespace YouveBeenAudited
                 sb.Begin();
                 sb.DrawString(_arial25, $"Health: {_player.Health}", new Vector2(_player.Position.X + _player.SpriteSize.X, _player.Position.Y), Color.Red);
                 sb.DrawString(_arial25, $"Speed: {_player.Speed}", new Vector2(_player.Position.X + _player.SpriteSize.X, _player.Position.Y + 25), Color.Red);
+                foreach (Vector2 p in _enemyManager.Path)
+                {
+                    float x = p.X;
+                    float y = p.Y;
+                    Rectangle pointRect = new Rectangle((int)(x - 5), (int)(y - 5), 10, 10);
+                    sb.Draw(_woodFloorTexture, pointRect, Color.Blue);
+                }
                 sb.End();
             }
         }
