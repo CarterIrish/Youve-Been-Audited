@@ -154,7 +154,7 @@ namespace YouveBeenAudited
             _graphics.ApplyChanges();
 
             // set up ui scaler
-            _ReferenceWindow = new Point(_graphics.GraphicsDevice.DisplayMode.Width, _graphics.GraphicsDevice.DisplayMode.Height);
+            _ReferenceWindow = new Point(2560, 1440);
             _UIscalar = _graphics.PreferredBackBufferWidth / (double)_ReferenceWindow.Y;
 
             // initialize useful window measurements
@@ -479,8 +479,13 @@ namespace YouveBeenAudited
             {
                 // On menu
                 case GameStates.Menu:
-                    _spriteBatch.Draw(_titleTexture, new Rectangle((int)(_windowCenter.X - _titleTexture.Width / 2 * _UIscalar), (int)(_windowSize.Y / 100 * 2),
-                        (int)((_titleTexture.Width) * _UIscalar), (int)((_titleTexture.Height) * _UIscalar)), Color.White);
+                    _spriteBatch.Draw(_titleTexture,
+                        new Rectangle(
+                            (int)(_windowCenter.X - _titleTexture.Width / 2 * _UIscalar),
+                            (int)(_windowSize.Y / 100 * 2),
+                            (int)(_titleTexture.Width * _UIscalar),
+                            (int)(_titleTexture.Height * _UIscalar)),
+                            Color.White);
                     foreach (Button b in _menuButtons)
                     {
                         b.Draw(_spriteBatch, b.Color);
@@ -539,6 +544,13 @@ namespace YouveBeenAudited
                     _spriteBatch.Draw(_healthBarTexture, _safeHealthBar, Color.Green);
 
                     _spriteBatch.End();
+                    // Draws the box on left side of screen containing game info
+
+                    ShapeBatch.Begin(GraphicsDevice);
+
+                    ShapeBatch.Box(new Rectangle((int)(0 + _marginWidth / 4), (int)(0 + _windowSize.Y * .10), _marginWidth / 2, _windowSize.Y / 10), Color.Bisque);
+
+                    ShapeBatch.End();
 
                     DrawDebug(_spriteBatch);
 
