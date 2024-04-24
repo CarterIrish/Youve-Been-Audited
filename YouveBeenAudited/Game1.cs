@@ -106,6 +106,10 @@ namespace YouveBeenAudited
 
         private Texture2D _pauseTexture;
 
+        private Texture2D _gameOverTexture;
+
+        private Texture2D _winTexture;
+
         //Map Textures
         private Texture2D _woodFloorTexture;
         private Texture2D _wallFloralTexture;
@@ -114,6 +118,8 @@ namespace YouveBeenAudited
         private Texture2D _nailTexture;
         private Texture2D _glueTexture;
         private Texture2D _bombTexture;
+
+        private Texture2D _inventoryTexture;
 
         // Input sources
         private MouseState _mouseState;
@@ -129,7 +135,7 @@ namespace YouveBeenAudited
 
         // Safe stuff
         private int _safeHealth;
-
+       
         private int _healthSubtractionAmt;
         private Texture2D _healthBarTexture;
         private Rectangle _safeHealthBar;
@@ -203,6 +209,8 @@ namespace YouveBeenAudited
             _resumeButtonTexture = Content.Load<Texture2D>("ResumeButton");
             _titleTexture = Content.Load<Texture2D>("Title");
             _pauseTexture = Content.Load<Texture2D>("pause_screen");
+            _gameOverTexture = Content.Load<Texture2D>("game_over_screen");
+            _winTexture = Content.Load<Texture2D>("win_screen");
             _woodFloorTexture = Content.Load<Texture2D>("tile_wood_floor");
             _wallFloralTexture = Content.Load<Texture2D>("tile_floral_wall");
             _grassFloorTexture = Content.Load<Texture2D>("tile_grass_large");
@@ -211,6 +219,7 @@ namespace YouveBeenAudited
             _glueTexture = Content.Load<Texture2D>("glue");
             _bombTexture = Content.Load<Texture2D>("bomb");
             _healthBarTexture = Content.Load<Texture2D>("healthBar");
+            _inventoryTexture = Content.Load<Texture2D>("inventory");
             _player = new Player(999, 999, _playerTexture, 999, 999, 999, 999);
             _player.LoadContent(Content);
             _appassionata = (Content.Load<Song>("Appassionata"));
@@ -256,7 +265,7 @@ namespace YouveBeenAudited
             // resume game button
             Button ResumeGame = new Button(
                 _windowCenter.X - (int)(_resumeButtonTexture.Width * _UIscalar) / 2,
-                _windowCenter.Y - (int)(_resumeButtonTexture.Height * _UIscalar),
+                _windowCenter.Y + 200 - (int)(_resumeButtonTexture.Height * _UIscalar),
                 _resumeButtonTexture,
                 "ResumeGameButton",
                 Color.White,
@@ -267,7 +276,7 @@ namespace YouveBeenAudited
             // Options exit game button
             Button optionsExit = new Button(
                 _windowCenter.X - (int)(_exitButtonTexture.Width * _UIscalar) / 2,
-                _windowCenter.Y + (int)(_exitButtonTexture.Height * _UIscalar),
+                _windowCenter.Y + (int)(_exitButtonTexture.Height * _UIscalar + 150),
                 _exitButtonTexture,
                 "ExitGameButton",
                 Color.White,
@@ -278,7 +287,7 @@ namespace YouveBeenAudited
             // game over exit game
             Button gameOverExit = new Button(
                 _windowCenter.X - (int)(_exitButtonTexture.Width * _UIscalar) / 2,
-                _windowCenter.Y + (int)(_exitButtonTexture.Height * _UIscalar),
+                _windowCenter.Y + (int)(_exitButtonTexture.Height * _UIscalar + 150),
                 _exitButtonTexture,
                 "ExitGameButton",
                 Color.White,
@@ -288,7 +297,7 @@ namespace YouveBeenAudited
 
             Button gameOverMenu = new Button(
                 _windowCenter.X - (int)(_menuButtonTexture.Width * _UIscalar) / 2,
-                _windowCenter.Y - (int)(_menuButtonTexture.Height * _UIscalar),
+                _windowCenter.Y + 200 - (int)(_menuButtonTexture.Height * _UIscalar),
                 _menuButtonTexture,
                 "MenuButton",
                 Color.White,
@@ -505,8 +514,18 @@ namespace YouveBeenAudited
 
                 // Active game
                 case GameStates.Game:
+
+                    //Draw Grass
                     _spriteBatch.Draw(_grassFloorTexture, new Rectangle(0, 0, _grassFloorTexture.Width * 3 * (int)_UIscalar, _grassFloorTexture.Height * 3 * (int)_UIscalar), Color.White);
                     DrawLevel(_spriteBatch);
+
+                    //Draw Inventory
+                    _spriteBatch.Draw(_inventoryTexture, new Rectangle((int)(_windowCenter.X + (_windowSize.X * .45) - _inventoryTexture.Width / 2 * _UIscalar), (int)(_windowSize.Y / 100 * 2),
+                        (int)((_inventoryTexture.Width) * _UIscalar), (int)((_inventoryTexture.Height) * _UIscalar)), Color.White);
+                    _spriteBatch.DrawString(_arial25, "J", new Vector2((int)(_windowCenter.X + (_windowSize.X * .455) - _inventoryTexture.Width / 2 * _UIscalar), (int)((_windowSize.Y / 100 * 2) + (_inventoryTexture.Height * .01))), Color.Yellow);
+                    _spriteBatch.DrawString(_arial25, "K", new Vector2((int)(_windowCenter.X + (_windowSize.X * .455) - _inventoryTexture.Width / 2 * _UIscalar), (int)((_windowSize.Y / 100 * 2) + (_inventoryTexture.Height * .45))), Color.Yellow);
+                    _spriteBatch.DrawString(_arial25, "L", new Vector2((int)(_windowCenter.X + (_windowSize.X * .455) - _inventoryTexture.Width / 2 * _UIscalar), (int)((_windowSize.Y / 100 * 2) + (_inventoryTexture.Height * .9))), Color.Yellow);
+
 
                     // Handles Text UI
                     _spriteBatch.DrawString(_arial25, $"${_player.Money}", new Vector2(50, 50), Color.DarkGreen, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
@@ -550,19 +569,13 @@ namespace YouveBeenAudited
                     _spriteBatch.Draw(_healthBarTexture, _safeHealthBar, Color.Green);
 
                     _spriteBatch.End();
-                    // Draws the box on left side of screen containing game info
-
-                    ShapeBatch.Begin(GraphicsDevice);
-
-                    ShapeBatch.Box(new Rectangle((int)(0 + _marginWidth / 4), (int)(0 + _windowSize.Y * .10), _marginWidth / 2, _windowSize.Y / 10), Color.Bisque);
-
-                    ShapeBatch.End();
-
                     DrawDebug(_spriteBatch);
 
                     break;
                 // Options/pause menu
                 case GameStates.Options:
+                    _spriteBatch.Draw(_pauseTexture, new Rectangle((int)(_windowCenter.X - _pauseTexture.Width / 2 * _UIscalar), (int)(_windowSize.Y / 100 * 2),
+                        (int)((_pauseTexture.Width) * _UIscalar), (int)((_pauseTexture.Height) * _UIscalar)), Color.White);
                     foreach (Button b in _optionButtons)
                     {
                         b.Draw(_spriteBatch, b.Color);
@@ -571,6 +584,8 @@ namespace YouveBeenAudited
                     break;
                 // Game over
                 case GameStates.GameOver:
+                    _spriteBatch.Draw(_gameOverTexture, new Rectangle((int)(_windowCenter.X - _gameOverTexture.Width / 2 * _UIscalar), (int)(_windowSize.Y / 100 * 2),
+                        (int)((_gameOverTexture.Width) * _UIscalar), (int)((_gameOverTexture.Height) * _UIscalar)), Color.White);
                     foreach (Button b in _gameOverButtons)
                     {
                         b.Draw(_spriteBatch, b.Color);
@@ -966,9 +981,9 @@ namespace YouveBeenAudited
         private Trap PlaceTrap()
         {
             bool onTrap = false;
-            foreach(Trap t in  _traps)
+            foreach (Trap t in _traps)
             {
-                if(new Rectangle(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _nailTexture.Width, _nailTexture.Height).Intersects(t.Position))
+                if (new Rectangle(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _nailTexture.Width, _nailTexture.Height).Intersects(t.Position))
                 {
                     onTrap = true;
                 }
