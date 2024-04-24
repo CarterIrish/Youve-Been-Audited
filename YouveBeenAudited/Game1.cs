@@ -728,6 +728,7 @@ namespace YouveBeenAudited
         private void NextLevel(string fileName)
         {
             _wallList.Clear();
+            _traps.Clear();
             _enemyManager = new EnemyManager(3, 3, 1);
             _enemyManager.LoadContent(Content);
             ReadFile(fileName);
