@@ -472,7 +472,7 @@ namespace YouveBeenAudited
                     _enemyManager.UpdateEnemies(gameTime, this);
                     if (currentEnemies > _enemyManager.RemainingEnemies)
                     {
-                        _player.Money += 100 * (currentEnemies - _enemyManager.RemainingEnemies); // Player gets money with each kill
+                        _player.Money += 80 * (currentEnemies - _enemyManager.RemainingEnemies); // Player gets money with each kill
                     }
 
                     DebugInputs();
@@ -582,7 +582,7 @@ namespace YouveBeenAudited
                             if (b.IsExploding)
                             {
                                 ShapeBatch.Begin(GraphicsDevice);
-                                ShapeBatch.Circle(b.Position.Center.ToVector2(), 100, Color.OrangeRed);
+                                ShapeBatch.Circle(b.Position.Center.ToVector2(), trap.Position.Height/2, Color.OrangeRed);
                                 ShapeBatch.End();
                             }
                         }
@@ -1019,20 +1019,21 @@ namespace YouveBeenAudited
             if (!onTrap)
             {
                 Trap trap = null;
-                if (SingleKeyPress(Keys.K) && _player.Money >= 20)
+                if (SingleKeyPress(Keys.K) && _player.Money >= 30)
                 {
                     _player.Money -= 20;
-                    trap = new Glue(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _glueTexture, 20, 0, _tileLength);
+                    trap = new Glue(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _glueTexture, 30, 0, _tileLength);
                 }
-                else if (SingleKeyPress(Keys.J) && _player.Money >= 20)
+                else if (SingleKeyPress(Keys.J) && _player.Money >= 50)
                 {
-                    _player.Money -= 20;
-                    trap = new Spike(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _nailTexture, 20, 100, _tileLength);
+                    _player.Money -= 50;
+                    trap = new Spike(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _nailTexture, 50, 100, _tileLength);
                     trap.IsActive = false;
                 }
-                else if (SingleKeyPress(Keys.L) && _player.Money >= 20)
+                else if (SingleKeyPress(Keys.L) && _player.Money >= 75)
                 {
-                    trap = new Bomb(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _bombTexture, 20, 100, _tileLength);
+                    _player.Money -= 100;
+                    trap = new Bomb(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _bombTexture, 75, 200, _tileLength);
                     Bomb bomb = (Bomb)trap;
                 }
 
