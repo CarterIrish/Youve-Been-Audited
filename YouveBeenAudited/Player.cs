@@ -4,14 +4,14 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
-using System.Xml;
-using ShapeUtils;
 
 namespace YouveBeenAudited
 {
     /// <summary>
-    /// Purpose: Store information specific to the player.
+    /// Contains all information specific to the Player character.
     /// </summary>
+    /// <seealso cref="YouveBeenAudited.Character" />
+    /// <seealso cref="YouveBeenAudited.IDamageable" />
     internal class Player : Character, IDamageable
     {
         #region Fields
@@ -36,19 +36,29 @@ namespace YouveBeenAudited
 
         #region Properties
 
-        public bool SteppedOffSpikes
-        {
-            set { _steppedOffSpikes = value;}
-            get { return _steppedOffSpikes; }
-        }
+        /// <summary>
+        /// Gets or sets a value indicating whether [stepped off spikes].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [stepped off spikes]; otherwise, <c>false</c>.
+        /// </value>
+        public bool SteppedOffSpikes { get => _steppedOffSpikes; set => _steppedOffSpikes = value; }
 
         /// <summary>
-        /// Gets/Sets the current amount of money
-        /// posessed.
+        /// Gets or sets the money.
         /// </summary>
+        /// <value>
+        /// The money.
+        /// </value>
         public int Money
         { get => _money; set { _money = value; } }
 
+        /// <summary>
+        /// Gets the size of the sprite.
+        /// </summary>
+        /// <value>
+        /// The size of the sprite.
+        /// </value>
         public Point SpriteSize { get => _spriteSize; }
 
         #endregion Properties
@@ -56,13 +66,15 @@ namespace YouveBeenAudited
         #region Methods
 
         /// <summary>
-        /// Create a new player object.
+        /// Initializes a new instance of the <see cref="Player"/> class.
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="texture"></param>
-        /// <param name="startingMoney"></param>
-        /// <param name="health"></param>
+        /// <param name="x">The x coord.</param>
+        /// <param name="y">The y coord.</param>
+        /// <param name="texture">The texture.</param>
+        /// <param name="health">The health.</param>
+        /// <param name="startingMoney">The starting money.</param>
+        /// <param name="tileHeight">Height of the tile.</param>
+        /// <param name="speed">The speed.</param>
         public Player(int x, int y, Texture2D texture, int health, int startingMoney, int tileHeight, int speed) : base(x, y, texture, health, speed)
         {
             _money = startingMoney;
@@ -74,16 +86,18 @@ namespace YouveBeenAudited
         }
 
         /// <summary>
-        /// Loads necessary textures
+        /// Loads the content.
         /// </summary>
-        /// <param name="content">ContentManager to load from</param>
+        /// <param name="content">The content manager.</param>
         public void LoadContent(ContentManager content)
         {
             _font = content.Load<SpriteFont>("Arial25");
         }
 
-        /// <summary>Updates the player objects information.</summary>
-        /// <param name="gametime">GameTime from Game1</param>
+        /// <summary>
+        /// Updates the object.
+        /// </summary>
+        /// <param name="gametime">The gametime.</param>
         public override void Update(GameTime gametime)
         {
             Move();
@@ -95,7 +109,7 @@ namespace YouveBeenAudited
         }
 
         /// <summary>
-        /// Changes the players position based on WASD input
+        /// Moves this instance.
         /// </summary>
         public void Move()
         {
@@ -145,9 +159,9 @@ namespace YouveBeenAudited
         }
 
         /// <summary>
-        /// Draws player, traps, and money
+        /// Draws this instance of an object.
         /// </summary>
-        /// <param name="sb"></param>
+        /// <param name="sb">The sb.</param>
         public override void Draw(SpriteBatch sb)
         {
             switch (_currentState)
@@ -183,9 +197,10 @@ namespace YouveBeenAudited
         }
 
         /// <summary>
-        /// Updates the animation for the player.
+        /// Updates the animation.
         /// </summary>
-        /// <param name="gameTime">Game time information</param>
+        /// <param name="_timeCount">The time count.</param>
+        /// <returns>Updates time count</returns>
         public double UpdateAnimation(double _timeCount)
         {
             if (_timeCount >= 6.5f / 60.0)
@@ -200,6 +215,10 @@ namespace YouveBeenAudited
             return _timeCount;
         }
 
+        /// <summary>
+        /// Resolves the collisions.
+        /// </summary>
+        /// <param name="walls">The walls.</param>
         public void ResolveCollisions(List<GameObject> walls)
         {
             List<Rectangle> intersections = new List<Rectangle>();
@@ -239,24 +258,6 @@ namespace YouveBeenAudited
 
             _position.X = playerRect.X;
             _position.Y = playerRect.Y;
-        }
-
-
-        /// <summary>
-        /// Moves the player to a specified position
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        public void MoveToSpawn(int x, int y)
-        {
-            _position.X = x;
-            _position.Y = y;
-        }
-
-        private Rectangle ScaledRectangle(int tileHeight)
-        {
-            int scaler = _texture.Width / tileHeight;
-            return new Rectangle(_position.X, _position.Y, _spriteSize.X * scaler, _spriteSize.Y * scaler);
         }
 
         #endregion Methods

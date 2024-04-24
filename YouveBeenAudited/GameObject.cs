@@ -1,12 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Diagnostics;
 
 namespace YouveBeenAudited
 {
     /// <summary>
-    /// Purpose: To contain generic information about
-    /// every game object.
+    /// Contains high level information for all game objects.
     /// </summary>
     internal class GameObject
     {
@@ -20,13 +18,19 @@ namespace YouveBeenAudited
         #region Properties
 
         /// <summary>
-        /// Gets the rectangle position of an object.
+        /// Gets the position.
         /// </summary>
+        /// <value>
+        /// The position.
+        /// </value>
         public Rectangle Position { get => _position; }
 
         /// <summary>
-        /// Gets the texture for a game object.
+        /// Gets the texture.
         /// </summary>
+        /// <value>
+        /// The texture.
+        /// </value>
         public Texture2D Texture { get => _texture; }
 
         #endregion Properties
@@ -48,7 +52,7 @@ namespace YouveBeenAudited
         /// <summary>
         /// Initializes a new instance of the <see cref="GameObject"/> class.
         /// </summary>
-        /// <param name="rect">The object Bounding Box.</param>
+        /// <param name="rect">The rect.</param>
         /// <param name="texture">The texture.</param>
         public GameObject(Rectangle rect, Texture2D texture)
         {
@@ -57,22 +61,26 @@ namespace YouveBeenAudited
         }
 
         /// <summary>
-        /// Updates the objects information.
+        /// Updates the object.
         /// </summary>
-        /// <param name="gametime">GameTime object</param>
+        /// <param name="gametime">The gametime.</param>
         public virtual void Update(GameTime gametime)
         { }
 
-        /// <summary>Draws this instance of an object.</summary>
-        /// <param name="sb">The SpriteBatch.</param>
+        /// <summary>
+        /// Draws this instance of an object.
+        /// </summary>
+        /// <param name="sb">The sb.</param>
         public virtual void Draw(SpriteBatch sb)
         {
             sb.Draw(_texture, _position, Color.White);
         }
 
-        /// <summary>Draws this instance of an object.</summary>
-        /// <param name="sb">The SpriteBatch.</param>
-        /// <param name="tint">The tint of texture to be drawn.</param>
+        /// <summary>
+        /// Draws the this instance of an object.
+        /// </summary>
+        /// <param name="sb">The sb.</param>
+        /// <param name="tint">The tint.</param>
         public virtual void Draw(SpriteBatch sb, Color tint)
         {
             sb.Draw(_texture, _position, tint);

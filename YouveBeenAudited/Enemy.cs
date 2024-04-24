@@ -1,16 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 
 namespace YouveBeenAudited
 {
     /// <summary>
-    /// Purpose: To contain information specific to the enemy object.
+    /// Contains all information for an enemy.
     /// </summary>
+    /// <seealso cref="YouveBeenAudited.Character" />
+    /// <seealso cref="YouveBeenAudited.IDamageable" />
     internal class Enemy : Character, IDamageable
     {
         #region Fields
@@ -22,16 +20,13 @@ namespace YouveBeenAudited
         private Rectangle _destinationRectangle;
         private Point _spriteSize;
         private double _timeCount;
-        
-        private int _tileHeight;
 
         #endregion Fields
 
         #region Properties
 
-        
         /// <summary>
-        /// Gets the current frame of enemy animation.
+        /// Gets the current frame.
         /// </summary>
         /// <value>
         /// The current frame.
@@ -39,24 +34,27 @@ namespace YouveBeenAudited
         public int CurrentFrame { get => _currentFrame; }
 
         /// <summary>
-        /// Gets whether or not enemy is at goal.
+        /// Gets a value indicating whether [at goal].
         /// </summary>
-        public bool AtGoal
-        {
-            get
-            {
-                return _atGoal;
-            }
-        }
+        /// <value>
+        ///   <c>true</c> if [at goal]; otherwise, <c>false</c>.
+        /// </value>
+        public bool AtGoal { get => _atGoal; }
 
         /// <summary>
-        /// Gets current point in path.
+        /// Gets the current point.
         /// </summary>
+        /// <value>
+        /// The current point.
+        /// </value>
         public int CurrentPoint { get => _currentPoint; }
 
         /// <summary>
-        /// Gets path list or sets new path and resets progress.
+        /// Gets or sets the path.
         /// </summary>
+        /// <value>
+        /// The path.
+        /// </value>
         public List<Vector2> Path
         {
             get => _path;
@@ -92,10 +90,11 @@ namespace YouveBeenAudited
         /// </summary>
         /// <param name="x">The x coord.</param>
         /// <param name="y">The y coord.</param>
-        /// <param name="health">The health of enemy.</param>
-        /// <param name="speed">The speed of enemy. </param>
-        /// <param name="texture">The texture of enemy.</param>
-        /// <param name="path">The path of enemy.</param>
+        /// <param name="health">The health.</param>
+        /// <param name="speed">The speed.</param>
+        /// <param name="tileHeight">Height of the tile.</param>
+        /// <param name="texture">The texture.</param>
+        /// <param name="path">The path.</param>
         public Enemy(int x, int y, int health, int speed, int tileHeight, Texture2D texture, List<Vector2> path) : base(x, y, texture, health, speed)
         {
             _path = path;
@@ -113,22 +112,21 @@ namespace YouveBeenAudited
             _position = _destinationRectangle;
             _isSlowed = false;
         }
-        
 
         /// <summary>
-        /// Moves the enemy to next point in path. If the end is reached, do nothing.
+        /// Updates the objects information.
         /// </summary>
+        /// <param name="gt">GameTime object</param>
         public override void Update(GameTime gt)
         {
             _timeCount += gt.ElapsedGameTime.TotalSeconds;
             _timeCount = UpdateAnimation(_timeCount);
-   
+
             if (_currentPoint < _path.Count)
             {
-                Vector2 alteredPoint = new Vector2(_path[_currentPoint].X - _position.Width/2, _path[_currentPoint].Y - _position.Height/2);
+                Vector2 alteredPoint = new Vector2(_path[_currentPoint].X - _position.Width / 2, _path[_currentPoint].Y - _position.Height / 2);
                 Vector2 direction = alteredPoint - new Vector2(_position.X, _position.Y);
                 direction = Vector2.Normalize(direction);
-
 
                 if (direction.X < 0)
                 {
@@ -149,13 +147,11 @@ namespace YouveBeenAudited
                 _destinationRectangle.X = _position.X;
                 _destinationRectangle.Y = _position.Y;
 
-
                 if ((_position.X < _path[_currentPoint].X - (_position.Width / 2) + _speed && _position.X > _path[_currentPoint].X - (_position.Width / 2) - _speed) &&
                 _position.Y < _path[_currentPoint].Y - (_position.Height / 2) + _speed && _position.Y > _path[_currentPoint].Y - (_position.Height / 2) - _speed)
                 {
                     _currentPoint++;
                 }
-
 
                 if (_currentPoint == _path.Count)
                 {
@@ -172,14 +168,14 @@ namespace YouveBeenAudited
                 {
                     _currentState = CharacterStates.Left;
                 }
-
             }
         }
 
         /// <summary>
-        /// Updates the enemy animation.
+        /// Updates the animation.
         /// </summary>
-        /// <param name="gameTime">Game time information</param>
+        /// <param name="_timeCount">The time count.</param>
+        /// <returns>Return the time count of animation</returns>
         public double UpdateAnimation(double _timeCount)
         {
             if (_timeCount >= 6.5f / 60.0)
@@ -195,9 +191,9 @@ namespace YouveBeenAudited
         }
 
         /// <summary>
-        /// Draws enemy according to current state.
+        /// Draws this instance of an object.
         /// </summary>
-        /// <param name="sb">SpriteBatch</param>
+        /// <param name="sb">The SpriteBatch.</param>
         public override void Draw(SpriteBatch sb)
         {
             switch (_currentState)

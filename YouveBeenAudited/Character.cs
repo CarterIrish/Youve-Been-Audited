@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+﻿using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
 namespace YouveBeenAudited
@@ -16,8 +14,10 @@ namespace YouveBeenAudited
     }
 
     /// <summary>
-    /// Purpose: Holds character specific information.
+    /// Contains core information for all characters.
     /// </summary>
+    /// <seealso cref="YouveBeenAudited.GameObject" />
+    /// <seealso cref="YouveBeenAudited.IDamageable" />
     internal class Character : GameObject, IDamageable
     {
         #region Fields
@@ -34,17 +34,19 @@ namespace YouveBeenAudited
         #region Properties
 
         /// <summary>
-        /// Determines of a character is slowed by glue
+        /// Gets or sets a value indicating whether this instance is slowed.
         /// </summary>
-        public bool IsSlowed
-        {
-            get { return _isSlowed; }
-            set { _isSlowed = value; }
-        }
+        /// <value>
+        ///   <c>true</c> if this instance is slowed; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsSlowed { get => _isSlowed; set => _isSlowed = value; }
 
         /// <summary>
-        /// Determines if the enemy is currently standing on glue
+        /// Gets a value indicating whether [on glue].
         /// </summary>
+        /// <value>
+        ///   <c>true</c> if [on glue]; otherwise, <c>false</c>.
+        /// </value>
         public bool OnGlue
         {
             get
@@ -61,26 +63,27 @@ namespace YouveBeenAudited
         }
 
         /// <summary>
-        /// Gets whether or not the character is dead.
+        /// Gets a value indicating whether this instance is dead.
         /// </summary>
-        public bool IsDead
-        {
-            get
-            {
-                return _isDead;
-            }
-        }
-
-        public List<Trap> SteppedOn
-        {
-            set { _steppedOn = value; }
-            get { return _steppedOn; }
-        }
-
+        /// <value>
+        ///   <c>true</c> if this instance is dead; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsDead { get => _isDead; }
 
         /// <summary>
-        /// Gets or sets the health of a player. If health is below or at 0, set to dead.
+        /// Gets or sets the stepped on.
         /// </summary>
+        /// <value>
+        /// The stepped on.
+        /// </value>
+        public List<Trap> SteppedOn { get => _steppedOn; set => _steppedOn = value; }
+
+        /// <summary>
+        /// Gets or sets the health.
+        /// </summary>
+        /// <value>
+        /// The health.
+        /// </value>
         public int Health
         {
             get => _health;
@@ -96,22 +99,18 @@ namespace YouveBeenAudited
         }
 
         /// <summary>
-        /// Gets or sets the speed of Character.
+        /// Gets or sets the speed.
         /// </summary>
         /// <value>
         /// The speed.
         /// </value>
-        public int Speed
-        {
-            set => _speed = value;
-            get => _speed;
-        }
+        public int Speed { get => _speed; set => _speed = value; }
 
         /// <summary>
-        /// Gets the current state of character.
+        /// Gets the state of the current.
         /// </summary>
         /// <value>
-        /// The state of the player.
+        /// The state of the current.
         /// </value>
         public CharacterStates CurrentState { get => _currentState; }
 
@@ -120,11 +119,13 @@ namespace YouveBeenAudited
         #region Methods
 
         /// <summary>
-        /// Create a new character object.
+        /// Initializes a new instance of the <see cref="Character"/> class.
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="texture"></param>
+        /// <param name="x">The x coord.</param>
+        /// <param name="y">The y coord.</param>
+        /// <param name="texture">The texture.</param>
+        /// <param name="health">The health.</param>
+        /// <param name="speed">The speed.</param>
         public Character(int x, int y, Texture2D texture, int health, int speed) : base(x, y, texture)
         {
             _health = health;
@@ -134,9 +135,9 @@ namespace YouveBeenAudited
         }
 
         /// <summary>
-        /// Makes the enemy object take damage.
+        /// Method for making the object take damage based off given amount.
         /// </summary>
-        /// <param name="amount">amount of damage to take.</param>
+        /// <param name="amount">Amount of damage to take.</param>
         public void TakeDamage(int amount)
         {
             this.Health -= amount;
