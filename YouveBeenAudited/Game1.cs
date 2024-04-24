@@ -834,6 +834,7 @@ namespace YouveBeenAudited
         {
             for (int i = 0; i < _traps.Count; i++)
             {
+                _traps[i].ResolveCollisions(_wallList);
                 if (_traps[i].CheckCollisions(_player))
                 {
                     if (!_player.SteppedOn.Contains(_traps[i]))
@@ -975,17 +976,17 @@ namespace YouveBeenAudited
                 if (SingleKeyPress(Keys.K) && _player.Money >= 20)
                 {
                     _player.Money -= 20;
-                    trap = new Glue(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _glueTexture, 20, 0);
+                    trap = new Glue(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _glueTexture, 20, 0, _tileLength);
                 }
                 if (SingleKeyPress(Keys.J) && _player.Money >= 20)
                 {
                     _player.Money -= 20;
-                    trap = new Spike(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _nailTexture, 20, 100);
+                    trap = new Spike(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _nailTexture, 20, 100, _tileLength);
                     trap.IsActive = false;
                 }
                 if (SingleKeyPress(Keys.L) && _player.Money >= 20)
                 {
-                    trap = new Bomb(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _bombTexture, 20, 100);
+                    trap = new Bomb(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _bombTexture, 20, 100, _tileLength);
                     Bomb bomb = (Bomb)trap;
                 }
 
