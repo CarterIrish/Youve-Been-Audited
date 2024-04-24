@@ -685,12 +685,15 @@ namespace YouveBeenAudited
         /// <param name="fileName">Name of the file.</param>
         private void NextLevel(string fileName)
         {
+            _wallList.Clear();
             _enemyManager = new EnemyManager(3, 3, 1);
             _enemyManager.LoadContent(Content);
             ReadFile(fileName);
             _enemyManager.TileHeight = _tileLength;
+            _safeHealthBar = new Rectangle(_windowCenter.X - 500, _windowSize.Y - 75, 1000, 50);
             _safeHealth = 100 + ((_enemyManager.NumOfEnemies * _enemyManager.TotalWaves) / 5) * 100;
             _healthSubtractionAmt = 1000 / (1 + ((_enemyManager.NumOfEnemies * _enemyManager.TotalWaves) / 5));
+
         }
 
         /// <summary>
