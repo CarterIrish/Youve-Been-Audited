@@ -117,12 +117,17 @@ namespace YouveBeenAudited
 
         private KeyboardState _prevKbState;
 
-        //Level Information
+        // Level Information
         private int _tileLength;    // Dimensions of a square tile
 
         private TileType[,] _map;   // 2D array representing the tile types of the map
         private int _marginWidth;   // pixel width of the side margins
         private List<GameObject> _wallList; // list of walls in the map
+
+        // Safe stuff
+        private int _safeHealth;
+        private Texture2D _healthBarTexture;
+        private Rectangle _safeHealthBar;
 
         //Debugger
         private bool _debug;
@@ -165,6 +170,7 @@ namespace YouveBeenAudited
             _gameState = GameStates.Menu;
             _traps = new List<Trap>();
             _wallList = new List<GameObject>();
+            _safeHealthBar = new Rectangle(_windowCenter.X-500, _windowSize.Y - 75, 1000, 50);
             base.Initialize();
         }
 
@@ -187,6 +193,7 @@ namespace YouveBeenAudited
             _nailTexture = Content.Load<Texture2D>("spikes");
             _glueTexture = Content.Load<Texture2D>("glue");
             _bombTexture = Content.Load<Texture2D>("bomb");
+            _healthBarTexture = Content.Load<Texture2D>("healthBar");
             _player = new Player(999, 999, _playerTexture, 999, 999, 999, 999);
             _player.LoadContent(Content);
             _appassionata = (Content.Load<Song>("Appassionata"));
@@ -342,10 +349,7 @@ namespace YouveBeenAudited
                     {
                         _player.Money += 100 * (currentEnemies - _enemyManager.RemainingEnemies); // Player gets money with each kill
                     }
-                    if (_enemyManager.EnemyAtGoal)
-                    {
-                        _gameState = GameStates.GameOver;
-                    }
+
 
                     DebugInputs();
 
@@ -450,6 +454,11 @@ namespace YouveBeenAudited
                         _spriteBatch.DrawString(_arial25, "Debug : OFF", new Vector2(50, 100), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 0);
                     }
 
+                    // Draws Safe Health Bar
+                    _spriteBatch.Draw(_healthBarTexture, new Rectangle(_windowCenter.X - 510, _windowSize.Y - 85, 1020, 70), Color.Black);
+                    _spriteBatch.Draw(_healthBarTexture, new Rectangle(_windowCenter.X - 500, _windowSize.Y - 75, 1000, 50), Color.Red);
+                    _spriteBatch.Draw(_healthBarTexture, _safeHealthBar, Color.Green);
+
                     _spriteBatch.End();
 
                     DrawDebug(_spriteBatch);
@@ -525,6 +534,16 @@ namespace YouveBeenAudited
             }
         }
 
+        public void TakeSafeDamage()
+        {
+            _safeHealth -= 100;
+            if(_safeHealth <= 0)
+            {
+                GameOver();
+            }
+            _safeHealthBar.Width -= 1000/(1+((_enemyManager.NumOfEnemies * _enemyManager.TotalWaves) / 5));
+        }
+
         /// <summary>
         /// Creates the next level.
         /// </summary>
@@ -533,9 +552,9 @@ namespace YouveBeenAudited
         {
             _enemyManager = new EnemyManager(3, 3, 1);
             _enemyManager.LoadContent(Content);
-
             ReadFile(fileName);
             _enemyManager.TileHeight = _tileLength;
+            _safeHealth = 100 + ((_enemyManager.NumOfEnemies*_enemyManager.TotalWaves)/5)*100;
         }
 
         /// <summary>
