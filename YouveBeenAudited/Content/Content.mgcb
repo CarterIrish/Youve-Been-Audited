@@ -116,6 +116,21 @@
 /processorParam:TextureFormat=Color
 /build:inventory.png
 
+#begin Level1.level
+/copy:Level1.level
+
+#begin Level2.level
+/copy:Level2.level
+
+#begin Level3.level
+/copy:Level3.level
+
+#begin Level4.level
+/copy:Level4.level
+
+#begin Level5.level
+/copy:Level5.level
+
 #begin LevelEditorButton.png
 /importer:TextureImporter
 /processor:TextureProcessor

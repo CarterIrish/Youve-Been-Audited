@@ -181,11 +181,11 @@ namespace YouveBeenAudited
             // File paths
             _filePaths = new string[]
             {
-                "../../../../Level1.level",
-                "../../../../Level2.level",
-                "../../../../Level3.level",
-                "../../../../Level4.level",
-                "../../../../Level5.level"
+                "Content/Level1.level",
+                "Content/Level2.level",
+                "Content/Level3.level",
+                "Content/Level4.level",
+                "Content/Level5.level"
             };
         }
 
