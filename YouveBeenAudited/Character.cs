@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 
 namespace YouveBeenAudited
@@ -113,6 +114,9 @@ namespace YouveBeenAudited
         /// The state of the current.
         /// </value>
         public CharacterStates CurrentState { get => _currentState; }
+
+        public Point SpriteSize => throw new System.NotImplementedException();
+
 
         #endregion Properties
 

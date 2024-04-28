@@ -84,7 +84,7 @@ namespace YouveBeenAudited
             _position = _destinationRectangle;
             _currentFrame = 0;
         }
-
+        
         /// <summary>
         /// Loads the content.
         /// </summary>

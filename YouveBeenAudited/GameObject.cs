@@ -23,7 +23,7 @@ namespace YouveBeenAudited
         /// <value>
         /// The position.
         /// </value>
-        public Rectangle Position { get => _position; }
+        public Rectangle Position { get => _position; } 
 
         /// <summary>
         /// Gets the texture.

@@ -90,13 +90,25 @@ namespace YouveBeenAudited
         /// <summary>
         /// Checks the collision between provided object and this instance.
         /// </summary>
-        /// <param name="obj">The object.</param>
-        /// <returns>True if collides with an object</returns>
-        public bool CheckCollisions(GameObject obj)
+        /// <param name="obj">Object to check collisions with</param>
+        /// <returns>True if collision detected</returns>
+        public bool CheckCollisions(IDamageable obj)
         {
-            if (obj is IDamageable && Position.Intersects(new Rectangle(obj.Position.X, obj.Position.Y, 55, 100)))
+            switch (obj)
             {
-                return true;
+                case (Player):
+                    if (Position.Intersects(new Rectangle(obj.Position.X, obj.Position.Y, obj.SpriteSize.X, obj.SpriteSize.Y)))
+                    {
+                        return true;
+                    }
+                    break;
+
+                case (Enemy):
+                    if (Position.Intersects(new Rectangle(obj.Position.X, obj.Position.Y, obj.SpriteSize.X, obj.SpriteSize.Y)))
+                    {
+                        return true;
+                    }
+                    break;
             }
             return false;
         }
