@@ -110,6 +110,7 @@ namespace YouveBeenAudited
 
         //Map Textures
         private Texture2D _woodFloorTexture;
+        private Texture2D _pathFloorTexture;
 
         private Texture2D _wallFloralTexture;
         private Texture2D _grassFloorTexture;
@@ -232,6 +233,7 @@ namespace YouveBeenAudited
             _pauseTexture = Content.Load<Texture2D>("pause_screen");
             _gameOverTexture = Content.Load<Texture2D>("game_over_screen");
             _woodFloorTexture = Content.Load<Texture2D>("tile_wood_floor");
+            _pathFloorTexture = Content.Load<Texture2D>("tile_path_floor");
             _wallFloralTexture = Content.Load<Texture2D>("tile_floral_wall");
             _grassFloorTexture = Content.Load<Texture2D>("tile_grass_large");
             _safeTexture = Content.Load<Texture2D>("safe_new");
@@ -862,6 +864,10 @@ namespace YouveBeenAudited
                             break;
                     }
                 }
+            }
+            foreach(Vector2 point in _enemyManager.Path)
+            {
+                sb.Draw(_pathFloorTexture, new Rectangle((int)point.X - _tileLength/2, (int)point.Y - _tileLength / 2, _tileLength, _tileLength), Color.White);
             }
         }
 
