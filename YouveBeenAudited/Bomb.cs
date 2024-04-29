@@ -111,7 +111,7 @@ namespace YouveBeenAudited
         /// </summary>
         public void Explode()
         {
-            this._position.Inflate(_tileHeight * 2, _tileHeight * 2);
+            this._position.Inflate(_tileHeight, _tileHeight);
             _isExploding = true;
         }
 

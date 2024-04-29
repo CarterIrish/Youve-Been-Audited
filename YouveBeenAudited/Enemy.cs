@@ -119,6 +119,7 @@ namespace YouveBeenAudited
         /// <param name="gt">GameTime object</param>
         public override void Update(GameTime gt)
         {
+            base.Update(gt);
             _timeCount += gt.ElapsedGameTime.TotalSeconds;
             _timeCount = UpdateAnimation(_timeCount);
 
@@ -203,7 +204,7 @@ namespace YouveBeenAudited
                 Texture,
                 _destinationRectangle,
                 new Rectangle(((_spriteSize.X + 25) * _currentFrame) + 560, 0, _spriteSize.X, _spriteSize.Y),
-                Color.White,
+                _currentTint,
                 0.0f,
                 Vector2.Zero,
                 SpriteEffects.FlipHorizontally,
@@ -215,7 +216,7 @@ namespace YouveBeenAudited
                 Texture,
                 _destinationRectangle,
                 new Rectangle(((_spriteSize.X + 25) * _currentFrame) + 560, 0, _spriteSize.X, _spriteSize.Y),
-                Color.White,
+                _currentTint,
                 0.0f,
                 Vector2.Zero,
                 SpriteEffects.None,
@@ -223,7 +224,7 @@ namespace YouveBeenAudited
                     break;
 
                 default:
-                    sb.Draw(Texture, _destinationRectangle, new Rectangle(400, 0, _spriteSize.X, _spriteSize.Y), Color.White);
+                    sb.Draw(Texture, _destinationRectangle, new Rectangle(400, 0, _spriteSize.X, _spriteSize.Y), _currentTint);
                     break;
             }
         }

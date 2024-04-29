@@ -295,6 +295,11 @@ namespace LevelEditor
             }
         }
 
+        /// <summary>
+        /// Deletes a point on the enemy path
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void DeletePoint(object sender, EventArgs e)
         {
             if (currentState == EditorState.Pathing)
@@ -333,6 +338,11 @@ namespace LevelEditor
             e.Graphics.FillEllipse(myBrush, new Rectangle(pointLocation, new Size(6, 6)));
         }
 
+        /// <summary>
+        /// Paints the spawn point of the player
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void PaintSpawn(object sender, PaintEventArgs e)
         {
 
@@ -415,9 +425,6 @@ namespace LevelEditor
                 output.WriteLine(numWaves);
                 output.WriteLine(enemyMultiplier);
                 output.Write(playerSpawn.X + "," + playerSpawn.Y);
-
-
-
 
                 output.Close();
 

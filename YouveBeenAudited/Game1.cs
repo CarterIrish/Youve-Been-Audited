@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using ShapeUtils;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -247,7 +248,7 @@ namespace YouveBeenAudited
             _inventoryTexture = Content.Load<Texture2D>("inventory");
 
 
-            
+
             // Game music.
             _appassionata = (Content.Load<Song>("Appassionata"));
             _moonlightSonata = (Content.Load<Song>("Moonlight Sonata"));
@@ -608,7 +609,7 @@ namespace YouveBeenAudited
                             if (b.IsExploding)
                             {
                                 ShapeBatch.Begin(GraphicsDevice);
-                                ShapeBatch.Circle(b.Position.Center.ToVector2(), trap.Position.Height / 2, Color.OrangeRed);
+                                ShapeBatch.Circle(b.Position.Center.ToVector2(), (float)(trap.Position.Height * .63), Color.OrangeRed);
                                 ShapeBatch.End();
                             }
                         }
@@ -620,10 +621,10 @@ namespace YouveBeenAudited
 
                     // Draws Safe Health Bar
                     _spriteBatch.Draw(_healthBarTexture, new Rectangle(_windowCenter.X - 510, _windowSize.Y - _tileLength, 1020, _tileLength), Color.Black);
-                    _spriteBatch.Draw(_healthBarTexture, new Rectangle(_windowCenter.X - 500, _windowSize.Y - _tileLength + 10, 1000, _tileLength-20), Color.Red);
+                    _spriteBatch.Draw(_healthBarTexture, new Rectangle(_windowCenter.X - 500, _windowSize.Y - _tileLength + 10, 1000, _tileLength - 20), Color.Red);
                     _spriteBatch.Draw(_healthBarTexture, _safeHealthBar, Color.Green);
-                    _spriteBatch.DrawString(_arial25, $"{_safeHealth}/{_maxSafeHealth}", new Vector2(_safeHealthBar.X + 10, _safeHealthBar.Y + (_tileLength/15)), Color.Black, 0, Vector2.Zero, _tileLength / 40, SpriteEffects.None, 0);
-                    _spriteBatch.DrawString(_arial25, $"{_safeHealth}/{_maxSafeHealth}", new Vector2(_safeHealthBar.X + 10, _safeHealthBar.Y), Color.White, 0, Vector2.Zero, _tileLength/40, SpriteEffects.None, 0);
+                    _spriteBatch.DrawString(_arial25, $"{_safeHealth}/{_maxSafeHealth}", new Vector2(_safeHealthBar.X + 10, _safeHealthBar.Y + (_tileLength / 15)), Color.Black, 0, Vector2.Zero, _tileLength / 40, SpriteEffects.None, 0);
+                    _spriteBatch.DrawString(_arial25, $"{_safeHealth}/{_maxSafeHealth}", new Vector2(_safeHealthBar.X + 10, _safeHealthBar.Y), Color.White, 0, Vector2.Zero, _tileLength / 40, SpriteEffects.None, 0);
 
 
 
@@ -631,7 +632,7 @@ namespace YouveBeenAudited
                     _spriteBatch.Draw(_healthBarTexture, new Rectangle(_player.Position.X - (_tileLength / 2 - _player.Position.Width / 2) - 5, _player.Position.Y - 15, _tileLength + 10, _tileLength / 10 + 10), Color.Black);
                     _spriteBatch.Draw(_healthBarTexture, new Rectangle(_player.Position.X - (_tileLength / 2 - _player.Position.Width / 2), _player.Position.Y - 10, _tileLength, _tileLength / 10), Color.Red);
                     _spriteBatch.Draw(_healthBarTexture, _playerHealthBar, Color.Green);
-                    
+
                     _spriteBatch.End();
                     DrawDebug(_spriteBatch);
 
@@ -773,7 +774,7 @@ namespace YouveBeenAudited
             ReadFile(fileName);
             _enemyManager.TileHeight = _tileLength;
             _playerHealthBar = new Rectangle(_player.Position.X - (_tileLength / 2 - _player.Position.Width / 2), _player.Position.Y - 10, _tileLength, _tileLength / 10);
-            _safeHealthBar = new Rectangle(_windowCenter.X - 500, _windowSize.Y - _tileLength + 10, 1000, _tileLength-20);
+            _safeHealthBar = new Rectangle(_windowCenter.X - 500, _windowSize.Y - _tileLength + 10, 1000, _tileLength - 20);
             _maxSafeHealth = 100 + ((_enemyManager.NumOfEnemies * _enemyManager.TotalWaves) / 5) * 100;
             _safeHealth = _maxSafeHealth;
             _healthSubtractionAmt = 1000 / (1 + ((_enemyManager.NumOfEnemies * _enemyManager.TotalWaves) / 5));
@@ -846,7 +847,7 @@ namespace YouveBeenAudited
 
             string[] spawn;
             spawn = input.ReadLine().Split(',');
-            _player = new Player((int.Parse(spawn[0]) * _tileLength) + _marginWidth, int.Parse(spawn[1]) * _tileLength, _playerTexture, 300, 100, _tileLength, 6);
+            _player = new Player((int.Parse(spawn[0]) * _tileLength) + _marginWidth, int.Parse(spawn[1]) * _tileLength, _playerTexture, 500, 300, _tileLength, 6);
         }
 
         /// <summary>
@@ -882,9 +883,9 @@ namespace YouveBeenAudited
                     }
                 }
             }
-            foreach(Vector2 point in _enemyManager.Path)
+            foreach (Vector2 point in _enemyManager.Path)
             {
-                sb.Draw(_pathFloorTexture, new Rectangle((int)point.X - _tileLength/2, (int)point.Y - _tileLength / 2, _tileLength, _tileLength), Color.White);
+                sb.Draw(_pathFloorTexture, new Rectangle((int)point.X - _tileLength / 2, (int)point.Y - _tileLength / 2, _tileLength, _tileLength), Color.White);
             }
         }
 
@@ -902,7 +903,7 @@ namespace YouveBeenAudited
                 foreach (Enemy em in _enemyManager.Enemies)
                 {
                     ShapeBatch.Begin(GraphicsDevice);
-                    ShapeBatch.BoxOutline(new Rectangle(em.Position.X, em.Position.Y, em.SpriteSize.X, em.SpriteSize.Y), Color.Blue);
+                    ShapeBatch.BoxOutline(em.Position, Color.Blue);
                     ShapeBatch.End();
                     sb.Begin();
                     sb.DrawString(_arial25, $"X : {em.Position.X}, Y: {em.Position.Y}", new Vector2(em.Position.X + em.SpriteSize.X, em.Position.Y), Color.Blue);
@@ -946,7 +947,7 @@ namespace YouveBeenAudited
                                 if (_traps[i].IsActive)
                                 {
                                     _traps[i].DoEffect(_player);
-                                    _playerHealthBar.Width -= _tileLength/3; // Adjusts player health bar
+                                    _playerHealthBar.Width -= _tileLength / 5; // Adjusts player health bar
                                     Spike s = (Spike)_traps[i];
                                     _player.SteppedOn.Add(_traps[i]);
                                     if (s.Health <= 0)
@@ -961,7 +962,7 @@ namespace YouveBeenAudited
                                 Bomb b = (Bomb)_traps[i];
                                 if (b.IsExploding)
                                 {
-                                    _playerHealthBar.Width -= (int)(_tileLength * (2.0/3)); // Adjusts player health bar
+                                    _playerHealthBar.Width -= (int)(_tileLength * (2.0 / 5)); // Adjusts player health bar
                                     _player.SteppedOn.Add(_traps[i]);
                                 }
                                 _traps[i].DoEffect(_player);
@@ -1074,7 +1075,7 @@ namespace YouveBeenAudited
                 Trap trap = null;
                 if (SingleKeyPress(Keys.K) && _player.Money >= 30)
                 {
-                    _player.Money -= 20;
+                    _player.Money -= 30;
                     trap = new Glue(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _glueTexture, 30, 0, _tileLength);
                 }
                 else if (SingleKeyPress(Keys.J) && _player.Money >= 50)
@@ -1085,7 +1086,7 @@ namespace YouveBeenAudited
                 }
                 else if (SingleKeyPress(Keys.L) && _player.Money >= 75)
                 {
-                    _player.Money -= 100;
+                    _player.Money -= 75;
                     trap = new Bomb(_player.Position.X - 10, _player.Position.Y + _player.Position.Height / 6, _bombTexture, 75, 200, _tileLength);
                     Bomb bomb = (Bomb)trap;
                 }

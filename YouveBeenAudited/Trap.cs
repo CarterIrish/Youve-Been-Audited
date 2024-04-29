@@ -97,14 +97,14 @@ namespace YouveBeenAudited
             switch (obj)
             {
                 case (Player):
-                    if (Position.Intersects(new Rectangle(obj.Position.X, obj.Position.Y, obj.SpriteSize.X, obj.SpriteSize.Y)))
+                    if (Position.Intersects(obj.Position))
                     {
                         return true;
                     }
                     break;
 
                 case (Enemy):
-                    if (Position.Intersects(new Rectangle(obj.Position.X, obj.Position.Y, obj.SpriteSize.X, obj.SpriteSize.Y)))
+                    if (Position.Intersects(obj.Position))
                     {
                         return true;
                     }

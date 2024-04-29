@@ -29,6 +29,8 @@ namespace YouveBeenAudited
         protected CharacterStates _currentState;
         protected List<Trap> _steppedOn;
         protected bool _isSlowed;
+        protected double _damageTime;
+        protected Color _currentTint;
 
         #endregion Fields
 
@@ -115,6 +117,15 @@ namespace YouveBeenAudited
         /// </value>
         public CharacterStates CurrentState { get => _currentState; }
 
+        /// <summary>
+        /// Gets/sets the time left the object should spend being drawn red to signify taking damage
+        /// </summary>
+        public double DamageTime
+        {
+            get { return _damageTime; }
+            set { _damageTime = value; }
+        }
+
         public Point SpriteSize => throw new System.NotImplementedException();
 
 
@@ -136,6 +147,8 @@ namespace YouveBeenAudited
             _speed = speed;
             _currentState = CharacterStates.Idle;
             _steppedOn = new List<Trap>();
+            _currentTint = Color.White;
+            _damageTime = .1;
         }
 
         /// <summary>
@@ -145,6 +158,28 @@ namespace YouveBeenAudited
         public void TakeDamage(int amount)
         {
             this.Health -= amount;
+
+            if (amount > 0)
+            {
+                _currentTint = Color.Red;
+            }
+        }
+
+        /// <summary>
+        /// Updates the character
+        /// </summary>
+        /// <param name="gametime"></param>
+        public override void Update(GameTime gametime)
+        {
+            if (_currentTint == Color.Red)
+            {
+                _damageTime -= gametime.ElapsedGameTime.TotalSeconds;
+                if(_damageTime <= 0)
+                {
+                    _currentTint = Color.White;
+                    _damageTime = .1;
+                }
+            }
         }
 
         #endregion Methods
